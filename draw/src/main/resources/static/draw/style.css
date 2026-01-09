@@ -1,0 +1,42 @@
+body {
+    position: relative;
+    min-height: 100vh;
+}
+
+#toolbar {
+    padding: 6px;
+    height: 25px;
+}
+
+#main {
+    position: absolute;
+    top: 36px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#container {
+    width: 100%;
+    height: 100%;
+}
+
+/* 定义提示框样式 */
+#copySuccessMessage {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    background-color: green;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* 定义渐显动画 */
+#copySuccessMessage.show {
+    display: block;
+    opacity: 1;
+}

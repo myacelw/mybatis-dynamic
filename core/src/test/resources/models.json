@@ -1,0 +1,171 @@
+[
+  {
+    "name": "Company",
+    "comment": "公司",
+    "schema": null,
+    "fields": [
+      {
+        "name": "name",
+        "type": "Basic",
+        "javaClass": "java.lang.String",
+        "comment": "公司名"
+      }
+    ]
+  },
+  {
+    "name": "Department",
+    "comment": "部门",
+    "fields": [
+      {
+        "name": "name",
+        "comment": "部门名"
+      },
+      {
+        "name": "parentId",
+        "comment": "上级部门ID"
+      },
+      {
+        "name": "parent",
+        "type": "ToOne",
+        "targetModel": "Department",
+        "joinLocalField": "parentId"
+      },
+      {
+        "name": "companyId",
+        "comment": "所属公司ID"
+      },
+      {
+        "name": "company",
+        "type": "ToOne",
+        "targetModel": "Company",
+        "joinLocalField": "companyId"
+      },
+      {
+        "name": "users",
+        "type": "ToMany",
+        "targetModel": "User",
+        "joinTargetField": "departmentId"
+      }
+    ]
+  },
+  {
+    "name": "Role",
+    "comment": "角色",
+    "fields": [
+      {
+        "name": "name",
+        "comment": "角色名"
+      }
+    ]
+  },
+  {
+    "name": "User",
+    "comment": "人员",
+    "fields": [
+      {
+        "name": "name",
+        "comment": "姓名"
+      },
+      {
+        "name": "departmentId",
+        "comment": "所在部门"
+      },
+      {
+        "name": "department",
+        "type": "ToOne",
+        "targetModel": "Department",
+        "joinLocalField": "departmentId"
+      },
+      {
+        "name": "userRoles",
+        "type": "ToMany",
+        "targetModel": "UserRole",
+        "joinTargetField": "userId"
+      },
+      {
+        "name": "userAddressList",
+        "type": "ToMany",
+        "targetModel": "UserAddress",
+        "joinTargetField": "userId"
+      },
+      {
+        "name": "ext",
+        "type": "ToOne",
+        "targetModel": "UserExt",
+        "joinLocalField": "id"
+      }
+    ]
+  },
+  {
+    "name": "UserRole",
+    "comment": "用户角色",
+    "primaryKeyFields": ["userId", "roleId"],
+    "fields": [
+      {
+        "name": "userId",
+        "comment": "用户ID"
+      },
+      {
+        "name": "roleId",
+        "comment": "角色ID"
+      },
+      {
+        "name": "user",
+        "type": "ToOne",
+        "targetModel": "User",
+        "joinLocalField": "userId"
+      },
+      {
+        "name": "role",
+        "type": "ToOne",
+        "targetModel": "Role",
+        "joinLocalField": "roleId"
+      }
+    ]
+  },
+
+  {
+    "name": "UserAddress",
+    "tableName": "user_address2",
+    "comment": "地址",
+    "fields": [
+      {
+        "name": "userId",
+        "javaClass": "java.lang.String",
+        "comment": "用户"
+      },
+      {
+        "name": "address",
+        "type": "Group",
+        "fields": [
+          {
+            "name": "city",
+            "javaClass": "java.lang.String",
+            "comment": "城市"
+          },
+          {
+            "name": "postcode",
+            "javaClass": "java.lang.String",
+            "comment": "邮编"
+          },
+          {
+            "name": "street",
+            "javaClass": "java.lang.String"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "UserExt",
+    "comment": "用户扩展表",
+    "fields": [
+      {
+        "name": "oldSystemId",
+        "type": "Basic",
+        "javaClass": "java.lang.String",
+        "comment": "旧系统标识"
+      }
+    ]
+  }
+]

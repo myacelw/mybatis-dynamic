@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: mybatis-dynamic-experimental
+  # 数据源连接池配置
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:./test;MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DATABASE_TO_UPPER=FALSE;
+    username: sa
+    password:
+  h2:
+    console:
+      #是否开启H2数据库web控制台(http://localhost:8080/h2-console)
+      enabled: true
+      settings:
+        web-allow-others: true
+  jackson:
+    mapper:
+      ACCEPT_CASE_INSENSITIVE_ENUMS: true
+
+mybatis-dynamic:
+  table-prefix: d_
+  index-prefix: idx_
+  seq-prefix: seq_
+  max-row-limit: 10000
+  timeout-seconds: 30
+  commentAnnotationClass: io.swagger.v3.oas.annotations.media.Schema
+  commentAnnotationFieldName: title
+  # 是否调用根据模型更新数据库方法，默认为true
+  update-model: true
+  # 忽略更新表和列的注解
+  disable-alter-comment: false
+  # 初始化数据文件路径列表，支持通配符，例如 classpath:data-v1.json,classpath:data-v2.json
+  #init-data-files: classpath:data.json
+
+# 服务基础配置
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    root: INFO
+    io.github.myacelw.mybatis.dynamic: DEBUG
+
+# 开发环境 文档放出 sql测试接口
+springdoc:
+  api-docs:
+    enabled: true

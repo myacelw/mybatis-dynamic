@@ -1,0 +1,37 @@
+[
+  {
+    "name": "名称-类型",
+    "nodePropertyName": "name",
+    "secondNodePropertyName": "comment",
+    "mainPortPropertyName": "name",
+    "secondPortPropertyName": "javaClass"
+  },
+  {
+    "name": "名称-描述",
+    "nodePropertyName": "name_comment",
+    "secondNodePropertyName": null,
+    "mainPortPropertyName": "name",
+    "secondPortPropertyName": "comment"
+  },
+  {
+    "name": "描述-名称",
+    "nodePropertyName": "comment",
+    "secondNodePropertyName": "name",
+    "mainPortPropertyName": "comment",
+    "secondPortPropertyName": "name"
+  },
+  {
+    "name": "描述-类型",
+    "nodePropertyName": "comment",
+    "secondNodePropertyName": null,
+    "mainPortPropertyName": "comment",
+    "secondPortPropertyName": "fieldType"
+  },
+  {
+    "name": "数据库表",
+    "nodePropertyName": "tableName",
+    "secondNodePropertyName": "comment",
+    "mainPortPropertyName": "columnName",
+    "secondPortPropertyName": "columnType"
+  }
+]

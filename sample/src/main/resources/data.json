@@ -1,0 +1,17 @@
+[
+{ "#" : "========== 初始化公司数据 =========="},
+{"model": "Company", "method":"insertOrUpdate", "data": [
+  {"id" : "c1", "name" : "公司A"},
+  {"id" : "c2", "name" : "公司B"},
+  {"id" : "c3", "name" : "公司C"}
+]},
+
+{ "#" : "========== 初始化部门数据 =========="},
+{"model": "Department",  "data": {"id" : "d1", "name": "部门A", "companyId": "c1" }},
+{"model": "Department",  "data": {"id" : "d2", "name": "部门B", "companyId": "c2"}},
+{"model": "Department",  "data": {"id" : "d3", "name": "部门C", "companyId": "c3"}},
+{"model": "Department",  "data": {"id" : "d4", "name": "部门A-1", "companyId": "c1", "parentId": "d1"}},
+{"model": "Department",  "data": {"id" : "d5", "name": "部门A-1-1", "companyId": "c1", "parentId": "d4"}},
+{"model": "Department",  "data": {"id" : "d6", "name": "部门A-2", "companyId": "c1", "parentId": "d1"}},
+{"model": "Department",  "data": {"id" : "d7", "name": "部门B-1", "companyId": "c2", "parentId": "d2"}}
+]

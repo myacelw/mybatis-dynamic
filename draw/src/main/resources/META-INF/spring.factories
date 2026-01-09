@@ -1,0 +1,2 @@
+# for spring boot < 2.7 version
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.github.myacelw.mybatis.dynamic.draw.DynamicModelDrawAutoConfiguration

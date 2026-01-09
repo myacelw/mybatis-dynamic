@@ -1,0 +1,45 @@
+[
+{ "#" : "========== 初始化公司数据 =========="},
+{"model": "Company", "method":"insertOrUpdate", "data": [
+  {"id" : "c1", "name" : "公司A"},
+  {"id" : "c2", "name" : "公司B"},
+  {"id" : "c3", "name" : "公司C"}
+]},
+
+{ "#" : "========== 初始化部门数据 =========="},
+{"model": "Department",  "data": {"id" : "d1", "name": "部门A", "companyId": "c1" }},
+{"model": "Department",  "data": {"id" : "d2", "name": "部门B", "companyId": "c2"}},
+{"model": "Department",  "data": {"id" : "d3", "name": "部门C", "companyId": "c3"}},
+{"model": "Department",  "data": {"id" : "d4", "name": "部门A-1", "companyId": "c1", "parentId": "d1"}},
+{"model": "Department",  "data": {"id" : "d5", "name": "部门A-1-1", "companyId": "c1", "parentId": "d4"}},
+{"model": "Department",  "data": {"id" : "d6", "name": "部门A-2", "companyId": "c1", "parentId": "d1"}},
+{"model": "Department",  "data": {"id" : "d7", "name": "部门B-1", "companyId": "c2", "parentId": "d2"}},
+
+{ "#" : "========== 初始化角色数据 =========="},
+{"model": "Role", "data": {"id" : "r1", "name" : "普通用户"}},
+{"model": "Role", "data": {"id" : "r2", "name" : "管理员"}},
+
+{ "#" : "========== 初始化人员数据 =========="},
+{"model": "User", "data": {"id" : "u1", "name" : "张三", "departmentId": "d1"}},
+{"model": "User", "data": {"id" : "u2", "name" : "李四", "departmentId": "d2"}},
+
+{ "#" : "========== UserRole =========="},
+{"model": "UserRole", "data": {"userId" : "u1", "roleId" : "r1"}},
+{"model": "UserRole", "data": {"userId" : "u1", "roleId" : "r2"}},
+{"model": "UserRole", "data": {"userId" : "u2", "roleId" : "r2"}},
+
+{ "#" : "========== UserAddress =========="},
+{"model": "UserAddress", "data": {"id":"ad1", "userId" : "u1", "address": {"city": "广州", "postcode": "100000", "street": "广州市天河区XXX路XXX号"}}},
+{"model": "UserAddress", "data": {"id":"ad2", "userId" : "u1", "address": {"city": "深圳", "postcode": "100000", "street": "深圳市龙华区XXX路XXX号"}}},
+{"model": "UserAddress", "data": {"id":"ad3", "userId" : "u2", "address": {"city": "北京", "postcode": "100000", "street": "北京市朝阳区XXX路XXX号"}}},
+{"model": "UserAddress", "data": {"id":"ad4", "userId" : "u2", "address": {"city": "天津", "postcode": "222222", "street": "天津市和平区XXX路XXX号"}}},
+
+{ "#" : "========== UserExt =========="},
+{"model": "UserExt", "data": {"id" : "u1", "oldSystemId": 90001}},
+{"model": "UserExt", "data": {"id" : "u2", "oldSystemId": 90002}},
+
+{ "#" : "========== 删除数据方法示例 =========="},
+{"model": "User",  "method":"delete", "data": {"id" : "u3"}},
+{"model": "User",  "method":"logicDelete", "data": {"id" : "u4"}},
+{"model": "User",  "method":"physicalDelete", "data": {"id" : "u5"}}
+]

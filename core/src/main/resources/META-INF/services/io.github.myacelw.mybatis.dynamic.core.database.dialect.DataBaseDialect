@@ -1,0 +1,5 @@
+io.github.myacelw.mybatis.dynamic.core.database.dialect.MysqlDataBaseDialect
+io.github.myacelw.mybatis.dynamic.core.database.dialect.PostgresqlDataBaseDialect
+io.github.myacelw.mybatis.dynamic.core.database.dialect.OracleDataBaseDialect
+io.github.myacelw.mybatis.dynamic.core.database.dialect.H2DataBaseDialect
+io.github.myacelw.mybatis.dynamic.core.database.dialect.OceanBaseDataBaseDialect

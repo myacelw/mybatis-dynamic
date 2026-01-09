@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- dev -->
+    <appender name="std_plain" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d %-5level [%thread] %logger{36} %line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--公共组件日志过滤示例 -->
+    <!-- <logger name="org.apache" level="warn" /> -->
+    <springProfile name="default">
+        <root level="info">
+            <appender-ref ref="std_plain"/>
+        </root>
+    </springProfile>
+</configuration>
