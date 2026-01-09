@@ -3,8 +3,8 @@ package io.github.myacelw.mybatis.dynamic.spring.dao;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.OrderItem;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.PageResult;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.ConditionBuilder;
 import io.github.myacelw.mybatis.dynamic.core.service.DataManager;
-import io.github.myacelw.mybatis.dynamic.core.service.chain.*;
 import io.github.myacelw.mybatis.dynamic.core.service.chain.*;
 import lombok.NonNull;
 import org.apache.ibatis.cursor.Cursor;
@@ -119,7 +119,7 @@ public interface BaseDao<ID, T> {
     /**
      * 批量删除，根据是否存在逻辑删除字段，执行逻辑删除或者物理删除
      */
-    default int delete(Consumer<Condition.ConditionBuilder> condition) {
+    default int delete(Consumer<ConditionBuilder> condition) {
         return getDataManager().delete(condition);
     }
 
@@ -150,7 +150,7 @@ public interface BaseDao<ID, T> {
      * 按条件批量删除，根据是否存在逻辑删除字段，执行逻辑删除或者物理删除
      * @param forcePhysicalDelete 是否强制物理删除，不考虑是否存在逻辑删除字段
      */
-    default int delete(Consumer<Condition.ConditionBuilder> b, boolean forcePhysicalDelete) {
+    default int delete(Consumer<ConditionBuilder> b, boolean forcePhysicalDelete) {
         return getDataManager().delete(b, forcePhysicalDelete);
     }
 
@@ -209,7 +209,7 @@ public interface BaseDao<ID, T> {
     /**
      * 按条件查询数据
      */
-    default List<T> query(Consumer<Condition.ConditionBuilder> condition) {
+    default List<T> query(Consumer<ConditionBuilder> condition) {
         return query().where(condition).exec();
     }
 
@@ -234,7 +234,7 @@ public interface BaseDao<ID, T> {
      * @param condition 查询条件构建器
      * @param handler 结果处理器
      */
-    default int queryCallBack(Consumer<Condition.ConditionBuilder> condition, ResultHandler<T> handler) {
+    default int queryCallBack(Consumer<ConditionBuilder> condition, ResultHandler<T> handler) {
         return queryCallBack().where(condition).handler(handler).exec();
     }
 
@@ -257,7 +257,7 @@ public interface BaseDao<ID, T> {
      * 流式数据查询，通过回调接口处理返回数据
      * @param condition 查询条件构建器
      */
-    default Cursor<T> queryCursor(Consumer<Condition.ConditionBuilder> condition) {
+    default Cursor<T> queryCursor(Consumer<ConditionBuilder> condition) {
         return queryCursor().where(condition).exec();
     }
 
@@ -275,7 +275,7 @@ public interface BaseDao<ID, T> {
      * @param pageSize 每页条数
      * @param orderItems 排序字段
      */
-    default PageResult<T> page(Consumer<Condition.ConditionBuilder> condition, int pageCurrent, int pageSize, OrderItem... orderItems) {
+    default PageResult<T> page(Consumer<ConditionBuilder> condition, int pageCurrent, int pageSize, OrderItem... orderItems) {
         return page().where(condition).orderItems(orderItems).page(pageCurrent, pageSize).exec();
     }
 
@@ -296,7 +296,7 @@ public interface BaseDao<ID, T> {
     /**
      * 查询单条数据
      */
-    default T queryOne(Consumer<Condition.ConditionBuilder> conditionBuilderConfig) {
+    default T queryOne(Consumer<ConditionBuilder> conditionBuilderConfig) {
         return queryOne().where(conditionBuilderConfig).exec();
     }
 
@@ -328,7 +328,7 @@ public interface BaseDao<ID, T> {
      *
      * @param condition 查询条件构建器
      */
-    default long count(Consumer<Condition.ConditionBuilder> condition) {
+    default long count(Consumer<ConditionBuilder> condition) {
         return getDataManager().count(condition);
     }
 
@@ -353,7 +353,7 @@ public interface BaseDao<ID, T> {
      *
      * @param condition 查询条件构建器
      */
-    default boolean exists(Consumer<Condition.ConditionBuilder> condition) {
+    default boolean exists(Consumer<ConditionBuilder> condition) {
         return getDataManager().exists(condition);
     }
 

@@ -2,6 +2,7 @@ package io.github.myacelw.mybatis.dynamic.core.service.chain;
 
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.Page;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.ConditionBuilder;
 import io.github.myacelw.mybatis.dynamic.core.service.DataManager;
 import io.github.myacelw.mybatis.dynamic.core.service.command.QueryRecursiveListCommand;
 import io.github.myacelw.mybatis.dynamic.core.util.Assert;
@@ -35,9 +36,9 @@ public class QueryRecursiveListChain<ID, T> extends AbstractSelectQueryChain<ID,
         return this;
     }
 
-    public QueryRecursiveListChain<ID, T> initNodeCondition(Consumer<Condition.ConditionBuilder> initNodeCondition) {
+    public QueryRecursiveListChain<ID, T> initNodeCondition(Consumer<ConditionBuilder> initNodeCondition) {
         Assert.notNull(initNodeCondition, "initNodeCondition can not be null");
-        Condition.ConditionBuilder builder = Condition.builder();
+        ConditionBuilder builder = Condition.builder();
         initNodeCondition.accept(builder);
         command.setInitNodeCondition(builder.build());
         return this;

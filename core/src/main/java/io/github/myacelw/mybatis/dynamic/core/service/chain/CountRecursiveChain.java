@@ -1,6 +1,7 @@
 package io.github.myacelw.mybatis.dynamic.core.service.chain;
 
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.ConditionBuilder;
 import io.github.myacelw.mybatis.dynamic.core.service.DataManager;
 import io.github.myacelw.mybatis.dynamic.core.service.command.CountRecursiveCommand;
 import io.github.myacelw.mybatis.dynamic.core.util.Assert;
@@ -27,9 +28,9 @@ public class CountRecursiveChain<ID> extends AbstractCountChain<ID, CountRecursi
         return this;
     }
 
-    public CountRecursiveChain<ID> initNodeCondition(Consumer<Condition.ConditionBuilder> initNodeCondition) {
+    public CountRecursiveChain<ID> initNodeCondition(Consumer<ConditionBuilder> initNodeCondition) {
         Assert.notNull(initNodeCondition, "initNodeCondition can not be null");
-        Condition.ConditionBuilder builder = Condition.builder();
+        ConditionBuilder builder = Condition.builder();
         initNodeCondition.accept(builder);
         command.setInitNodeCondition(builder.build());
         return this;

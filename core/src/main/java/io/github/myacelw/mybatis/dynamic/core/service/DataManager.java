@@ -3,10 +3,9 @@ package io.github.myacelw.mybatis.dynamic.core.service;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.PageResult;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.ConditionBuilder;
 import io.github.myacelw.mybatis.dynamic.core.service.command.*;
 import io.github.myacelw.mybatis.dynamic.core.service.chain.*;
-import io.github.myacelw.mybatis.dynamic.core.service.chain.*;
-import io.github.myacelw.mybatis.dynamic.core.service.command.*;
 import io.github.myacelw.mybatis.dynamic.core.service.impl.IdUtil;
 import io.github.myacelw.mybatis.dynamic.core.service.impl.ModelContext;
 import lombok.NonNull;
@@ -113,7 +112,7 @@ public interface DataManager<ID> {
      * @param onlyUpdateNonNull 是否只更新非空字段
      * @return 更新的记录数
      */
-    default int updateByCondition(@NonNull Consumer<Condition.ConditionBuilder> condition, Object data, boolean onlyUpdateNonNull) {
+    default int updateByCondition(@NonNull Consumer<ConditionBuilder> condition, Object data, boolean onlyUpdateNonNull) {
         return updateByConditionChain().where(condition).data(data).onlyUpdateNonNull(onlyUpdateNonNull).exec();
     }
 
@@ -179,7 +178,7 @@ public interface DataManager<ID> {
      * @param condition 删除条件构建器
      * @return 删除的记录数
      */
-    default int delete(Consumer<Condition.ConditionBuilder> condition) {
+    default int delete(Consumer<ConditionBuilder> condition) {
         return delete(condition, false);
     }
 
@@ -202,8 +201,8 @@ public interface DataManager<ID> {
      * @param condition           删除条件构建器
      * @param forcePhysicalDelete 是否强制物理删除，不考虑是否存在逻辑删除字段
      */
-    default int delete(Consumer<Condition.ConditionBuilder> condition, boolean forcePhysicalDelete) {
-        Condition.ConditionBuilder conditionBuilder = new Condition.ConditionBuilder();
+    default int delete(Consumer<ConditionBuilder> condition, boolean forcePhysicalDelete) {
+        ConditionBuilder conditionBuilder = new ConditionBuilder();
         condition.accept(conditionBuilder);
         return execCommand(new DeleteByConditionCommand(conditionBuilder.build(), forcePhysicalDelete));
     }
@@ -345,7 +344,7 @@ public interface DataManager<ID> {
      * @param condition 查询条件构建器
      * @return 查询结果列表, List<Map<String, Object>>类型数据结构
      **/
-    default List<Map<String, Object>> query(Consumer<Condition.ConditionBuilder> condition) {
+    default List<Map<String, Object>> query(Consumer<ConditionBuilder> condition) {
         return queryChain().where(condition).exec();
     }
 
@@ -356,7 +355,7 @@ public interface DataManager<ID> {
      * @param condition 查询条件构建器
      * @return 查询结果列表, List<T>类型数据结构
      **/
-    default <T> List<T> query(Class<T> clazz, Consumer<Condition.ConditionBuilder> condition) {
+    default <T> List<T> query(Class<T> clazz, Consumer<ConditionBuilder> condition) {
         return queryChain(clazz).where(condition).exec();
     }
 
@@ -383,7 +382,7 @@ public interface DataManager<ID> {
      * @param condition 查询条件构建器
      * @return 查询结果, T类型数据结构
      **/
-    default <T> T queryOne(Class<T> clazz, Consumer<Condition.ConditionBuilder> condition) {
+    default <T> T queryOne(Class<T> clazz, Consumer<ConditionBuilder> condition) {
         return queryOneChain(clazz).where(condition).exec();
     }
 
@@ -403,7 +402,7 @@ public interface DataManager<ID> {
      * @param condition 查询条件构建器
      * @return 查询结果, Map<String, Object>类型数据结构
      **/
-    default Map<String, Object> queryOne(Consumer<Condition.ConditionBuilder> condition) {
+    default Map<String, Object> queryOne(Consumer<ConditionBuilder> condition) {
         return queryOneChain().where(condition).exec();
     }
 
@@ -446,7 +445,7 @@ public interface DataManager<ID> {
      * @param pageCurrent 当前页码
      * @param pageSize    每页数据量
      */
-    default PageResult<Map<String, Object>> page(int pageCurrent, int pageSize, Consumer<Condition.ConditionBuilder> condition) {
+    default PageResult<Map<String, Object>> page(int pageCurrent, int pageSize, Consumer<ConditionBuilder> condition) {
         return pageChain().where(condition).page(pageCurrent, pageSize).exec();
     }
 
@@ -458,7 +457,7 @@ public interface DataManager<ID> {
      * @param pageCurrent 当前页码
      * @param pageSize    每页数据量
      */
-    default <T> PageResult<T> page(Class<T> clazz, int pageCurrent, int pageSize, Consumer<Condition.ConditionBuilder> condition) {
+    default <T> PageResult<T> page(Class<T> clazz, int pageCurrent, int pageSize, Consumer<ConditionBuilder> condition) {
         return pageChain(clazz).where(condition).page(pageCurrent, pageSize).exec();
     }
 
@@ -482,7 +481,7 @@ public interface DataManager<ID> {
      * @param condition 查询条件构建器
      * @param handler   回调接口
      */
-    default int queryCallBack(Consumer<Condition.ConditionBuilder> condition, ResultHandler<Map<String, Object>> handler) {
+    default int queryCallBack(Consumer<ConditionBuilder> condition, ResultHandler<Map<String, Object>> handler) {
         return queryCallBackChain().where(condition).handler(handler).exec();
     }
 
@@ -492,7 +491,7 @@ public interface DataManager<ID> {
      * @param condition 查询条件构建器
      * @param handler   回调接口
      */
-    default <T> int queryCallBack(Class<T> clazz, Consumer<Condition.ConditionBuilder> condition, ResultHandler<T> handler) {
+    default <T> int queryCallBack(Class<T> clazz, Consumer<ConditionBuilder> condition, ResultHandler<T> handler) {
         return queryCallBackChain(clazz).where(condition).handler(handler).exec();
     }
 
@@ -516,7 +515,7 @@ public interface DataManager<ID> {
      *
      * @param condition 查询条件构建器
      */
-    default QueryCursorChain<ID, Map<String, Object>> queryCursor(Consumer<Condition.ConditionBuilder> condition) {
+    default QueryCursorChain<ID, Map<String, Object>> queryCursor(Consumer<ConditionBuilder> condition) {
         return queryCursorChain().where(condition);
     }
 
@@ -525,7 +524,7 @@ public interface DataManager<ID> {
      *
      * @param condition 查询条件构建器
      */
-    default <T> QueryCursorChain<ID, T> queryCursor(Class<T> clazz, Consumer<Condition.ConditionBuilder> condition) {
+    default <T> QueryCursorChain<ID, T> queryCursor(Class<T> clazz, Consumer<ConditionBuilder> condition) {
         return queryCursorChain(clazz).where(condition);
     }
 
@@ -546,14 +545,14 @@ public interface DataManager<ID> {
     /**
      * 树形递归查询，结果数据通过列表返回
      */
-    default <T> List<T> queryRecursiveList(Class<T> clazz, Consumer<Condition.ConditionBuilder> initNodeCondition, boolean recursiveDown) {
+    default <T> List<T> queryRecursiveList(Class<T> clazz, Consumer<ConditionBuilder> initNodeCondition, boolean recursiveDown) {
         return queryRecursiveListChain(clazz).initNodeCondition(initNodeCondition).recursiveDown(recursiveDown).exec();
     }
 
     /**
      * 树形递归查询，结果数据通过列表返回
      */
-    default List<Map<String, Object>> queryRecursiveList(Consumer<Condition.ConditionBuilder> initNodeCondition, boolean recursiveDown) {
+    default List<Map<String, Object>> queryRecursiveList(Consumer<ConditionBuilder> initNodeCondition, boolean recursiveDown) {
         return queryRecursiveListChain().initNodeCondition(initNodeCondition).recursiveDown(recursiveDown).exec();
     }
 
@@ -574,14 +573,14 @@ public interface DataManager<ID> {
     /**
      * 树形向下递归查询，结果组织为树形结构返回
      */
-    default <T> List<T> queryRecursiveTree(Class<T> clazz, Consumer<Condition.ConditionBuilder> initNodeCondition) {
+    default <T> List<T> queryRecursiveTree(Class<T> clazz, Consumer<ConditionBuilder> initNodeCondition) {
         return queryRecursiveTreeChain(clazz).initNodeCondition(initNodeCondition).exec();
     }
 
     /**
      * 树形向下递归查询，结果组织为树形结构返回
      */
-    default List<Map<String, Object>> queryRecursiveTree(Consumer<Condition.ConditionBuilder> initNodeCondition) {
+    default List<Map<String, Object>> queryRecursiveTree(Consumer<ConditionBuilder> initNodeCondition) {
         return queryRecursiveTreeChain().initNodeCondition(initNodeCondition).exec();
     }
 
@@ -631,7 +630,7 @@ public interface DataManager<ID> {
      * @param initNodeCondition 递归查询主表初始条目的查询条件
      * @param recursiveDown     向下递归还是向上递归
      */
-    default long countRecursive(Consumer<Condition.ConditionBuilder> initNodeCondition, boolean recursiveDown) {
+    default long countRecursive(Consumer<ConditionBuilder> initNodeCondition, boolean recursiveDown) {
         return countRecursiveChain().initNodeCondition(initNodeCondition).recursiveDown(recursiveDown).exec();
     }
 
@@ -642,7 +641,7 @@ public interface DataManager<ID> {
      * @param condition         递归查询后结果的查询条件，可使用关联表字段条件
      * @param recursiveDown     向下递归还是向上递归
      */
-    default long countRecursive(Consumer<Condition.ConditionBuilder> initNodeCondition, Consumer<Condition.ConditionBuilder> condition, boolean recursiveDown) {
+    default long countRecursive(Consumer<ConditionBuilder> initNodeCondition, Consumer<ConditionBuilder> condition, boolean recursiveDown) {
         return countRecursiveChain().initNodeCondition(initNodeCondition).where(condition).recursiveDown(recursiveDown).exec();
     }
 
@@ -670,7 +669,7 @@ public interface DataManager<ID> {
     /**
      * 数量查询
      */
-    default int count(Consumer<Condition.ConditionBuilder> condition) {
+    default int count(Consumer<ConditionBuilder> condition) {
         return countChain().where(condition).exec();
     }
 
@@ -690,7 +689,7 @@ public interface DataManager<ID> {
      *
      * @param condition 查询条件设置回调函数
      */
-    default boolean exists(Consumer<Condition.ConditionBuilder> condition) {
+    default boolean exists(Consumer<ConditionBuilder> condition) {
         return existsChain().where(condition).exec();
     }
 

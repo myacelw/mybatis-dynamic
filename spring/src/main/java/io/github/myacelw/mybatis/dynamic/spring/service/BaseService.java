@@ -3,8 +3,8 @@ package io.github.myacelw.mybatis.dynamic.spring.service;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.OrderItem;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.PageResult;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.ConditionBuilder;
 import io.github.myacelw.mybatis.dynamic.core.service.DataManager;
-import io.github.myacelw.mybatis.dynamic.core.service.chain.*;
 import io.github.myacelw.mybatis.dynamic.core.service.chain.*;
 import lombok.NonNull;
 import org.apache.ibatis.cursor.Cursor;
@@ -92,7 +92,7 @@ public interface BaseService<ID, T> {
     /**
      * 批量删除，根据是否存在逻辑删除字段，执行逻辑删除或者物理删除
      */
-    int delete(Consumer<Condition.ConditionBuilder> condition);
+    int delete(Consumer<ConditionBuilder> condition);
 
     /**
      * 按ID列表批量删除，根据是否存在逻辑删除字段，执行逻辑删除或者物理删除
@@ -115,7 +115,7 @@ public interface BaseService<ID, T> {
      * 按条件批量删除，根据是否存在逻辑删除字段，执行逻辑删除或者物理删除
      * @param forcePhysicalDelete 是否强制物理删除，不考虑是否存在逻辑删除字段
      */
-    int delete(Consumer<Condition.ConditionBuilder> b, boolean forcePhysicalDelete);
+    int delete(Consumer<ConditionBuilder> b, boolean forcePhysicalDelete);
 
     /**
      * 按ID列表批量删除，根据是否存在逻辑删除字段，执行逻辑删除或者物理删除
@@ -158,7 +158,7 @@ public interface BaseService<ID, T> {
     /**
      * 按条件查询数据
      */
-    List<T> query(Consumer<Condition.ConditionBuilder> condition);
+    List<T> query(Consumer<ConditionBuilder> condition);
 
     /**
      * 查询结果回调方式的查询，用于大数据量查询，如大数据量查询并生成Excel
@@ -177,7 +177,7 @@ public interface BaseService<ID, T> {
      * @param condition 查询条件构建器
      * @param handler 结果处理器
      */
-    int queryCallBack(Consumer<Condition.ConditionBuilder> condition, ResultHandler<T> handler);
+    int queryCallBack(Consumer<ConditionBuilder> condition, ResultHandler<T> handler);
 
     /**
      * 流式数据查询，通过回调接口处理返回数据
@@ -194,7 +194,7 @@ public interface BaseService<ID, T> {
      * 流式数据查询，通过回调接口处理返回数据
      * @param condition 查询条件构建器
      */
-    Cursor<T> queryCursor(Consumer<Condition.ConditionBuilder> condition);
+    Cursor<T> queryCursor(Consumer<ConditionBuilder> condition);
 
     /**
      * 分页查询
@@ -208,7 +208,7 @@ public interface BaseService<ID, T> {
      * @param pageSize 每页条数
      * @param orderItems 排序字段
      */
-    PageResult<T> page(Consumer<Condition.ConditionBuilder> condition, int pageCurrent, int pageSize, OrderItem... orderItems);
+    PageResult<T> page(Consumer<ConditionBuilder> condition, int pageCurrent, int pageSize, OrderItem... orderItems);
 
     /**
      * 查询单条数据
@@ -223,7 +223,7 @@ public interface BaseService<ID, T> {
     /**
      * 查询单条数据
      */
-    T queryOne(Consumer<Condition.ConditionBuilder> conditionBuilderConfig);
+    T queryOne(Consumer<ConditionBuilder> conditionBuilderConfig);
 
     /**
      * 查询全部数据
@@ -247,7 +247,7 @@ public interface BaseService<ID, T> {
      *
      * @param condition 查询条件构建器
      */
-    long count(Consumer<Condition.ConditionBuilder> condition);
+    long count(Consumer<ConditionBuilder> condition);
 
     /**
      * 按条件查询是否存在数据。
@@ -266,7 +266,7 @@ public interface BaseService<ID, T> {
      *
      * @param condition 查询条件构建器
      */
-    boolean exists(Consumer<Condition.ConditionBuilder> condition);
+    boolean exists(Consumer<ConditionBuilder> condition);
 
     /**
      * 汇总查询

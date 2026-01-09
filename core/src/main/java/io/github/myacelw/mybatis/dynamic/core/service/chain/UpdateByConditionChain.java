@@ -1,6 +1,7 @@
 package io.github.myacelw.mybatis.dynamic.core.service.chain;
 
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.ConditionBuilder;
 import io.github.myacelw.mybatis.dynamic.core.service.DataManager;
 import io.github.myacelw.mybatis.dynamic.core.service.command.UpdateByConditionCommand;
 import io.github.myacelw.mybatis.dynamic.core.service.command.UpdateCommand;
@@ -26,9 +27,9 @@ public class UpdateByConditionChain<ID> extends AbstractChain<ID, Integer, Updat
         return self();
     }
 
-    public UpdateByConditionChain<ID> where(Consumer<Condition.ConditionBuilder> condition) {
+    public UpdateByConditionChain<ID> where(Consumer<ConditionBuilder> condition) {
         if (condition != null) {
-            Condition.ConditionBuilder builder = Condition.builder();
+            ConditionBuilder builder = Condition.builder();
             condition.accept(builder);
             command.setCondition(builder.build());
         }

@@ -2,6 +2,7 @@ package io.github.myacelw.mybatis.dynamic.spring.dao;
 
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.OrderItem;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.ConditionBuilder;
 import io.github.myacelw.mybatis.dynamic.core.service.chain.QueryRecursiveListChain;
 import io.github.myacelw.mybatis.dynamic.core.service.chain.QueryRecursiveTreeChain;
 import lombok.NonNull;
@@ -82,7 +83,7 @@ public interface BaseTreeDao<ID, T> extends BaseDao<ID, T> {
         return queryRecursiveList().initNodeCondition(initNodeCondition).recursiveDown(recursiveDown).exec();
     }
 
-    default List<T> queryRecursiveList(Consumer<Condition.ConditionBuilder> conditionBuilderConfig, boolean recursiveDown) {
+    default List<T> queryRecursiveList(Consumer<ConditionBuilder> conditionBuilderConfig, boolean recursiveDown) {
         return queryRecursiveList().initNodeCondition(conditionBuilderConfig).recursiveDown(recursiveDown).exec();
     }
 
@@ -103,7 +104,7 @@ public interface BaseTreeDao<ID, T> extends BaseDao<ID, T> {
     /**
      * 递归查询，各层级数据组织成树
      */
-    default List<T> queryRecursiveTree(Consumer<Condition.ConditionBuilder> initNodeCondition) {
+    default List<T> queryRecursiveTree(Consumer<ConditionBuilder> initNodeCondition) {
         return queryRecursiveTree().initNodeCondition(initNodeCondition).exec();
     }
 
@@ -126,7 +127,7 @@ public interface BaseTreeDao<ID, T> extends BaseDao<ID, T> {
      * @param initNodeCondition 递归查询主表初始条目的查询条件
      * @param recursiveDown 向下递归还是向上递归
      */
-    default long countRecursive(Consumer<Condition.ConditionBuilder> initNodeCondition, boolean recursiveDown) {
+    default long countRecursive(Consumer<ConditionBuilder> initNodeCondition, boolean recursiveDown) {
         return getDataManager().countRecursive(initNodeCondition, recursiveDown);
     }
 
@@ -136,7 +137,7 @@ public interface BaseTreeDao<ID, T> extends BaseDao<ID, T> {
      * @param condition 递归查询后结果的查询条件，可使用关联表字段条件
      * @param recursiveDown 向下递归还是向上递归
      */
-    default long countRecursive(Consumer<Condition.ConditionBuilder> initNodeCondition, Consumer<Condition.ConditionBuilder> condition, boolean recursiveDown) {
+    default long countRecursive(Consumer<ConditionBuilder> initNodeCondition, Consumer<ConditionBuilder> condition, boolean recursiveDown) {
         return getDataManager().countRecursive(initNodeCondition, condition, recursiveDown);
     }
 

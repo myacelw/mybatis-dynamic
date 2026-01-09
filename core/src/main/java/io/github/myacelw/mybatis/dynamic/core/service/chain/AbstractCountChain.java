@@ -2,6 +2,7 @@ package io.github.myacelw.mybatis.dynamic.core.service.chain;
 
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.Join;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.ConditionBuilder;
 import io.github.myacelw.mybatis.dynamic.core.service.DataManager;
 import io.github.myacelw.mybatis.dynamic.core.service.command.CountCommand;
 import lombok.NonNull;
@@ -29,9 +30,9 @@ public abstract class AbstractCountChain<ID, C extends CountCommand, B extends A
         return self();
     }
 
-    public B where(Consumer<Condition.ConditionBuilder> conditionBuilderConfig) {
+    public B where(Consumer<ConditionBuilder> conditionBuilderConfig) {
         if (conditionBuilderConfig != null) {
-            Condition.ConditionBuilder builder = Condition.builder();
+            ConditionBuilder builder = Condition.builder();
             conditionBuilderConfig.accept(builder);
             command.setCondition(builder.build());
         }

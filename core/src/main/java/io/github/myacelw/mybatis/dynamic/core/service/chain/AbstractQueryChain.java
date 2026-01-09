@@ -3,6 +3,7 @@ package io.github.myacelw.mybatis.dynamic.core.service.chain;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.Join;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.OrderItem;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.ConditionBuilder;
 import io.github.myacelw.mybatis.dynamic.core.service.DataManager;
 import io.github.myacelw.mybatis.dynamic.core.service.command.AbstractQueryCommand;
 import lombok.NonNull;
@@ -40,9 +41,9 @@ public abstract class AbstractQueryChain<ID, T, R, C extends AbstractQueryComman
      *
      * @param conditionBuilderConfig 条件构造器的配置函数
      */
-    public B where(Consumer<Condition.ConditionBuilder> conditionBuilderConfig) {
+    public B where(Consumer<ConditionBuilder> conditionBuilderConfig) {
         if (conditionBuilderConfig != null) {
-            Condition.ConditionBuilder builder = Condition.builder();
+            ConditionBuilder builder = Condition.builder();
             conditionBuilderConfig.accept(builder);
             command.setCondition(builder.build());
         }
