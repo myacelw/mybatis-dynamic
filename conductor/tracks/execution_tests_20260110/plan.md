@@ -47,9 +47,9 @@ This phase covers the integration testing of standard data retrieval executions.
 - [x] Task: Integration Test `QueryByIdExecution` [552dcd2]
     - [x] Write integration test for `QueryByIdExecution` with H2
     - [x] Verify test passes
-- [ ] Task: Integration Test `QueryByIdsExecution`
-    - [ ] Write integration test for `QueryByIdsExecution` with H2
-    - [ ] Verify test passes
+- [x] Task: Integration Test `QueryByIdsExecution` [64f483e]
+    - [x] Write integration test for `QueryByIdsExecution` with H2
+    - [x] Verify test passes
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Primary Query Executions' (Protocol in workflow.md)
 
 ## Phase 3: Specialized & Batch Executions
