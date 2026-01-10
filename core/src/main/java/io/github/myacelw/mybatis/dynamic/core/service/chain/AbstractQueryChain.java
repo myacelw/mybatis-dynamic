@@ -102,4 +102,12 @@ public abstract class AbstractQueryChain<ID, T, R, C extends AbstractQueryComman
         return self();
     }
 
+    /**
+     * 是否忽略逻辑删除
+     */
+    public B ignoreLogicDelete() {
+        command.setIgnoreLogicDelete(true);
+        return self();
+    }
+
 }

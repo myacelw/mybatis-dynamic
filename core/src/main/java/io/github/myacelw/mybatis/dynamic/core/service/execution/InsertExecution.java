@@ -188,13 +188,17 @@ public class InsertExecution<ID> extends AbstractExecution<ID, Object, InsertCom
 
     public static void convertTableDataForNoCommonField(ModelContext modelContext, List<FieldValue> result, Object data, Collection<String> skipFields, boolean ignoreNull) {
         Map<String, Object> extProperties = modelContext.getModel().getExtProperties();
+        log.debug("convertTableDataForNoCommonField: data map: {}", data);
 
         for (Field field : modelContext.getPermissionFields()) {
+            log.debug("Processing field: {}", field.getName());
             if (skipFields != null && skipFields.contains(field.getName())) {
+                log.debug("Skipping field: {}", field.getName());
                 continue;
             }
             if ((field instanceof GroupField || field instanceof BasicField) && DataUtil.containsKey(data, field.getName())) {
                 Object value = DataUtil.getProperty(data, field.getName());
+                log.debug("Field {} found in data, value: {}", field.getName(), value);
                 if (field instanceof GroupField) {
                     convertFieldGroupTableData(result, (GroupField) field, value, ignoreNull);
                 } else {
@@ -209,6 +213,8 @@ public class InsertExecution<ID> extends AbstractExecution<ID, Object, InsertCom
                 subTypeMap.entrySet().stream()
                         .filter(t -> t.getValue().equals(data.getClass())).findFirst()
                         .ifPresent(t -> result.add(new FieldValue((BasicField) field, t.getKey())));
+            } else {
+                log.debug("Field {} not found in data map or not a basic/group field or not sub-type related.", field.getName());
             }
         }
     }

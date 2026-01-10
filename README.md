@@ -353,6 +353,31 @@ assertEquals(LocalDateTime.class, result.get(0).get("createTime").getClass());
 ##### 提供模型的高级数据查询接口，参见:
 `DataManager.queryChain().where(Condition condition).orderItems(List<OrderItem> orderItems).page(Page page).joins(List<Join> joins).exec()`
 
+#### Fluent Condition API (链式查询条件)
+
+`ConditionBuilder` 现在支持更加自然和强大的链式调用 API，可以方便地构造复杂的 `AND`、`OR`、`NOT` 组合条件，并自动处理逻辑优先级（AND 优先级高于 OR）。
+
+示例：
+*   **SQL:** `a = 1 AND (b > 2 OR c < 3) AND d = 4`
+*   **代码:**
+    ```java
+    cb.eq("a", 1)
+      .and(b -> b.gt("b", 2).or(b2 -> b2.lt("c", 3)))
+      .eq("d", 4)
+    ```
+    或者使用更显式的链式风格：
+    ```java
+    cb.eq("a", 1)
+      .and().bracket(b -> b.gt("b", 2).or().lt("c", 3))
+      .and().eq("d", 4)
+    ```
+
+**主要特性：**
+*   **逻辑连接词:** 提供 `and()`、`or()`、`not()` 方法进行逻辑切换。
+*   **括号支持:** `bracket(Consumer<ConditionBuilder>)` 用于创建显式的括号分组。
+*   **优先级处理:** 自动处理 `A AND B OR C` (视为 `(A AND B) OR C`) 和 `A OR B AND C` (视为 `A OR (B AND C)`)。
+*   **代码复用:** 所有的连接词返回的 Connector 都具备完整的条件构造能力（eq, gt, in, etc.），减少代码重复。
+
 1. 通过设置`joins`属性，查询接口支持扩展查询主表的同时查询出字段为 关联类型`ToOne`、`ToMany`的具体关联表的数据。
 2. Join查询设置，说明：
    下面给一个典型模型场景并给出几个配置的例子：

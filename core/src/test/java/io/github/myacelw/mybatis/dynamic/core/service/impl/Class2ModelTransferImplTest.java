@@ -11,8 +11,6 @@ import io.github.myacelw.mybatis.dynamic.core.Database;
 import io.github.myacelw.mybatis.dynamic.core.TableServiceBuildUtil;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.*;
-import io.github.myacelw.mybatis.dynamic.core.service.entity.*;
-import io.github.myacelw.mybatis.dynamic.core.metadata.field.*;
 import io.github.myacelw.mybatis.dynamic.core.metadata.partition.KeyPartition;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.Join;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.SimpleCondition;
@@ -228,7 +226,7 @@ class Class2ModelTransferImplTest {
 
         // ======== User 数据 查询 2
 
-        List<Person> data2 = personDataManager.query(Person.class, b->b.startsWith("ext.phone", "138"));
+        List<Person> data2 = personDataManager.query(Person.class, b -> b.startsWith("ext.phone", "138"));
         personDataManager.fillChain().data(data2)
                 .fillField("mainDepartment")
                 .fillField("userDepartmentList", b -> b.join(Join.of("department")))
