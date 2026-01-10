@@ -35,9 +35,9 @@ This phase covers the integration testing of basic data modification and existen
 ## Phase 2: Primary Query Executions
 This phase covers the integration testing of standard data retrieval executions.
 
-- [ ] Task: Integration Test `QueryExecution`
-    - [ ] Write integration test for `QueryExecution` with H2
-    - [ ] Verify test passes
+- [x] Task: Integration Test `QueryExecution` [5da3bf2]
+    - [x] Write integration test for `QueryExecution` with H2
+    - [x] Verify test passes
 - [ ] Task: Integration Test `QueryOneExecution`
     - [ ] Write integration test for `QueryOneExecution` with H2
     - [ ] Verify test passes
