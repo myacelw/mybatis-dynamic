@@ -23,21 +23,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public abstract class BaseExecutionTest {
 
-    protected static SqlSessionFactory sqlSessionFactory = TableServiceBuildUtil.createSqlSessionFactory(Database.H2);
-    protected static ModelService modelService;
+    protected SqlSessionFactory sqlSessionFactory;
+    protected ModelService modelService;
     protected static String currentUser = "admin";
-    protected static ModelDataLoader modelDataLoader;
+    protected ModelDataLoader modelDataLoader;
 
     protected SqlSession sqlSession;
     protected Map<String, List<Map<String, Object>>> initDataMap;
 
-    @BeforeAll
-    static void setUpAll() {
+    @BeforeEach
+    void setUp() {
         Logger rootLogger = (Logger) LoggerFactory.getLogger("io.github.myacelw.mybatis.dynamic");
         rootLogger.setLevel(Level.DEBUG);
+
+        // Use a unique H2 database name per test instance to avoid interference
+        String h2Name = this.getClass().getSimpleName() + "_" + UUID.randomUUID().toString().substring(0, 8);
+        this.sqlSessionFactory = TableServiceBuildUtil.createSqlSessionFactory(Database.H2, h2Name);
 
         List<Filler> fillers = new ArrayList<>();
         fillers.add(new AbstractCreatorFiller() {
@@ -54,14 +59,11 @@ public abstract class BaseExecutionTest {
             }
         });
 
-        modelService = new ModelServiceBuilder(sqlSessionFactory).fillers(fillers).tablePrefix("d_").build();
-        modelDataLoader = new ModelDataLoader(modelService);
-        modelDataLoader.setIdType(String.class);
-        modelDataLoader.updateAndRegister("classpath:models.json");
-    }
+        this.modelService = new ModelServiceBuilder(sqlSessionFactory).fillers(fillers).tablePrefix("d_").build();
+        this.modelDataLoader = new ModelDataLoader(modelService);
+        this.modelDataLoader.setIdType(String.class);
+        this.modelDataLoader.updateAndRegister("classpath:models.json");
 
-    @BeforeEach
-    void setUp() {
         this.initDataMap = modelDataLoader.initModelData(sqlSessionFactory, "classpath:data.json");
         this.sqlSession = sqlSessionFactory.openSession();
     }

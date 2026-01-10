@@ -18,6 +18,10 @@ import javax.sql.DataSource;
 public class TableServiceBuildUtil {
 
     public static SqlSessionFactory createSqlSessionFactory(Database database) {
+        return createSqlSessionFactory(database, "test");
+    }
+
+    public static SqlSessionFactory createSqlSessionFactory(Database database, String h2Name) {
         DataSource dataSource;
         if (database == Database.MYSQL) {
             dataSource = dataSourceForMysql();
@@ -26,13 +30,17 @@ public class TableServiceBuildUtil {
         } else if (database == Database.OCEANBASE) {
             dataSource = dataSourceForOceanBase();
         } else {
-            dataSource = dataSourceForH2();
+            dataSource = dataSourceForH2(h2Name);
         }
         return sqlSessionFactory(dataSource);
     }
 
 
     public static TableManagerImpl createTableService(Database database) {
+        return createTableService(database, "test");
+    }
+
+    public static TableManagerImpl createTableService(Database database, String h2Name) {
         DataSource dataSource;
         DataBaseDialect dialect;
         if (database == Database.MYSQL) {
@@ -45,7 +53,7 @@ public class TableServiceBuildUtil {
             dataSource = dataSourceForOceanBase();
             dialect = new OceanBaseDataBaseDialect();
         } else {
-            dataSource = dataSourceForH2();
+            dataSource = dataSourceForH2(h2Name);
             dialect = new H2DataBaseDialect();
         }
         return new TableManagerImpl(new MybatisHelperImpl(sqlSessionFactory(dataSource), 0, 120), dialect);
@@ -70,9 +78,9 @@ public class TableServiceBuildUtil {
         return new SqlSessionFactoryBuilder().build(configuration);
     }
 
-    private static DataSource dataSourceForH2() {
+    private static DataSource dataSourceForH2(String h2Name) {
         DataSourceProperties properties = new DataSourceProperties();
-        properties.setUrl("jdbc:h2:mem:test;MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DATABASE_TO_UPPER=FALSE");
+        properties.setUrl("jdbc:h2:mem:" + h2Name + ";MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DATABASE_TO_UPPER=FALSE");
         properties.setUsername("sa");
         return properties.initializeDataSourceBuilder().build();
     }
