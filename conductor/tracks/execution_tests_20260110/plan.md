@@ -18,9 +18,9 @@ This phase covers the integration testing of basic data modification and existen
 - [x] Task: Integration Test `UpdateByConditionExecution` [fdc9ad9]
     - [x] Write integration test for `UpdateByConditionExecution` with H2
     - [x] Verify test passes
-- [ ] Task: Integration Test `InsertOrUpdateExecution`
-    - [ ] Write integration test for `InsertOrUpdateExecution` with H2
-    - [ ] Verify test passes
+- [x] Task: Integration Test `InsertOrUpdateExecution` [bb95a38]
+    - [x] Write integration test for `InsertOrUpdateExecution` with H2
+    - [x] Verify test passes
 - [ ] Task: Integration Test `CountExecution`
     - [ ] Write integration test for `CountExecution` with H2
     - [ ] Verify test passes
