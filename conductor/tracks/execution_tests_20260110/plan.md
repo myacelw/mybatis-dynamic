@@ -44,9 +44,9 @@ This phase covers the integration testing of standard data retrieval executions.
 - [x] Task: Integration Test `PageExecution` [487bf0e]
     - [x] Write integration test for `PageExecution` with H2
     - [x] Verify test passes
-- [ ] Task: Integration Test `QueryByIdExecution`
-    - [ ] Write integration test for `QueryByIdExecution` with H2
-    - [ ] Verify test passes
+- [x] Task: Integration Test `QueryByIdExecution` [552dcd2]
+    - [x] Write integration test for `QueryByIdExecution` with H2
+    - [x] Verify test passes
 - [ ] Task: Integration Test `QueryByIdsExecution`
     - [ ] Write integration test for `QueryByIdsExecution` with H2
     - [ ] Verify test passes
