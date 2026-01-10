@@ -1,11 +1,13 @@
 package io.github.myacelw.mybatis.dynamic.core.service.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.myacelw.mybatis.dynamic.core.database.MybatisHelper;
 import io.github.myacelw.mybatis.dynamic.core.database.dialect.DataBaseDialect;
 import io.github.myacelw.mybatis.dynamic.core.event.Event;
 import io.github.myacelw.mybatis.dynamic.core.event.EventListener;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Permission;
+import io.github.myacelw.mybatis.dynamic.core.metadata.field.BasicField;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.Field;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.GroupField;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
@@ -82,7 +84,7 @@ public class ModelContext {
 
         this.fieldMap = createFieldMap(model.getFields());
 
-        Condition deleteFlagCondition = fieldMap.containsKey(Model.FIELD_DELETE_FLAG) ? SimpleCondition.eq(Model.FIELD_DELETE_FLAG, 0) : null;
+        Condition deleteFlagCondition = isLogicDelete() ? SimpleCondition.eq(Model.FIELD_DELETE_FLAG, 0) : null;
 
         this.additionalCondition = permission != null ? GroupCondition.and(deleteFlagCondition, permission.getDataRights()) : deleteFlagCondition;
         this.additionalIgnoreDeleteCondition = permission != null ? permission.getDataRights() : null;
@@ -91,6 +93,17 @@ public class ModelContext {
 
     public Field getField(String fieldName) {
         return fieldMap.get(fieldName);
+    }
+
+    /**
+     * 是否逻辑删除
+     */
+    public boolean isLogicDelete() {
+        return getField(Model.FIELD_DELETE_FLAG) != null;
+    }
+
+    public BasicField getDeleteFlagField(){
+        return (BasicField) getField(Model.FIELD_DELETE_FLAG);
     }
 
     private Map<String, Field> createFieldMap(List<Field> fields) {

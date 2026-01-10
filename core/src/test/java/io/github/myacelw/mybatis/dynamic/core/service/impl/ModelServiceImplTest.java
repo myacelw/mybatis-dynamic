@@ -4,7 +4,7 @@ import io.github.myacelw.mybatis.dynamic.core.Database;
 import io.github.myacelw.mybatis.dynamic.core.TableServiceBuildUtil;
 import io.github.myacelw.mybatis.dynamic.core.database.impl.TableManagerImpl;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
-import io.github.myacelw.mybatis.dynamic.core.metadata.enums.ColumnAlterStrategy;
+import io.github.myacelw.mybatis.dynamic.core.metadata.enums.AlterOrDropStrategy;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.BasicField;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.Field;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Column;
@@ -226,10 +226,10 @@ public class ModelServiceImplTest {
         model.setSchema(schema);
 
         BasicField f1 = Field.string("name", 100);
-        f1.getColumnDefine().setIndex(true);
+        f1.getColumnDefinition().setIndex(true);
 
         BasicField f2 = Field.string("中文字段名", 100);
-        f2.getColumnDefine().setIndex(true);
+        f2.getColumnDefinition().setIndex(true);
 
         BasicField f3 = Field.string("addIndex", 100);
 
@@ -245,8 +245,8 @@ public class ModelServiceImplTest {
         log.info("index name: {}", index);
 
         // ====
-        f1.getColumnDefine().setIndex(false);
-        f3.getColumnDefine().setIndex(true);
+        f1.getColumnDefinition().setIndex(false);
+        f3.getColumnDefinition().setIndex(true);
         modelService.update(model);
 
         List<Column> columns3 = tableService.getCurrentTableColumns(new Table(tableService.getDialect().wrapper("d_index测试"), schema));
@@ -270,7 +270,7 @@ public class ModelServiceImplTest {
         model.setName("columnAlertStrategy测试");
         model.setSchema(schema);
 
-        BasicField f1 = Field.stringBuilder("name").characterMaximumLength(100).index(true).build();
+        BasicField f1 = Field.stringBuilder("name").characterMaximumLength(100).ddlIndex(true).build();
         BasicField f2 = Field.string("FORCE_ALTER", 100);
         BasicField f3 = Field.string("IGNORE_ALTER", 100);
         BasicField f4 = Field.string("DROP_AND_RECREATE", 100);
@@ -287,17 +287,17 @@ public class ModelServiceImplTest {
 
         // ========
 
-        f1.getColumnDefine().setCharacterMaximumLength(20);
-        f1.getColumnDefine().setAlterOrDropStrategy(ColumnAlterStrategy.ALTER);
+        f1.getColumnDefinition().setCharacterMaximumLength(20);
+        f1.getColumnDefinition().setAlterOrDropStrategy(AlterOrDropStrategy.ALTER);
 
         f2.setJavaClass(Integer.class);
-        f2.getColumnDefine().setAlterOrDropStrategy(ColumnAlterStrategy.ALTER);
+        f2.getColumnDefinition().setAlterOrDropStrategy(AlterOrDropStrategy.ALTER);
 
         f3.setJavaClass(Integer.class);
-        f3.getColumnDefine().setAlterOrDropStrategy(ColumnAlterStrategy.IGNORE);
+        f3.getColumnDefinition().setAlterOrDropStrategy(AlterOrDropStrategy.IGNORE);
 
         f4.setJavaClass(Integer.class);
-        f4.getColumnDefine().setAlterOrDropStrategy(ColumnAlterStrategy.DROP_AND_RECREATE);
+        f4.getColumnDefinition().setAlterOrDropStrategy(AlterOrDropStrategy.DROP_AND_RECREATE);
 
 //        sf2.setJavaClass(Integer.class);
 //        sf2.putExtProperty(Field.EXT_PROPERTY_COLUMN_ALTER_STRATEGY, ColumnAlterStrategy.FORCE_ALTER);
@@ -348,7 +348,7 @@ public class ModelServiceImplTest {
         model.setTableName(null);
 
         BasicField newField = Field.string("newFieldName", 100);
-        newField.getColumnDefine().setOldColumnNames(Collections.singletonList("old_field_name"));
+        newField.getColumnDefinition().setOldColumnNames(Collections.singletonList("old_field_name"));
         model.getFields().add(newField);
         model.getFields().remove(oldField);
 
@@ -377,8 +377,8 @@ public class ModelServiceImplTest {
         model.setName("multiIdFieldTest");
         model.setSchema(schema);
 
-        model.addField(Field.stringBuilder("id1").characterMaximumLength(32).comment("主键1").build());
-        model.addField(Field.stringBuilder("id2").characterMaximumLength(32).comment("主键2").build());
+        model.addField(Field.stringBuilder("id1").characterMaximumLength(32).ddlComment("主键1").build());
+        model.addField(Field.stringBuilder("id2").characterMaximumLength(32).ddlComment("主键2").build());
         model.addField(Field.stringBuilder("name").characterMaximumLength(20).build());
 
         model.setPrimaryKeyFields(new String[]{"id1", "id2"});

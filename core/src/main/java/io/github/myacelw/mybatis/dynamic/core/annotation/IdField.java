@@ -1,6 +1,6 @@
 package io.github.myacelw.mybatis.dynamic.core.annotation;
 
-import io.github.myacelw.mybatis.dynamic.core.metadata.enums.ColumnAlterStrategy;
+import io.github.myacelw.mybatis.dynamic.core.metadata.enums.AlterOrDropStrategy;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.KeyGeneratorMode;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
@@ -63,7 +63,7 @@ public @interface IdField {
     /**
      * 列变更策略；如果不启用自动DDL则可忽略
      */
-    ColumnAlterStrategy ddlColumnAlterStrategy() default ColumnAlterStrategy.ALTER;
+    AlterOrDropStrategy ddlColumnAlterStrategy() default AlterOrDropStrategy.ALTER;
 
 
 }

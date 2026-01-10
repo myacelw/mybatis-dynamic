@@ -63,6 +63,11 @@
     "comment": "人员",
     "fields": [
       {
+        "name": "deleteFlag",
+        "comment": "删除标志",
+        "javaClass": "java.lang.Boolean"
+      },
+      {
         "name": "name",
         "comment": "姓名"
       },

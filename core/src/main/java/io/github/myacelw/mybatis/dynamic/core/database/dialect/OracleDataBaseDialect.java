@@ -1,6 +1,6 @@
 package io.github.myacelw.mybatis.dynamic.core.database.dialect;
 
-import io.github.myacelw.mybatis.dynamic.core.metadata.enums.ColumnAlterStrategy;
+import io.github.myacelw.mybatis.dynamic.core.metadata.enums.AlterOrDropStrategy;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Column;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Table;
 import io.github.myacelw.mybatis.dynamic.core.metadata.vo.Sql;
@@ -49,7 +49,7 @@ public class OracleDataBaseDialect extends AbstractDataBaseDialect {
 
         List<String> columnSqlList = new ArrayList<>();
         for (Column column : table.getColumns()) {
-            if (column.getAlterOrDropStrategy() != ColumnAlterStrategy.DROP) {
+            if (column.getAlterOrDropStrategy() != AlterOrDropStrategy.DROP) {
                 String columnSql = column.getColumnName() + " " + getDataTypeDefinition(column) + getDefaultValueAndAdditionalDDlSql(table, column);
                 columnSqlList.add(columnSql);
             }
@@ -65,7 +65,7 @@ public class OracleDataBaseDialect extends AbstractDataBaseDialect {
             sqlList.add(getSetTableCommentSql(table));
         }
 
-        table.getColumns().stream().filter(c -> c.getAlterOrDropStrategy() != ColumnAlterStrategy.DROP)
+        table.getColumns().stream().filter(c -> c.getAlterOrDropStrategy() != AlterOrDropStrategy.DROP)
                 .filter(c -> c.getComment() != null).forEach(c -> sqlList.add(getSetColumnCommentSql(table, c)));
         return sqlList;
     }

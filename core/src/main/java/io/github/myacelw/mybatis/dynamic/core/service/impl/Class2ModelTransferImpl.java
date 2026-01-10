@@ -1,11 +1,9 @@
 package io.github.myacelw.mybatis.dynamic.core.service.impl;
 
 import io.github.myacelw.mybatis.dynamic.core.annotation.*;
-import io.github.myacelw.mybatis.dynamic.core.annotation.*;
 import io.github.myacelw.mybatis.dynamic.core.annotation.partition.Partition;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.KeyGeneratorMode;
-import io.github.myacelw.mybatis.dynamic.core.metadata.field.*;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.*;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.BasicField;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.Field;
@@ -14,7 +12,6 @@ import io.github.myacelw.mybatis.dynamic.core.metadata.partition.HashPartition;
 import io.github.myacelw.mybatis.dynamic.core.metadata.partition.KeyPartition;
 import io.github.myacelw.mybatis.dynamic.core.metadata.partition.PartitionFactory;
 import io.github.myacelw.mybatis.dynamic.core.service.Class2ModelTransfer;
-import io.github.myacelw.mybatis.dynamic.core.util.*;
 import io.github.myacelw.mybatis.dynamic.core.util.*;
 import io.github.myacelw.mybatis.dynamic.core.util.tuple.Tuple3;
 import lombok.*;
@@ -300,8 +297,8 @@ public class Class2ModelTransferImpl implements Class2ModelTransfer {
                 if (field != null) {
                     if (field instanceof BasicField) {
                         BasicField basicField = (BasicField) field;
-                        if (basicField.getColumnDefine().getComment() == null) {
-                            setComment(classField, t -> basicField.getColumnDefine().setComment(t));
+                        if (basicField.getColumnDefinition().getComment() == null) {
+                            setComment(classField, t -> basicField.getColumnDefinition().setComment(t));
                         }
                     }
 
@@ -430,17 +427,17 @@ public class Class2ModelTransferImpl implements Class2ModelTransfer {
         }
 
         if (StringUtil.hasText(basic.ddlColumnType())) {
-            field.getColumnDefine().setColumnType(basic.ddlColumnType());
+            field.getColumnDefinition().setColumnType(basic.ddlColumnType());
         }
-        field.getColumnDefine().setAlterOrDropStrategy(basic.ddlColumnAlterStrategy());
+        field.getColumnDefinition().setAlterOrDropStrategy(basic.ddlColumnAlterStrategy());
         if (basic.ddlCharacterMaximumLength() != Integer.MIN_VALUE) {
-            field.getColumnDefine().setCharacterMaximumLength(basic.ddlCharacterMaximumLength());
+            field.getColumnDefinition().setCharacterMaximumLength(basic.ddlCharacterMaximumLength());
         }
         if (StringUtil.hasText(basic.columnName())) {
             field.setColumnName(basic.columnName());
         }
         if (StringUtil.hasText(basic.ddlComment())) {
-            field.getColumnDefine().setComment(basic.ddlComment());
+            field.getColumnDefinition().setComment(basic.ddlComment());
         }
         return field;
     }
@@ -463,26 +460,26 @@ public class Class2ModelTransferImpl implements Class2ModelTransfer {
             field.setJdbcType(basic.jdbcType());
         }
         if (StringUtil.hasText(basic.ddlColumnType())) {
-            field.getColumnDefine().setColumnType(basic.ddlColumnType());
+            field.getColumnDefinition().setColumnType(basic.ddlColumnType());
         }
-        field.getColumnDefine().setNotNull(basic.ddlNotNull());
-        field.getColumnDefine().setIndex(basic.ddlIndex());
+        field.getColumnDefinition().setNotNull(basic.ddlNotNull());
+        field.getColumnDefinition().setIndex(basic.ddlIndex());
         if (StringUtil.hasText(basic.ddlIndexName())) {
-            field.getColumnDefine().setIndexName(basic.ddlIndexName());
+            field.getColumnDefinition().setIndexName(basic.ddlIndexName());
         }
-        field.getColumnDefine().setIndexType(basic.ddlIndexType());
-        field.getColumnDefine().setAlterOrDropStrategy(basic.ddlColumnAlterStrategy());
+        field.getColumnDefinition().setIndexType(basic.ddlIndexType());
+        field.getColumnDefinition().setAlterOrDropStrategy(basic.ddlColumnAlterStrategy());
         if (basic.ddlNumericPrecision() != Integer.MIN_VALUE) {
-            field.getColumnDefine().setNumericPrecision(basic.ddlNumericPrecision());
+            field.getColumnDefinition().setNumericPrecision(basic.ddlNumericPrecision());
         }
         if (basic.ddlNumericScale() != Integer.MIN_VALUE) {
-            field.getColumnDefine().setNumericScale(basic.ddlNumericScale());
+            field.getColumnDefinition().setNumericScale(basic.ddlNumericScale());
         }
         if (basic.ddlCharacterMaximumLength() != Integer.MIN_VALUE) {
-            field.getColumnDefine().setCharacterMaximumLength(basic.ddlCharacterMaximumLength());
+            field.getColumnDefinition().setCharacterMaximumLength(basic.ddlCharacterMaximumLength());
         }
         if (StringUtil.hasText(basic.ddlComment())) {
-            field.getColumnDefine().setComment(basic.ddlComment());
+            field.getColumnDefinition().setComment(basic.ddlComment());
         }
         return field;
     }
@@ -524,20 +521,20 @@ public class Class2ModelTransferImpl implements Class2ModelTransfer {
                 fieldField.setColumnName(columnPrefix + columnName);
             }
             if (!fieldGroup.ddlIndexNamePrefix().isEmpty()) {
-                String indexName = StringUtil.hasText(fieldField.getColumnDefine().getIndexName()) ? fieldField.getColumnDefine().getIndexName() : fieldField.getName();
+                String indexName = StringUtil.hasText(fieldField.getColumnDefinition().getIndexName()) ? fieldField.getColumnDefinition().getIndexName() : fieldField.getName();
                 String indexPrefix = constFieldName.equals(fieldGroup.ddlIndexNamePrefix()) ? name + "_" : fieldGroup.ddlIndexNamePrefix();
-                fieldField.getColumnDefine().setIndexName(indexPrefix + indexName);
+                fieldField.getColumnDefinition().setIndexName(indexPrefix + indexName);
             }
             if (!fieldGroup.ddLCommentPrefix().isEmpty()) {
-                String comment = StringUtil.hasText(fieldField.getColumnDefine().getComment()) ? fieldField.getColumnDefine().getComment() : fieldField.getName();
+                String comment = StringUtil.hasText(fieldField.getColumnDefinition().getComment()) ? fieldField.getColumnDefinition().getComment() : fieldField.getName();
                 String commentPrefix = constFieldName.equals(fieldGroup.ddLCommentPrefix()) ? name : fieldGroup.ddLCommentPrefix();
                 fieldField.setComment(commentPrefix + comment);
             }
             if (!fieldGroup.ddlIndexEnabled()) {
-                fieldField.getColumnDefine().setIndex(false);
+                fieldField.getColumnDefinition().setIndex(false);
             }
             if (!fieldGroup.ddlRequiredEnabled()) {
-                fieldField.getColumnDefine().setNotNull(false);
+                fieldField.getColumnDefinition().setNotNull(false);
             }
         }
 

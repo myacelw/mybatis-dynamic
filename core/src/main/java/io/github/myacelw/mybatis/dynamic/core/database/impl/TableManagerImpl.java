@@ -4,7 +4,7 @@ import io.github.myacelw.mybatis.dynamic.core.database.MybatisHelper;
 import io.github.myacelw.mybatis.dynamic.core.database.TableManager;
 import io.github.myacelw.mybatis.dynamic.core.database.dialect.DataBaseDialect;
 import io.github.myacelw.mybatis.dynamic.core.database.dialect.MysqlDataBaseDialect;
-import io.github.myacelw.mybatis.dynamic.core.metadata.enums.ColumnAlterStrategy;
+import io.github.myacelw.mybatis.dynamic.core.metadata.enums.AlterOrDropStrategy;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.IndexType;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Column;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Index;
@@ -138,7 +138,7 @@ public class TableManagerImpl implements TableManager {
         List<Sql> sqlList = new ArrayList<>(dialect.getCreateTableSql(table));
 
         table.getColumns().forEach(c -> {
-            if (c.getAlterOrDropStrategy() != ColumnAlterStrategy.DROP) {
+            if (c.getAlterOrDropStrategy() != AlterOrDropStrategy.DROP) {
                 getCreateIndexSql(table, c).ifPresent(sqlList::add);
             }
         });
@@ -201,24 +201,24 @@ public class TableManagerImpl implements TableManager {
                             }
                     );
             if (oldColumn == null) {
-                if (newColumn.getAlterOrDropStrategy() != ColumnAlterStrategy.DROP) {
+                if (newColumn.getAlterOrDropStrategy() != AlterOrDropStrategy.DROP) {
                     sqlList.addAll(getAddColumnAndIndexSql(table, newColumn));
                 }
             } else {
                 oldColumn.setChecked(true);
-                if (newColumn.getAlterOrDropStrategy() == ColumnAlterStrategy.DROP) {
+                if (newColumn.getAlterOrDropStrategy() == AlterOrDropStrategy.DROP) {
                     // 非改名的情况，才会删除列
                     if (oldColumn.getColumnName().equalsIgnoreCase(newColumn.getColumnName())) {
                         sqlList.add(dialect.getDropColumnSql(table, oldColumn));
                     }
-                } else if (newColumn.getAlterOrDropStrategy() == ColumnAlterStrategy.DROP_AND_RECREATE) {
+                } else if (newColumn.getAlterOrDropStrategy() == AlterOrDropStrategy.DROP_AND_RECREATE) {
                     if (isColumnChanged(newColumn, oldColumn)) {
                         sqlList.add(dialect.getDropColumnSql(table, oldColumn));
                         sqlList.addAll(getAddColumnAndIndexSql(table, newColumn));
                     } else if (isColumnCommentChanged(table, newColumn, oldColumn)) {
                         sqlList.add(dialect.getSetColumnCommentSql(table, newColumn));
                     }
-                } else if (newColumn.getAlterOrDropStrategy() == ColumnAlterStrategy.IGNORE) {
+                } else if (newColumn.getAlterOrDropStrategy() == AlterOrDropStrategy.IGNORE) {
                     continue;
                 } else {
                     sqlList.addAll(getAlterColumnSql(table, newColumn, oldColumn));
@@ -227,8 +227,8 @@ public class TableManagerImpl implements TableManager {
         }
 
         currentColumns.stream()
-                .filter(t -> t.getAlterOrDropStrategy() != ColumnAlterStrategy.DROP)
-                .filter(t -> t.getAlterOrDropStrategy() != ColumnAlterStrategy.IGNORE)
+                .filter(t -> t.getAlterOrDropStrategy() != AlterOrDropStrategy.DROP)
+                .filter(t -> t.getAlterOrDropStrategy() != AlterOrDropStrategy.IGNORE)
                 .filter(t -> !t.isChecked())
                 .forEach(t -> log.warn("undefined columns: '{}.{}'", table.getTableName(), t.getColumnName()));
 

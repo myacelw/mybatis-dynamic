@@ -39,7 +39,7 @@ public class DeleteByConditionExecution<ID> extends AbstractExecution<ID, Intege
             throw new ConditionParameterException("按条件删除数据，查询条件不能为空");
         }
 
-        boolean physicalDelete = dataManager.getModelContext().getField(Model.FIELD_DELETE_FLAG) == null;
+        boolean physicalDelete = !dataManager.getModelContext().isLogicDelete();
 
         if (command.isForcePhysicalDelete() || physicalDelete) {
             return physicalDelete(dataManager, command.getCondition());

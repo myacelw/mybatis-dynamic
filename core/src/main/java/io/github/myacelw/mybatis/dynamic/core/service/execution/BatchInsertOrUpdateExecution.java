@@ -34,7 +34,8 @@ public class BatchInsertOrUpdateExecution<ID> extends AbstractExecution<ID, Void
             return null;
         }
         Set<String> updateIgnoreColumns = getUpdateIgnoreColumns(command, modelContext);
-        Field field = dataManager.getModel().findField(Model.FIELD_DELETE_FLAG);
+
+        Field field =  dataManager.getModelContext().getField(Model.FIELD_DELETE_FLAG);
         if (field instanceof BasicField) {
             updateIgnoreColumns.add(((BasicField) field).getColumnName());
         }

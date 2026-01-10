@@ -4,7 +4,7 @@ import io.github.myacelw.mybatis.dynamic.core.database.dialect.DataBaseDialect;
 import io.github.myacelw.mybatis.dynamic.core.database.dialect.MysqlDataBaseDialect;
 import io.github.myacelw.mybatis.dynamic.core.exception.model.ModelException;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
-import io.github.myacelw.mybatis.dynamic.core.metadata.enums.ColumnAlterStrategy;
+import io.github.myacelw.mybatis.dynamic.core.metadata.enums.AlterOrDropStrategy;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.KeyGeneratorMode;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.BasicField;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.Field;
@@ -12,7 +12,6 @@ import io.github.myacelw.mybatis.dynamic.core.metadata.field.GroupField;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Column;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Table;
 import io.github.myacelw.mybatis.dynamic.core.service.ModelToTableConverter;
-import io.github.myacelw.mybatis.dynamic.core.service.handler.*;
 import io.github.myacelw.mybatis.dynamic.core.service.handler.*;
 import io.github.myacelw.mybatis.dynamic.core.util.StringUtil;
 import lombok.NonNull;
@@ -197,7 +196,7 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
             for (String columnName : dropColumnNameList) {
                 Column c = new Column();
                 c.setColumnName(columnName);
-                c.setAlterOrDropStrategy(ColumnAlterStrategy.DROP);
+                c.setAlterOrDropStrategy(AlterOrDropStrategy.DROP);
                 table.getColumns().add(c);
             }
         }
@@ -230,17 +229,17 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
     protected Column convertColumn(Model model, BasicField field) {
         Column column = new Column();
         column.setColumnName(field.getColumnName());
-        column.setComment(getComment(field.getColumnDefine().getComment()));
-        column.setOldColumnNames(field.getColumnDefine().getOldColumnNames());
-        column.setDisableAlterComment(field.getColumnDefine().getDisableAlterComment());
-        column.setAdditionalDDl(field.getColumnDefine().getAdditionalDDl());
+        column.setComment(getComment(field.getColumnDefinition().getComment()));
+        column.setOldColumnNames(field.getColumnDefinition().getOldColumnNames());
+        column.setDisableAlterComment(field.getColumnDefinition().getDisableAlterComment());
+        column.setAdditionalDDl(field.getColumnDefinition().getAdditionalDDl());
         setColumnType(model, field, column);
-        column.setNotNull(field.getColumnDefine().getNotNull());
-        column.setDefaultValue(field.getColumnDefine().getDefaultValue());
+        column.setNotNull(field.getColumnDefinition().getNotNull());
+        column.setDefaultValue(field.getColumnDefinition().getDefaultValue());
         column.setAlterOrDropStrategy(getStrategy(field));
-        column.setIndex(field.getColumnDefine().getIndex() == Boolean.TRUE);
-        column.setIndexName(field.getColumnDefine().getIndexName());
-        column.setIndexType(field.getColumnDefine().getIndexType());
+        column.setIndex(field.getColumnDefinition().getIndex() == Boolean.TRUE);
+        column.setIndexName(field.getColumnDefinition().getIndexName());
+        column.setIndexType(field.getColumnDefinition().getIndexType());
         return column;
     }
 
@@ -248,10 +247,10 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
         return comment == null ? null : comment.replaceAll("['#$\n]", "");
     }
 
-    private ColumnAlterStrategy getStrategy(BasicField field) {
-        ColumnAlterStrategy strategy = field.getColumnDefine().getAlterOrDropStrategy();
+    private AlterOrDropStrategy getStrategy(BasicField field) {
+        AlterOrDropStrategy strategy = field.getColumnDefinition().getAlterOrDropStrategy();
 
-        return strategy == null ? ColumnAlterStrategy.ALTER : strategy;
+        return strategy == null ? AlterOrDropStrategy.ALTER : strategy;
     }
 
     private void setColumnType(Model model, BasicField field, Column column) {
@@ -262,7 +261,7 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
             }
         }
 
-        String customDataType = field.getColumnDefine().getColumnType();
+        String customDataType = field.getColumnDefinition().getColumnType();
         if (customDataType != null) {
             column.setDataType(customDataType);
         } else if (field.getJdbcType() != null) {
@@ -278,22 +277,22 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
             column.setTypeHandler(typeHandler);
         }
 
-        Integer customCharacterMaximumLength = field.getColumnDefine().getCharacterMaximumLength();
+        Integer customCharacterMaximumLength = field.getColumnDefinition().getCharacterMaximumLength();
         if (customCharacterMaximumLength != null) {
             column.setCharacterMaximumLength(customCharacterMaximumLength);
         }
 
-        Integer customNumericPrecision = field.getColumnDefine().getNumericPrecision();
+        Integer customNumericPrecision = field.getColumnDefinition().getNumericPrecision();
         if (customNumericPrecision != null) {
             column.setNumericPrecision(customNumericPrecision);
         }
 
-        Integer customNumericScale = field.getColumnDefine().getNumericScale();
+        Integer customNumericScale = field.getColumnDefinition().getNumericScale();
         if (customNumericScale != null) {
             column.setNumericScale(customNumericScale);
         }
 
-        column.setCustomIndexColumn(field.getColumnDefine().getCustomIndexColumn());
+        column.setCustomIndexColumn(field.getColumnDefinition().getCustomIndexColumn());
 
         Integer customVectorLength = field.getExtPropertyValueForInteger(Field.EXT_PROPERTY_COLUMN_VECTOR_LENGTH);
         if (customNumericScale != null) {

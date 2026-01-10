@@ -14,7 +14,6 @@ import io.github.myacelw.mybatis.dynamic.core.metadata.field.Field;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.GroupField;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Table;
 import io.github.myacelw.mybatis.dynamic.core.service.*;
-import io.github.myacelw.mybatis.dynamic.core.service.*;
 import io.github.myacelw.mybatis.dynamic.core.service.filler.Filler;
 import lombok.Getter;
 import lombok.NonNull;
@@ -128,10 +127,10 @@ public class ModelServiceImpl implements ModelService {
             model.getTableDefine().setDisableAlterComment(true);
             for (Field field : model.getFields()) {
                 if (field instanceof BasicField) {
-                    ((BasicField) field).getColumnDefine().setDisableAlterComment(true);
+                    ((BasicField) field).getColumnDefinition().setDisableAlterComment(true);
                 } else if (field instanceof GroupField) {
                     for (BasicField basicField : ((GroupField) field).getFields()) {
-                        basicField.getColumnDefine().setDisableAlterComment(true);
+                        basicField.getColumnDefinition().setDisableAlterComment(true);
                     }
                 }
             }

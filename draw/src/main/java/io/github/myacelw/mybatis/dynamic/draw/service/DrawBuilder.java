@@ -4,8 +4,6 @@ package io.github.myacelw.mybatis.dynamic.draw.service;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.*;
 import io.github.myacelw.mybatis.dynamic.draw.vo.*;
-import io.github.myacelw.mybatis.dynamic.core.metadata.field.*;
-import io.github.myacelw.mybatis.dynamic.draw.vo.*;
 import lombok.Setter;
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.core.RecursiveGraphLayoutEngine;
@@ -144,15 +142,15 @@ public class DrawBuilder {
             Map<PropertyName, String> properties = new LinkedHashMap<>();
             properties.put(PropertyName.name, groupField.getName() + "." + field.getName());
             properties.put(PropertyName.fieldType, field.getClass().getSimpleName());
-            properties.put(PropertyName.require, field.getColumnDefine().getNotNull() == Boolean.TRUE ? "是" : "否");
+            properties.put(PropertyName.require, field.getColumnDefinition().getNotNull() == Boolean.TRUE ? "是" : "否");
 
-            String comment2 = field.getColumnDefine().getComment() == null ? field.getName() : field.getColumnDefine().getComment();
+            String comment2 = field.getColumnDefinition().getComment() == null ? field.getName() : field.getColumnDefinition().getComment();
             properties.put(PropertyName.comment, comment2);
 
             properties.put(PropertyName.javaClass, field.getJavaClass() == null ? "" : field.getJavaClass().getSimpleName());
             properties.put(PropertyName.columnName, field.getColumnName());
 
-            properties.put(PropertyName.columnType, field.getColumnDefine().getColumnType() != null ? field.getColumnDefine().getColumnType() : "");
+            properties.put(PropertyName.columnType, field.getColumnDefinition().getColumnType() != null ? field.getColumnDefinition().getColumnType() : "");
 
             properties.forEach((key, value) -> port.putProperty(key.name(), value));
             port.setTitle(properties.entrySet().stream().map(entry -> entry.getKey().getDisplayName() + ": " + entry.getValue()).collect(Collectors.joining("\n")));
@@ -237,13 +235,13 @@ public class DrawBuilder {
         Map<PropertyName, String> properties = new LinkedHashMap<>();
         properties.put(PropertyName.name, field.getName());
         properties.put(PropertyName.fieldType, field.getClass().getSimpleName());
-        properties.put(PropertyName.require, field.getColumnDefine().getNotNull() == Boolean.TRUE ? "是" : "否");
-        properties.put(PropertyName.comment, field.getColumnDefine().getComment() == null ? field.getName() : field.getColumnDefine().getComment());
+        properties.put(PropertyName.require, field.getColumnDefinition().getNotNull() == Boolean.TRUE ? "是" : "否");
+        properties.put(PropertyName.comment, field.getColumnDefinition().getComment() == null ? field.getName() : field.getColumnDefinition().getComment());
 
         properties.put(PropertyName.javaClass, field.getJavaClass() == null ? "" : field.getJavaClass().getSimpleName());
         properties.put(PropertyName.columnName, field.getColumnName());
 
-        properties.put(PropertyName.columnType, field.getColumnDefine().getColumnType() != null ? field.getColumnDefine().getColumnType() : "");
+        properties.put(PropertyName.columnType, field.getColumnDefinition().getColumnType() != null ? field.getColumnDefinition().getColumnType() : "");
 
         properties.forEach((key, value) -> port.putProperty(key.name(), value));
         port.setTitle(properties.entrySet().stream().map(entry -> entry.getKey().getDisplayName() + ": " + entry.getValue()).collect(Collectors.joining("\n")));

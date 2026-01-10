@@ -2,6 +2,8 @@ package io.github.myacelw.mybatis.dynamic.core.metadata.field;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
+import io.github.myacelw.mybatis.dynamic.core.metadata.enums.AlterOrDropStrategy;
+import io.github.myacelw.mybatis.dynamic.core.metadata.enums.IndexType;
 import io.github.myacelw.mybatis.dynamic.core.service.ModelToTableConverter;
 import io.github.myacelw.mybatis.dynamic.core.typehandler.BooleanForIntTypeHandler;
 import io.github.myacelw.mybatis.dynamic.core.typehandler.JsonTypeHandler;
@@ -55,7 +57,7 @@ public class BasicField extends AbstractField implements Serializable, Field {
     /**
      * 列定义
      */
-    private ColumnDefine columnDefine = new ColumnDefine();
+    private ColumnDefinition columnDefinition = new ColumnDefinition();
 
     /**
      * 字段值自动填充器，可空
@@ -81,14 +83,14 @@ public class BasicField extends AbstractField implements Serializable, Field {
         }
         columnName = converter.getColumnName(propertyPrefix + getName(), columnName);
 
-        if (columnDefine.getIndex() == Boolean.TRUE) {
-            columnDefine.setIndexName(converter.getIndexName(model.getTableName(), columnName, columnDefine.getIndexName()));
+        if (columnDefinition.getIndex() == Boolean.TRUE) {
+            columnDefinition.setIndexName(converter.getIndexName(model.getTableName(), columnName, columnDefinition.getIndexName()));
         }
     }
 
     @JsonIgnore
     public void setComment(String comment) {
-        this.columnDefine.setComment(comment);
+        this.columnDefinition.setComment(comment);
     }
 
     private Class<? extends TypeHandler> getDefaultTypeHandlerClass() {
@@ -196,12 +198,12 @@ public class BasicField extends AbstractField implements Serializable, Field {
         }
 
         public BuilderAndPrecisionAndScale precision(int precision) {
-            field.columnDefine.setNumericPrecision(precision);
+            field.columnDefinition.setNumericPrecision(precision);
             return this;
         }
 
         public BuilderAndPrecisionAndScale scale(int scale) {
-            field.columnDefine.setNumericScale(scale);
+            field.columnDefinition.setNumericScale(scale);
             return this;
         }
     }
@@ -214,7 +216,7 @@ public class BasicField extends AbstractField implements Serializable, Field {
         }
 
         public BuilderAndMaxLength characterMaximumLength(Integer characterMaximumLength) {
-            field.columnDefine.setCharacterMaximumLength(characterMaximumLength);
+            field.columnDefinition.setCharacterMaximumLength(characterMaximumLength);
             return this;
         }
     }
@@ -241,31 +243,6 @@ public class BasicField extends AbstractField implements Serializable, Field {
             return self();
         }
 
-        public T index(Boolean index) {
-            field.columnDefine.setIndex(index);
-            return self();
-        }
-
-        public T defaultValue(String defaultValue) {
-            field.columnDefine.setDefaultValue(defaultValue);
-            return self();
-        }
-
-        public T fillerName(String fillerName) {
-            field.setFillerName(fillerName);
-            return self();
-        }
-
-        public T required(Boolean required) {
-            field.columnDefine.setNotNull(required);
-            return self();
-        }
-
-        public T comment(String comment) {
-            field.columnDefine.setComment(comment);
-            return self();
-        }
-
         public T javaParameterClass(Class<?> javaParameterClass) {
             field.setJavaParameterClass(javaParameterClass);
             return self();
@@ -283,6 +260,92 @@ public class BasicField extends AbstractField implements Serializable, Field {
 
         public T typeHandlerClass(Class<? extends TypeHandler> typeHandlerClass) {
             field.setTypeHandlerClass(typeHandlerClass);
+            return self();
+        }
+
+        public T select(Boolean select) {
+            field.setSelect(select);
+            return self();
+        }
+
+        public T fillerName(String fillerName) {
+            field.setFillerName(fillerName);
+            return self();
+        }
+
+        public T ddlColumnType(String columnType) {
+            field.columnDefinition.setColumnType(columnType);
+            return self();
+        }
+
+        public T ddlCharacterMaximumLength(Integer characterMaximumLength) {
+            field.columnDefinition.setCharacterMaximumLength(characterMaximumLength);
+            return self();
+        }
+
+        public T ddlNumericPrecision(Integer numericPrecision) {
+            field.columnDefinition.setNumericPrecision(numericPrecision);
+            return self();
+        }
+
+        public T ddlNumericScale(Integer numericScale) {
+            field.columnDefinition.setNumericScale(numericScale);
+            return self();
+        }
+
+        public T ddlIndex(Boolean index) {
+            field.columnDefinition.setIndex(index);
+            return self();
+        }
+
+        public T ddlIndexName(String indexName) {
+            field.columnDefinition.setIndexName(indexName);
+            return self();
+        }
+
+        public T ddlIndexType(IndexType indexType) {
+            field.columnDefinition.setIndexType(indexType);
+            return self();
+        }
+
+        public T ddlCustomIndexColumn(String customIndexColumn) {
+            field.columnDefinition.setCustomIndexColumn(customIndexColumn);
+            return self();
+        }
+
+
+        public T ddlDefaultValue(String defaultValue) {
+            field.columnDefinition.setDefaultValue(defaultValue);
+            return self();
+        }
+
+        public T ddlNotNull(Boolean notNull) {
+            field.columnDefinition.setNotNull(notNull);
+            return self();
+        }
+
+        public T ddlComment(String comment) {
+            field.columnDefinition.setComment(comment);
+            return self();
+        }
+
+        public T ddlOldColumnNames(List<String> oldColumnNames) {
+            field.columnDefinition.setOldColumnNames(oldColumnNames);
+            return self();
+        }
+
+        public T ddlAdditionalDDl(String additionalDDl) {
+            field.columnDefinition.setAdditionalDDl(additionalDDl);
+            return self();
+        }
+
+        public T ddlDisableAlterComment(Boolean disableAlterComment) {
+            field.columnDefinition.setDisableAlterComment(disableAlterComment);
+            return self();
+        }
+
+        public T ddlAlterOrDropStrategy(AlterOrDropStrategy alterOrDropStrategy) {
+            field.columnDefinition.setAlterOrDropStrategy(alterOrDropStrategy);
             return self();
         }
 

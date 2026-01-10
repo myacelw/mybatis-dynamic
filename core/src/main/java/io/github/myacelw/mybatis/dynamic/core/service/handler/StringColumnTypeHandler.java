@@ -23,7 +23,7 @@ public class StringColumnTypeHandler implements ColumnTypeHandler {
     }
 
     public static void convertStringColumn(Column column, BasicField field, int defaultMaxLength, DataBaseDialect dialect) {
-        int maxLength = field.getColumnDefine().getCharacterMaximumLength() == null ? defaultMaxLength : field.getColumnDefine().getCharacterMaximumLength();
+        int maxLength = field.getColumnDefinition().getCharacterMaximumLength() == null ? defaultMaxLength : field.getColumnDefinition().getCharacterMaximumLength();
         column.setDataType(getStringDataType(maxLength, dialect));
         if (column.getDataType().endsWith("CHAR")) {
             column.setCharacterMaximumLength(maxLength);

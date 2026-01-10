@@ -1,6 +1,6 @@
 package io.github.myacelw.mybatis.dynamic.core.database.dialect;
 
-import io.github.myacelw.mybatis.dynamic.core.metadata.enums.ColumnAlterStrategy;
+import io.github.myacelw.mybatis.dynamic.core.metadata.enums.AlterOrDropStrategy;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.IndexType;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Column;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Table;
@@ -47,7 +47,7 @@ public class MysqlDataBaseDialect extends AbstractDataBaseDialect {
 
         List<String> columnSqlList = new ArrayList<>();
         for (Column column : table.getColumns()) {
-            if (column.getAlterOrDropStrategy() != ColumnAlterStrategy.DROP) {
+            if (column.getAlterOrDropStrategy() != AlterOrDropStrategy.DROP) {
                 columnSqlList.add(doColumnSql(table, column));
             }
         }

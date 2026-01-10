@@ -12,7 +12,7 @@ import java.util.List;
  * @author liuwei
  */
 @Data
-public class ColumnDefine {
+public class ColumnDefinition {
     /**
      * 列类型
      */

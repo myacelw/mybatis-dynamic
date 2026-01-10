@@ -7,7 +7,6 @@ import io.github.myacelw.mybatis.dynamic.core.exception.model.ModelException;
 import io.github.myacelw.mybatis.dynamic.core.exception.model.RecursiveFieldException;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.KeyGeneratorMode;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.*;
-import io.github.myacelw.mybatis.dynamic.core.metadata.field.*;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.ExtProperties;
 import io.github.myacelw.mybatis.dynamic.core.service.ModelToTableConverter;
 import io.github.myacelw.mybatis.dynamic.core.service.filler.AbstractCreatorFiller;
@@ -167,7 +166,7 @@ public class Model implements ExtProperties, Cloneable, Serializable {
     }
 
     /**
-     * 是否启用逻辑删除
+     * 是否逻辑删除
      */
     @JsonIgnore
     public boolean isLogicDelete() {
@@ -373,7 +372,7 @@ public class Model implements ExtProperties, Cloneable, Serializable {
     }
 
     public Model addLogicDeleteFieldIfNotExist() {
-        if (findField(Model.FIELD_DELETE_FLAG) == null) {
+        if (!isLogicDelete()) {
             fields.add(createLogicDeleteField());
         }
         return this;
@@ -381,16 +380,16 @@ public class Model implements ExtProperties, Cloneable, Serializable {
 
     public Model addAuditFieldsIfNotExist() {
         if (findField(Model.FIELD_CREATOR) == null) {
-            fields.add(Field.stringBuilder(FIELD_CREATOR).characterMaximumLength(64).fillerName(AbstractCreatorFiller.NAME).comment("创建人").build());
+            fields.add(Field.stringBuilder(FIELD_CREATOR).characterMaximumLength(64).fillerName(AbstractCreatorFiller.NAME).ddlComment("创建人").build());
         }
         if (findField(Model.FIELD_MODIFIER) == null) {
-            fields.add(Field.stringBuilder(FIELD_MODIFIER).characterMaximumLength(64).fillerName(AbstractModifierFiller.NAME).comment("修改人").build());
+            fields.add(Field.stringBuilder(FIELD_MODIFIER).characterMaximumLength(64).fillerName(AbstractModifierFiller.NAME).ddlComment("修改人").build());
         }
         if (findField(Model.FIELD_CREATE_TIME) == null) {
-            fields.add(Field.dateTimeBuilder(FIELD_CREATE_TIME).fillerName(CreateTimeFiller.NAME).comment("创建时间").build());
+            fields.add(Field.dateTimeBuilder(FIELD_CREATE_TIME).fillerName(CreateTimeFiller.NAME).ddlComment("创建时间").build());
         }
         if (findField(Model.FIELD_UPDATE_TIME) == null) {
-            fields.add(Field.dateTimeBuilder(FIELD_UPDATE_TIME).fillerName(UpdateTimeFiller.NAME).comment("修改时间").build());
+            fields.add(Field.dateTimeBuilder(FIELD_UPDATE_TIME).fillerName(UpdateTimeFiller.NAME).ddlComment("修改时间").build());
         }
         return this;
     }
@@ -422,19 +421,19 @@ public class Model implements ExtProperties, Cloneable, Serializable {
     }
 
     public static BasicField createStringIdField() {
-        return Field.stringBuilder(FIELD_ID).characterMaximumLength(32).comment("主键").build();
+        return Field.stringBuilder(FIELD_ID).characterMaximumLength(32).ddlComment("主键").build();
     }
 
     public static BasicField createIntegerIdField() {
-        return Field.integerBuilder(FIELD_ID).comment("主键").build();
+        return Field.integerBuilder(FIELD_ID).ddlComment("主键").build();
     }
 
     public static BasicField createLongIdField() {
-        return Field.longBuilder(FIELD_ID).comment("主键").build();
+        return Field.longBuilder(FIELD_ID).ddlComment("主键").build();
     }
 
     public static BasicField createLogicDeleteField() {
-        return Field.booleanBuilder(FIELD_DELETE_FLAG).defaultValue("0").comment("逻辑删除").build();
+        return Field.booleanBuilder(FIELD_DELETE_FLAG).select(false).ddlDefaultValue("0").ddlComment("逻辑删除").build();
     }
 
     public Field findField(String name) {

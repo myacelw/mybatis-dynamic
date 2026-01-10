@@ -45,13 +45,13 @@ class Class2ModelTransferImplTest {
         assertEquals("id", model.getPrimaryKeyFields()[0]);
 
         assertEquals(BasicField.class, model.findField("name").getClass());
-        assertEquals(200, model.findBasicField("name").getColumnDefine().getCharacterMaximumLength());
-        assertTrue(model.findBasicField("name").getColumnDefine().getNotNull());
+        assertEquals(200, model.findBasicField("name").getColumnDefinition().getCharacterMaximumLength());
+        assertTrue(model.findBasicField("name").getColumnDefinition().getNotNull());
 
         assertEquals(BasicField.class, model.findField("age").getClass());
 
         assertEquals(BasicField.class, model.findField("status").getClass());
-        assertTrue(model.findBasicField("status").getColumnDefine().getIndex());
+        assertTrue(model.findBasicField("status").getColumnDefinition().getIndex());
 
         assertEquals(ToOneField.class, model.findField("mainDepartment").getClass());
         assertEquals("Department", ((RefModel) model.findField("mainDepartment")).getTargetModel());

@@ -5,7 +5,7 @@ package io.github.myacelw.mybatis.dynamic.core.metadata.enums;
  *
  * @author liuwei
  */
-public enum ColumnAlterStrategy {
+public enum AlterOrDropStrategy {
     /**
      * 进行列类型转换，如果更新失败则抛出异常；
      */

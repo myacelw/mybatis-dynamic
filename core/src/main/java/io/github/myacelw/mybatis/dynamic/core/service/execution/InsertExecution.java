@@ -168,9 +168,9 @@ public class InsertExecution<ID> extends AbstractExecution<ID, Object, InsertCom
     public static void convertTableDataForInsert(DataManager<?> dataManager, Object data, List<FieldValue> result, Collection<String> skipFields, boolean ignoreNull) {
         ModelContext modelContext = dataManager.getModelContext();
 
-        Field field = modelContext.getModel().findField(Model.FIELD_DELETE_FLAG);
-        if (field instanceof BasicField) {
-            result.add(new FieldValue((BasicField) field, false));
+        BasicField deleteFlagField = modelContext.getDeleteFlagField();
+        if (deleteFlagField != null) {
+            result.add(new FieldValue(deleteFlagField, false));
         }
 
         convertTableDataForNoCommonField(modelContext, result, data, skipFields, ignoreNull);

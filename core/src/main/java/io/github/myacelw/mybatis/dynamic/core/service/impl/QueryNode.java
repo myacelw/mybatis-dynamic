@@ -344,9 +344,9 @@ public class QueryNode {
             Field field = entry.getKey();
             Set<BasicField> subFields = entry.getValue();
 
-            if (field.getName().equals(Model.FIELD_DELETE_FLAG) && (join == null || !join.isIgnoreLogicDelete())) {
-                continue;
-            }
+//            if (field.getName().equals(Model.FIELD_DELETE_FLAG) && (join == null || !join.isIgnoreLogicDelete())) {
+//                continue;
+//            }
             result.addAll(getSelectColumnsForField(propertyPrefix, field, subFields));
         }
 

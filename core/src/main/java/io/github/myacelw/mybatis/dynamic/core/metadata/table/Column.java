@@ -1,6 +1,6 @@
 package io.github.myacelw.mybatis.dynamic.core.metadata.table;
 
-import io.github.myacelw.mybatis.dynamic.core.metadata.enums.ColumnAlterStrategy;
+import io.github.myacelw.mybatis.dynamic.core.metadata.enums.AlterOrDropStrategy;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.IndexType;
 import lombok.Data;
 import org.apache.ibatis.type.TypeHandler;
@@ -102,7 +102,7 @@ public class Column {
     /**
      * 列更新策略
      */
-    private ColumnAlterStrategy alterOrDropStrategy;
+    private AlterOrDropStrategy alterOrDropStrategy;
 
     /**
      * 类型转换处理器

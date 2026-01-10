@@ -7,7 +7,6 @@ import io.github.myacelw.mybatis.dynamic.core.exception.crud.UnsupportedCommandE
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Permission;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.BasicField;
-import io.github.myacelw.mybatis.dynamic.core.metadata.field.Field;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.GroupCondition;
 import io.github.myacelw.mybatis.dynamic.core.metadata.vo.FieldValue;
@@ -45,7 +44,7 @@ public class DeleteExecution<ID> extends AbstractExecution<ID, Integer, DeleteCo
             return null;
         }
 
-        boolean physicalDelete = !modelContext.getFieldMap().containsKey(Model.FIELD_DELETE_FLAG);
+        boolean physicalDelete = !modelContext.isLogicDelete();
 
         if (command.isBatch()) {
             if (command.isForcePhysicalDelete() || physicalDelete) {
@@ -118,9 +117,8 @@ public class DeleteExecution<ID> extends AbstractExecution<ID, Integer, DeleteCo
     private int logicDelete(DataManager<?> dataManager, @NonNull Object id) {
         ModelContext modelContext = dataManager.getModelContext();
         Model model = dataManager.getModel();
-        Map<String, Field> fieldMap = modelContext.getFieldMap();
 
-        if (!fieldMap.containsKey(Model.FIELD_DELETE_FLAG)) {
+        if (!modelContext.isLogicDelete()) {
             throw new UnsupportedCommandException("模型[" + model.getName() + "]没有'" + Model.FIELD_DELETE_FLAG + "'字段，不支持逻辑删除操作");
         }
         Condition idCondition = IdUtil.getIdCondition(model, id);
@@ -139,9 +137,8 @@ public class DeleteExecution<ID> extends AbstractExecution<ID, Integer, DeleteCo
     private int batchLogicDelete(DataManager<ID> dataManager, @NonNull Collection<ID> ids) {
         ModelContext modelContext = dataManager.getModelContext();
         Model model = modelContext.getModel();
-        Map<String, Field> fieldMap = modelContext.getFieldMap();
 
-        if (!fieldMap.containsKey(Model.FIELD_DELETE_FLAG)) {
+        if (!modelContext.isLogicDelete()) {
             throw new UnsupportedCommandException("模型[" + model.getName() + "]没有'" + Model.FIELD_DELETE_FLAG + "'字段，不支持逻辑删除操作");
         }
         Condition idCondition = IdUtil.getIdsCondition(model, ids);
@@ -163,7 +160,7 @@ public class DeleteExecution<ID> extends AbstractExecution<ID, Integer, DeleteCo
         ModelContext modelContext = dataManager.getModelContext();
         List<FieldValue> result = new ArrayList<>();
 
-        result.add(new FieldValue(((BasicField) modelContext.getPermissionedField(Model.FIELD_DELETE_FLAG)), true));
+        result.add(new FieldValue(modelContext.getDeleteFlagField(), true));
 
         dataManager.getModel().getFields().stream()
                 .map(field -> new Tuple<>(getFiller(modelContext, field, modelContext.getFillers()), field))
