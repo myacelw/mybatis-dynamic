@@ -31,7 +31,6 @@ public class QueryByIdsExecution<ID, T> extends AbstractExecution<ID, List<T>, Q
 
         return dataManager.queryChain(command.getClazz())
                 .where(IdUtil.getIdsCondition(model, command.getIds()))
-                .page(ObjectUtil.isEmpty(command.getJoins()) ? new Page(1, 1) : null)
                 .joins(command.getJoins())
                 .select(command.getSelectFields())
                 .exec();
