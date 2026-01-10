@@ -1,6 +1,6 @@
 package io.github.myacelw.mybatis.dynamic.core.metadata.field;
 
-import io.github.myacelw.mybatis.dynamic.core.metadata.enums.ColumnAlterStrategy;
+import io.github.myacelw.mybatis.dynamic.core.metadata.enums.AlterOrDropStrategy;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.IndexType;
 import lombok.Data;
 
@@ -66,9 +66,9 @@ public class ColumnDefine {
     private Boolean notNull;
 
     /**
-     * 列创建附加DDL语句， 例如： GENERATED ALWAYS AS (TRIM(BOTH '/' FROM REGEXP_SUBSTR(location, '[^/]+', 1, 1))) STORED
+     * 列备注
      */
-    private String additionalDDl;
+    private String comment;
 
     /**
      * 从旧列名迁移数据时，需要指定旧列名。
@@ -76,9 +76,9 @@ public class ColumnDefine {
     private List<String> oldColumnNames;
 
     /**
-     * 列备注
+     * 列创建附加DDL语句， 例如： GENERATED ALWAYS AS (TRIM(BOTH '/' FROM REGEXP_SUBSTR(location, '[^/]+', 1, 1))) STORED
      */
-    private String comment;
+    private String additionalDDl;
 
     /**
      * 是否禁用列注释变更
@@ -88,6 +88,6 @@ public class ColumnDefine {
     /**
      * 列更新策略
      */
-    private ColumnAlterStrategy alterOrDropStrategy;
+    private AlterOrDropStrategy alterOrDropStrategy;
 
 }
