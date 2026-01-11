@@ -36,7 +36,11 @@ public class NotCondition implements Condition {
     @Override
     public NotCondition clone() {
         try {
-            return (NotCondition) super.clone();
+            NotCondition cloned = (NotCondition) super.clone();
+            if (this.condition != null) {
+                cloned.condition = this.condition.clone();
+            }
+            return cloned;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }

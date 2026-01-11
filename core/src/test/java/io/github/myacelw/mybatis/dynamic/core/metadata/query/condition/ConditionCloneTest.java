@@ -49,6 +49,17 @@ public class ConditionCloneTest {
         ExistsCondition cloned = original.clone();
 
         assertNotSame(original, cloned);
+        assertNotSame(original.getCondition(), cloned.getCondition());
+        assertEquals(original.getCondition(), cloned.getCondition());
+    }
+
+    @Test
+    public void testNotConditionClone() {
+        SimpleCondition inner = SimpleCondition.eq("name", "test");
+        NotCondition original = NotCondition.of(inner);
+        NotCondition cloned = original.clone();
+
+        assertNotSame(original, cloned);
         assertNotSame(original.getCondition(), cloned.getCondition()); // Deep copy check
         assertEquals(original.getCondition(), cloned.getCondition());
     }
