@@ -1,18 +1,9 @@
 # Plan: Condition Inheritance of Cloneable Interface
 
-## Phase 1: Base and Leaf Conditions
+## Phase 1: Base and Leaf Conditions [checkpoint: f5d737f]
 - [x] Task: TDD - Support cloning for `Condition` interface and `SimpleCondition` [de703da]
-    - [ ] Sub-task: Create test `ConditionCloneTest.java` to verify `Condition` is `Cloneable` and `SimpleCondition` can be cloned.
-    - [ ] Sub-task: Modify `Condition.java` to extend `Cloneable`.
-    - [ ] Sub-task: Modify `SimpleCondition.java` to override `clone()`.
-    - [ ] Sub-task: Verify tests pass.
 - [x] Task: TDD - Support cloning for simple leaf conditions [f73127c]
-    - [ ] Sub-task: Add tests for `CustomCondition`, `ExistsCondition`, and `SearchCondition` to `ConditionCloneTest.java`.
-    - [ ] Sub-task: Implement `clone()` in `CustomCondition`.
-    - [ ] Sub-task: Implement `clone()` in `ExistsCondition`.
-    - [ ] Sub-task: Implement `clone()` in `SearchCondition`.
-    - [ ] Sub-task: Verify tests pass.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Base and Leaf Conditions' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Base and Leaf Conditions' (Protocol in workflow.md)
 
 ## Phase 2: Recursive Conditions (Deep Copy)
 - [ ] Task: TDD - Support deep cloning for `NotCondition`
