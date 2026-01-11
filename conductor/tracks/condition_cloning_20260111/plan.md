@@ -5,13 +5,7 @@
 - [x] Task: TDD - Support cloning for simple leaf conditions [f73127c]
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Base and Leaf Conditions' (Protocol in workflow.md)
 
-## Phase 2: Recursive Conditions (Deep Copy)
+## Phase 2: Recursive Conditions (Deep Copy) [checkpoint: 99e8e54]
 - [x] Task: TDD - Support deep cloning for `NotCondition` [11305f3]
-    - [ ] Sub-task: Add test to `ConditionCloneTest.java` specifically checking deep copy of `NotCondition`.
-    - [ ] Sub-task: Implement `clone()` in `NotCondition` to clone its inner condition.
-    - [ ] Sub-task: Verify tests pass.
 - [x] Task: TDD - Support deep cloning for `GroupCondition` [edde6d0]
-    - [ ] Sub-task: Add test to `ConditionCloneTest.java` specifically checking deep copy of `GroupCondition` (nested lists).
-    - [ ] Sub-task: Implement `clone()` in `GroupCondition` to iterate and clone children.
-    - [ ] Sub-task: Verify tests pass.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Recursive Conditions (Deep Copy)' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Recursive Conditions (Deep Copy)' (Protocol in workflow.md)
