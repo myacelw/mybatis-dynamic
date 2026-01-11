@@ -10,7 +10,7 @@
     - [ ] Sub-task: Add test to `ConditionCloneTest.java` specifically checking deep copy of `NotCondition`.
     - [ ] Sub-task: Implement `clone()` in `NotCondition` to clone its inner condition.
     - [ ] Sub-task: Verify tests pass.
-- [ ] Task: TDD - Support deep cloning for `GroupCondition`
+- [x] Task: TDD - Support deep cloning for `GroupCondition` [edde6d0]
     - [ ] Sub-task: Add test to `ConditionCloneTest.java` specifically checking deep copy of `GroupCondition` (nested lists).
     - [ ] Sub-task: Implement `clone()` in `GroupCondition` to iterate and clone children.
     - [ ] Sub-task: Verify tests pass.
