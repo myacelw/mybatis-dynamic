@@ -54,7 +54,14 @@ public class GroupCondition implements Condition {
     @Override
     public GroupCondition clone() {
         try {
-            return (GroupCondition) super.clone();
+            GroupCondition cloned = (GroupCondition) super.clone();
+            if (this.conditions != null) {
+                cloned.conditions = new ArrayList<>(this.conditions.size());
+                for (Condition c : this.conditions) {
+                    cloned.conditions.add(c == null ? null : c.clone());
+                }
+            }
+            return cloned;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }

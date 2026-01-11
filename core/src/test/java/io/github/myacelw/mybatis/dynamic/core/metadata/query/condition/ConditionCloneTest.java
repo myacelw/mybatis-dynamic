@@ -59,8 +59,24 @@ public class ConditionCloneTest {
         NotCondition original = NotCondition.of(inner);
         NotCondition cloned = original.clone();
 
-        assertNotSame(original, cloned);
-        assertNotSame(original.getCondition(), cloned.getCondition()); // Deep copy check
+        assertNotSame(original.getCondition(), cloned.getCondition());
         assertEquals(original.getCondition(), cloned.getCondition());
+    }
+
+    @Test
+    public void testGroupConditionClone() {
+        SimpleCondition c1 = SimpleCondition.eq("f1", 1);
+        SimpleCondition c2 = SimpleCondition.eq("f2", 2);
+        GroupCondition original = GroupCondition.and(c1, c2);
+        GroupCondition cloned = original.clone();
+
+        assertNotSame(original, cloned);
+        assertNotSame(original.getConditions(), cloned.getConditions()); // List should be cloned
+        assertEquals(original.getConditions().size(), cloned.getConditions().size());
+        
+        for (int i = 0; i < original.getConditions().size(); i++) {
+            assertNotSame(original.getConditions().get(i), cloned.getConditions().get(i)); // Elements should be cloned
+            assertEquals(original.getConditions().get(i), cloned.getConditions().get(i));
+        }
     }
 }
