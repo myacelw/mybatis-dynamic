@@ -6,7 +6,7 @@
     - [ ] Sub-task: Modify `Condition.java` to extend `Cloneable`.
     - [ ] Sub-task: Modify `SimpleCondition.java` to override `clone()`.
     - [ ] Sub-task: Verify tests pass.
-- [ ] Task: TDD - Support cloning for simple leaf conditions
+- [x] Task: TDD - Support cloning for simple leaf conditions [f73127c]
     - [ ] Sub-task: Add tests for `CustomCondition`, `ExistsCondition`, and `SearchCondition` to `ConditionCloneTest.java`.
     - [ ] Sub-task: Implement `clone()` in `CustomCondition`.
     - [ ] Sub-task: Implement `clone()` in `ExistsCondition`.
