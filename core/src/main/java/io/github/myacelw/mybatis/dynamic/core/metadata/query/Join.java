@@ -84,7 +84,11 @@ public class Join implements Cloneable {
     @SneakyThrows
     @Override
     public Join clone() {
-        return (Join) super.clone();
+        Join cloned = (Join) super.clone();
+        if (this.condition != null) {
+            cloned.condition = this.condition.clone();
+        }
+        return cloned;
     }
 
     public enum JoinType {

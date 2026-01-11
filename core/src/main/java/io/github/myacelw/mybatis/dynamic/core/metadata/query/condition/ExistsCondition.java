@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -62,7 +63,18 @@ public class ExistsCondition implements Condition {
     @Override
     public ExistsCondition clone() {
         try {
-            return (ExistsCondition) super.clone();
+            ExistsCondition cloned = (ExistsCondition) super.clone();
+            if (this.condition != null) {
+                cloned.condition = this.condition.clone();
+            }
+            if (this.joins != null) {
+                List<Join> clonedJoins = new ArrayList<>(this.joins.size());
+                for (Join join : this.joins) {
+                    clonedJoins.add(join.clone());
+                }
+                cloned.joins = clonedJoins;
+            }
+            return cloned;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }

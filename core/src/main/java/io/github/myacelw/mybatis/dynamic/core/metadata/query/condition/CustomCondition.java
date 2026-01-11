@@ -56,7 +56,11 @@ public class CustomCondition implements Condition {
     @Override
     public CustomCondition clone() {
         try {
-            return (CustomCondition) super.clone();
+            CustomCondition cloned = (CustomCondition) super.clone();
+            if (this.fields != null) {
+                cloned.fields = this.fields.clone();
+            }
+            return cloned;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
