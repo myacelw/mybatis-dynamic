@@ -55,6 +55,15 @@ public class SearchCondition implements Condition {
     }
 
     @Override
+    public SearchCondition clone() {
+        try {
+            return (SearchCondition) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public String sql(String valueExpression, FieldToSqlConverter fieldToSqlConverter, DataBaseDialect dialect) {
         String sqlTemplate = getSqlTemplate(dialect);
         return Condition.replacePlaceholders(valueExpression, fieldToSqlConverter, sqlTemplate, field);

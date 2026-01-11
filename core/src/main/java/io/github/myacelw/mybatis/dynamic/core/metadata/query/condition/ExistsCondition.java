@@ -60,6 +60,15 @@ public class ExistsCondition implements Condition {
     }
 
     @Override
+    public ExistsCondition clone() {
+        try {
+            return (ExistsCondition) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public String sql(String valueExpression, FieldToSqlConverter fieldToSqlConverter, DataBaseDialect dialect) {
         if (!StringUtil.hasText(field)) {
             return "";

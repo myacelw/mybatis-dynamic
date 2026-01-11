@@ -26,7 +26,9 @@ import java.util.regex.Pattern;
         @JsonSubTypes.Type(value = CustomCondition.class, name = "custom", names = {"Custom", "CUSTOM"}),
         @JsonSubTypes.Type(value = SearchCondition.class, name = "search", names = {"Search", "SEARCH"}),
 })
-public interface Condition {
+public interface Condition extends Cloneable {
+
+    Condition clone();
 
     /**
      * 生成查询条件sql片段

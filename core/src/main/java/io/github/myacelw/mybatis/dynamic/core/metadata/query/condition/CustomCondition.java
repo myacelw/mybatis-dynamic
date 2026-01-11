@@ -54,6 +54,15 @@ public class CustomCondition implements Condition {
     }
 
     @Override
+    public CustomCondition clone() {
+        try {
+            return (CustomCondition) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public String sql(String valueExpression, FieldToSqlConverter fieldToSqlConverter, DataBaseDialect dialect) {
         String sql = fields == null || fields.length == 0 ? sqlTemplate : Condition.replacePlaceholders(valueExpression, fieldToSqlConverter, sqlTemplate, fields);
         return field == null ? sql : Condition.replacePlaceholders(valueExpression, fieldToSqlConverter, sql, field);

@@ -33,6 +33,15 @@ public class NotCondition implements Condition {
         return condition;
     }
 
+    @Override
+    public NotCondition clone() {
+        try {
+            return (NotCondition) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public String sql(String valueExpression, FieldToSqlConverter fieldToSqlConverter, DataBaseDialect dialect) {
         if (condition == null) {
             return "";

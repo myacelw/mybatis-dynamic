@@ -51,6 +51,15 @@ public class GroupCondition implements Condition {
         return conditions;
     }
 
+    @Override
+    public GroupCondition clone() {
+        try {
+            return (GroupCondition) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public GroupCondition(Logic logic, Collection<? extends Condition> conditions) {
         this.logic = logic;
