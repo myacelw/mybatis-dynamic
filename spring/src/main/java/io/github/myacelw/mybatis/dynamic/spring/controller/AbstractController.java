@@ -78,7 +78,7 @@ public abstract class AbstractController<ID, T> {
     }
 
     @Autowired
-    public void setService(BaseService<ID, T> service) {
+    public void setService(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") BaseService<ID, T> service) {
         this.service = service;
     }
 
