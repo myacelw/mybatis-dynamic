@@ -18,7 +18,7 @@ Implement the core logic for interacting with JDBC `DatabaseMetaData` and managi
 ## Phase 3: Refactor Dialect and Update Callers
 Remove the legacy static logic and migrate all components to the new metadata helper.
 
-- [ ] Task: Remove `wrapper`, `unWrapper`, `getEscapeCharacter`, `isTableNameUpperCase`, and `KEYWORD` from `DataBaseDialect` interface and `AbstractDataBaseDialect`.
+- [x] Task: Remove `wrapper`, `unWrapper`, `getEscapeCharacter`, `isTableNameUpperCase`, and `KEYWORD` from `DataBaseDialect` interface and `AbstractDataBaseDialect` [dbd72b7]
 - [ ] Task: Update all callers of the removed methods (e.g., in `TableManager`, `AbstractDataBaseDialect` subclasses, and internal DDL generators) to use the corresponding methods in `DataBaseMetaDataHelper`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)
 
