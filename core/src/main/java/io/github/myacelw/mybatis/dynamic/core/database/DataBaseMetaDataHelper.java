@@ -23,6 +23,18 @@ public interface DataBaseMetaDataHelper {
     String getIdentifierQuoteString();
 
     @SneakyThrows
+    boolean isIdentifierReserved(String identifier);
+
+    @SneakyThrows
+    String wrapIdentifier(String identifier);
+
+    @SneakyThrows
+    String unwrapIdentifier(String identifier);
+
+    @SneakyThrows
+    String getIdentifierInMeta(String identifier, boolean isQuoted);
+
+    @SneakyThrows
     List<Column> getColumns(String tableName, String schema);
 
     @SneakyThrows

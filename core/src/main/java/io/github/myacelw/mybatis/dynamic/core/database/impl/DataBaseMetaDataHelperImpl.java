@@ -63,6 +63,30 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
         }
     }
 
+    @SneakyThrows
+    @Override
+    public boolean isIdentifierReserved(String identifier) {
+        return false;
+    }
+
+    @SneakyThrows
+    @Override
+    public String wrapIdentifier(String identifier) {
+        return identifier;
+    }
+
+    @SneakyThrows
+    @Override
+    public String unwrapIdentifier(String identifier) {
+        return identifier;
+    }
+
+    @SneakyThrows
+    @Override
+    public String getIdentifierInMeta(String identifier, boolean isQuoted) {
+        return identifier;
+    }
+
 
     @SneakyThrows
     @Override
