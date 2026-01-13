@@ -212,12 +212,35 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
     @SneakyThrows
     @Override
     public String wrapIdentifier(String identifier) {
+        if (identifier == null || identifier.isEmpty()) {
+            return identifier;
+        }
+        String quote = getIdentifierQuoteString();
+        if (quote == null || quote.isEmpty()) {
+            return identifier;
+        }
+        if (identifier.startsWith(quote) && identifier.endsWith(quote)) {
+            return identifier;
+        }
+        if (!identifier.matches("[a-zA-Z_][a-zA-Z0-9_]*") || isIdentifierReserved(identifier)) {
+            return quote + identifier + quote;
+        }
         return identifier;
     }
 
     @SneakyThrows
     @Override
     public String unwrapIdentifier(String identifier) {
+        if (identifier == null || identifier.isEmpty()) {
+            return identifier;
+        }
+        String quote = getIdentifierQuoteString();
+        if (quote == null || quote.isEmpty()) {
+            return identifier;
+        }
+        if (identifier.startsWith(quote) && identifier.endsWith(quote)) {
+            return identifier.substring(quote.length(), identifier.length() - quote.length());
+        }
         return identifier;
     }
 
