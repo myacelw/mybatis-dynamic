@@ -10,3 +10,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ## [~] Track: 为 io.github.myacelw.mybatis.dynamic.core.database.impl.DataBaseMetaDataHelperImpl 类生成测试用例。
 *Link: [./conductor/tracks/metadata_helper_tests_20260113/](./conductor/tracks/metadata_helper_tests_20260113/)*
+
+---
+
+## [~] Track: Refactor Database Dialect Metadata Logic
+*Link: [./conductor/tracks/dialect_metadata_refactor_20260113/](./conductor/tracks/dialect_metadata_refactor_20260113/)*
