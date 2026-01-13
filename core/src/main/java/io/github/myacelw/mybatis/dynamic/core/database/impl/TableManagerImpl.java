@@ -1,5 +1,6 @@
 package io.github.myacelw.mybatis.dynamic.core.database.impl;
 
+import io.github.myacelw.mybatis.dynamic.core.database.DataBaseMetaDataHelper;
 import io.github.myacelw.mybatis.dynamic.core.database.MybatisHelper;
 import io.github.myacelw.mybatis.dynamic.core.database.TableManager;
 import io.github.myacelw.mybatis.dynamic.core.database.dialect.DataBaseDialect;
@@ -31,12 +32,16 @@ public class TableManagerImpl implements TableManager {
     public static final String CONST_SQL_EXP = "${" + CONST_SQL_KEY + "}";
 
     @Getter
+    private final DataBaseMetaDataHelper metaDataHelper;
+
+    @Getter
     private final MybatisHelper sqlHelper;
 
     @Getter
     private final DataBaseDialect dialect;
 
-    public TableManagerImpl(@NonNull MybatisHelper mybatisHelper, DataBaseDialect dialect) {
+    public TableManagerImpl(@NonNull DataBaseMetaDataHelper metaDataHelper, @NonNull MybatisHelper mybatisHelper, DataBaseDialect dialect) {
+        this.metaDataHelper = metaDataHelper;
         this.sqlHelper = mybatisHelper;
         this.dialect = dialect == null ? new MysqlDataBaseDialect() : dialect;
     }
@@ -101,7 +106,7 @@ public class TableManagerImpl implements TableManager {
     }
 
     public Table queryTable(Table table) {
-        return sqlHelper.getTable(dialect.getTableNameInMeta(table), dialect.getSchemaNameInMeta(table));
+        return metaDataHelper.getTable(dialect.getTableNameInMeta(table), dialect.getSchemaNameInMeta(table));
     }
 
     public List<Column> getCurrentTableColumns(String tableName, String schemaName) {
@@ -109,8 +114,8 @@ public class TableManagerImpl implements TableManager {
     }
 
     public List<Column> getCurrentTableColumns(Table table) {
-        List<Column> columns = sqlHelper.getColumns(dialect.getTableNameInMeta(table), dialect.getSchemaNameInMeta(table));
-        List<Index> indexList = sqlHelper.getIndexList(dialect.getTableNameInMeta(table), dialect.getSchemaNameInMeta(table));
+        List<Column> columns = metaDataHelper.getColumns(dialect.getTableNameInMeta(table), dialect.getSchemaNameInMeta(table));
+        List<Index> indexList = metaDataHelper.getIndexList(dialect.getTableNameInMeta(table), dialect.getSchemaNameInMeta(table));
 
         Map<String, Index> indexMap = new HashMap<>();
         indexList.stream().filter(t -> t.getColumnNames().size() == 1)
@@ -171,7 +176,7 @@ public class TableManagerImpl implements TableManager {
     }
 
     protected Optional<Sql> getCreateIndexSql(Table table, Column column) {
-        if (column.isIndex() && (table.getPrimaryKeyColumns() ==null || table.getPrimaryKeyColumns().stream().noneMatch(t -> t.equalsIgnoreCase(column.getColumnName())))) {
+        if (column.isIndex() && (table.getPrimaryKeyColumns() == null || table.getPrimaryKeyColumns().stream().noneMatch(t -> t.equalsIgnoreCase(column.getColumnName())))) {
             String indexName = column.getIndexName();
             Assert.notNull(indexName, "indexName is null");
             return Optional.ofNullable(dialect.getAddIndexSql(table, column, indexName));

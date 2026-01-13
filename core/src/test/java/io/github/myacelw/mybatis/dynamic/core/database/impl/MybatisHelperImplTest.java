@@ -27,8 +27,8 @@ class MybatisHelperImplTest {
         TableManagerImpl tableService = TableServiceBuildUtil.createTableService(db);
         createTable(tableService);
 
-        Table table = tableService.getSqlHelper().getTable(tableName, schema);
-        List<Column> columns = tableService.getSqlHelper().getColumns(tableName, schema);
+        Table table = tableService.getMetaDataHelper().getTable(tableName, schema);
+        List<Column> columns = tableService.getMetaDataHelper().getColumns(tableName, schema);
 
         //tableManager.dropTable(table);
 

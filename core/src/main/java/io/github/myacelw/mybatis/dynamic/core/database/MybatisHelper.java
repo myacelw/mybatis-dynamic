@@ -1,10 +1,7 @@
 package io.github.myacelw.mybatis.dynamic.core.database;
 
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.KeyGeneratorMode;
-import io.github.myacelw.mybatis.dynamic.core.metadata.table.Column;
-import io.github.myacelw.mybatis.dynamic.core.metadata.table.Index;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.SelectColumn;
-import io.github.myacelw.mybatis.dynamic.core.metadata.table.Table;
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.SqlSession;
@@ -86,15 +83,6 @@ public interface MybatisHelper {
         return (Cursor) queryCursor(sqlSession, sql, context, columns, Map.class);
     }
 
-
-    Table getTable(String tableName, String schema);
-
-    String getDatabaseProductName();
-
-    List<Column> getColumns(String tableName, String schema);
-
-    List<Index> getIndexList(String tableName, String schema);
-
     default int insert(SqlSession sqlSession, String sql, Object context) {
         return insert(sqlSession, sql, context, null, null, null);
     }
@@ -108,7 +96,6 @@ public interface MybatisHelper {
     int update(SqlSession sqlSession, String sql, Object context);
 
     int delete(SqlSession sqlSession, String sql, Object context);
-
 
     org.apache.ibatis.session.SqlSessionFactory getSqlSessionFactory();
 }

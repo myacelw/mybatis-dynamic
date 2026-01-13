@@ -3,6 +3,7 @@ package io.github.myacelw.mybatis.dynamic.core.service;
 import io.github.myacelw.mybatis.dynamic.core.database.MybatisHelper;
 import io.github.myacelw.mybatis.dynamic.core.database.TableManager;
 import io.github.myacelw.mybatis.dynamic.core.database.dialect.DataBaseDialect;
+import io.github.myacelw.mybatis.dynamic.core.database.impl.DataBaseMetaDataHelperImpl;
 import io.github.myacelw.mybatis.dynamic.core.database.impl.MybatisHelperImpl;
 import io.github.myacelw.mybatis.dynamic.core.database.impl.TableManagerImpl;
 import io.github.myacelw.mybatis.dynamic.core.event.EventListener;
@@ -137,9 +138,10 @@ public class ModelServiceBuilder {
     }
 
     public ModelServiceImpl build() {
+        DataBaseMetaDataHelperImpl dataBaseMetaDataHelper = new DataBaseMetaDataHelperImpl(sqlSessionFactory);
         MybatisHelper mybatisHelper = new MybatisHelperImpl(sqlSessionFactory, rowLimit, timeoutSeconds);
         if (this.dialect == null) {
-            String dbProductName = mybatisHelper.getDatabaseProductName();
+            String dbProductName = dataBaseMetaDataHelper.getDatabaseProductName();
             for (DataBaseDialect instance : DataBaseDialect.getInstances()) {
                 if (instance.getName().equalsIgnoreCase(dbProductName)) {
                     this.dialect = instance;
@@ -152,7 +154,7 @@ public class ModelServiceBuilder {
             }
         }
 
-        TableManager tableManager = new TableManagerImpl(mybatisHelper, dialect);
+        TableManager tableManager = new TableManagerImpl(dataBaseMetaDataHelper, mybatisHelper, dialect);
         Map<String, Filler> mergedFiller = new HashMap<>();
         for (Filler filler : Filler.DEFAULT_FILLERS) {
             mergedFiller.put(filler.getName(), filler);
