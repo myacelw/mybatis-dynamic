@@ -55,6 +55,12 @@ public class SimpleCondition implements Condition {
         return (ignoreIfValueEmpty ? "?" : "") + operation + "(" + field + ", " + value + ")";
     }
 
+
+    @JsonIgnore
+    public Object getV() {
+        return value;
+    }
+
     @Override
     public SimpleCondition clone() {
         try {
