@@ -2,7 +2,7 @@
 
 This plan outlines the steps to create comprehensive integration tests for the `DataBaseMetaDataHelperImpl` class using the project's existing test infrastructure and H2 database.
 
-## Phase 1: Environment Setup and Baseline
+## Phase 1: Environment Setup and Baseline [checkpoint: 6f92ce9]
 - [x] Task: Analyze existing test utilities (`Database.java`, etc.) to understand the established pattern for `SqlSessionFactory` and database initialization in the `core` module.
 - [x] Task: Create the test class structure at `core/src/test/java/io/github/myacelw/mybatis/dynamic/core/database/impl/DataBaseMetaDataHelperImplTest.java`.
 - [x] Task: Implement a basic setup method to initialize the database with a sample table for testing.
