@@ -46,4 +46,67 @@ class DataBaseMetaDataHelperImplTest {
         String quoteString = metaDataHelper.getIdentifierQuoteString();
         assertEquals("\"", quoteString);
     }
+
+    @Test
+    void getTable_ExistingTable() {
+        Table table = metaDataHelper.getTable("test_table", null);
+        assertNotNull(table);
+        assertEquals("test_table", table.getTableName());
+        assertEquals("Test table comment", table.getComment());
+    }
+
+    @Test
+    void getTable_NonExistingTable() {
+        Table table = metaDataHelper.getTable("non_existing_table", null);
+        assertNull(table);
+    }
+
+    @Test
+    void getColumns() {
+        List<Column> columns = metaDataHelper.getColumns("test_table", null);
+        assertNotNull(columns);
+        assertEquals(4, columns.size());
+
+        Column idColumn = columns.stream().filter(c -> "id".equalsIgnoreCase(c.getColumnName())).findFirst().orElse(null);
+        assertNotNull(idColumn);
+        assertTrue(idColumn.getNotNull());
+        assertTrue(idColumn.isAutoIncrement());
+
+        Column nameColumn = columns.stream().filter(c -> "name".equalsIgnoreCase(c.getColumnName())).findFirst().orElse(null);
+        assertNotNull(nameColumn);
+        assertTrue("VARCHAR".equalsIgnoreCase(nameColumn.getDataType()) || "CHARACTER VARYING".equalsIgnoreCase(nameColumn.getDataType()));
+        assertEquals(255, nameColumn.getCharacterMaximumLength());
+        assertTrue(nameColumn.getNotNull());
+        assertEquals("Name column comment", nameColumn.getComment());
+
+        Column descriptionColumn = columns.stream().filter(c -> "description".equalsIgnoreCase(c.getColumnName())).findFirst().orElse(null);
+        assertNotNull(descriptionColumn);
+        assertFalse(descriptionColumn.getNotNull());
+
+        Column createdAtColumn = columns.stream().filter(c -> "created_at".equalsIgnoreCase(c.getColumnName())).findFirst().orElse(null);
+        assertNotNull(createdAtColumn);
+        assertNotNull(createdAtColumn.getDefaultValue());
+    }
+
+    @Test
+    void getIndexList() {
+        List<Index> indexList = metaDataHelper.getIndexList("test_table", null);
+        assertNotNull(indexList);
+        // H2 might report the primary key as an index as well.
+        // uk_test_id_name, idx_test_name, and potentially PRIMARY_KEY_...
+        assertTrue(indexList.size() >= 2);
+
+        Index ukIndex = indexList.stream().filter(i -> "uk_test_id_name".equalsIgnoreCase(i.getIndexName())).findFirst().orElse(null);
+        assertNotNull(ukIndex);
+        assertEquals(io.github.myacelw.mybatis.dynamic.core.metadata.enums.IndexType.UNIQUE, ukIndex.getIndexType());
+        assertEquals(2, ukIndex.getColumnNames().size());
+        assertTrue(ukIndex.getColumnNames().contains("id"));
+        assertTrue(ukIndex.getColumnNames().contains("name"));
+
+        Index idxIndex = indexList.stream().filter(i -> "idx_test_name".equalsIgnoreCase(i.getIndexName())).findFirst().orElse(null);
+        assertNotNull(idxIndex);
+        assertEquals(io.github.myacelw.mybatis.dynamic.core.metadata.enums.IndexType.NORMAL, idxIndex.getIndexType());
+        assertEquals(1, idxIndex.getColumnNames().size());
+        assertEquals("name", idxIndex.getColumnNames().get(0));
+    }
 }

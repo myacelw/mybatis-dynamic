@@ -56,6 +56,16 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
 
     @SneakyThrows
     @Override
+    public String getIdentifierQuoteString() {
+        try (Connection connection = sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
+            DatabaseMetaData metaData = connection.getMetaData();
+            return metaData.getIdentifierQuoteString();
+        }
+    }
+
+
+    @SneakyThrows
+    @Override
     public List<Column> getColumns(String tableName, String schema) {
         try (Connection connection = sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
             CatalogAndSchema catalogAndSchema = getCatalogAndSchema(schema, connection);

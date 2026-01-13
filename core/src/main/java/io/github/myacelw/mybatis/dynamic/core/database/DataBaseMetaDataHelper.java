@@ -20,6 +20,9 @@ public interface DataBaseMetaDataHelper {
     String getDatabaseProductName();
 
     @SneakyThrows
+    String getIdentifierQuoteString();
+
+    @SneakyThrows
     List<Column> getColumns(String tableName, String schema);
 
     @SneakyThrows
