@@ -13,8 +13,8 @@ This plan outlines the steps to create comprehensive integration tests for the `
 - [x] Task: Verify tests pass for `getDatabaseProductName` and `getIdentifierQuoteString` (implementation already exists). ab2fc1e
 - [x] Task: Write failing tests for `getTable` (covering both existing and non-existing tables). 4d14a30
 - [x] Task: Verify tests pass for `getTable`. 4d14a30
-- [ ] Task: Write failing tests for `getColumns` (covering various data types, nullability, and auto-increment).
-- [ ] Task: Verify tests pass for `getColumns`.
+- [x] Task: Write failing tests for `getColumns` (covering various data types, nullability, and auto-increment). 56534a3
+- [x] Task: Verify tests pass for `getColumns`. 56534a3
 - [ ] Task: Write failing tests for `getIndexList` (covering unique and normal indexes with multiple columns).
 - [ ] Task: Verify tests pass for `getIndexList`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Implement Test Cases' (Protocol in workflow.md)
