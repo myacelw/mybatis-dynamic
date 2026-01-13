@@ -146,9 +146,57 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
     @SneakyThrows
     @Override
     public String getIdentifierQuoteString() {
-        try (Connection connection = sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
+        return getMetaDataInfo().getIdentifierQuoteString();
+    }
+
+    private MetaDataInfo getMetaDataInfo() throws SQLException {
+        DataSource dataSource = sqlSessionFactory.getConfiguration().getEnvironment().getDataSource();
+        MetaDataInfo info = CACHE.get(dataSource);
+        if (info != null) {
+            return info;
+        }
+
+        try (Connection connection = dataSource.getConnection()) {
             DatabaseMetaData metaData = connection.getMetaData();
-            return metaData.getIdentifierQuoteString();
+            String quoteString = metaData.getIdentifierQuoteString();
+            if (" ".equals(quoteString)) {
+                quoteString = "";
+            }
+
+            Set<String> keywords = new HashSet<>(STANDARD_KEYWORDS);
+            String extraKeywords = metaData.getSQLKeywords();
+            if (extraKeywords != null && !extraKeywords.isEmpty()) {
+                Arrays.stream(extraKeywords.split(",")).map(String::trim).filter(s -> !s.isEmpty())
+                        .forEach(s -> keywords.add(s.toUpperCase()));
+            }
+            // Add functions as keywords to be safe
+            addFunctions(metaData.getNumericFunctions(), keywords);
+            addFunctions(metaData.getStringFunctions(), keywords);
+            addFunctions(metaData.getSystemFunctions(), keywords);
+            addFunctions(metaData.getTimeDateFunctions(), keywords);
+
+            info = MetaDataInfo.builder()
+                    .identifierQuoteString(quoteString)
+                    .keywords(keywords)
+                    .supportsMixedCaseIdentifiers(metaData.supportsMixedCaseIdentifiers())
+                    .storesUpperCaseIdentifiers(metaData.storesUpperCaseIdentifiers())
+                    .storesLowerCaseIdentifiers(metaData.storesLowerCaseIdentifiers())
+                    .storesMixedCaseIdentifiers(metaData.storesMixedCaseIdentifiers())
+                    .supportsMixedCaseQuotedIdentifiers(metaData.supportsMixedCaseQuotedIdentifiers())
+                    .storesUpperCaseQuotedIdentifiers(metaData.storesUpperCaseQuotedIdentifiers())
+                    .storesLowerCaseQuotedIdentifiers(metaData.storesLowerCaseQuotedIdentifiers())
+                    .storesMixedCaseQuotedIdentifiers(metaData.storesMixedCaseQuotedIdentifiers())
+                    .build();
+
+            CACHE.put(dataSource, info);
+            return info;
+        }
+    }
+
+    private void addFunctions(String functions, Set<String> keywords) {
+        if (functions != null && !functions.isEmpty()) {
+            Arrays.stream(functions.split(",")).map(String::trim).filter(s -> !s.isEmpty())
+                    .forEach(s -> keywords.add(s.toUpperCase()));
         }
     }
 
@@ -173,6 +221,23 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
     @SneakyThrows
     @Override
     public String getIdentifierInMeta(String identifier, boolean isQuoted) {
+        if (identifier == null) {
+            return null;
+        }
+        MetaDataInfo info = getMetaDataInfo();
+        if (isQuoted) {
+            if (info.isStoresUpperCaseQuotedIdentifiers()) {
+                return identifier.toUpperCase();
+            } else if (info.isStoresLowerCaseQuotedIdentifiers()) {
+                return identifier.toLowerCase();
+            }
+        } else {
+            if (info.isStoresUpperCaseIdentifiers()) {
+                return identifier.toUpperCase();
+            } else if (info.isStoresLowerCaseIdentifiers()) {
+                return identifier.toLowerCase();
+            }
+        }
         return identifier;
     }
 
