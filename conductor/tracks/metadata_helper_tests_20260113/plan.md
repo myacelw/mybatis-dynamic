@@ -15,8 +15,8 @@ This plan outlines the steps to create comprehensive integration tests for the `
 - [x] Task: Verify tests pass for `getTable`. 4d14a30
 - [x] Task: Write failing tests for `getColumns` (covering various data types, nullability, and auto-increment). 56534a3
 - [x] Task: Verify tests pass for `getColumns`. 56534a3
-- [ ] Task: Write failing tests for `getIndexList` (covering unique and normal indexes with multiple columns).
-- [ ] Task: Verify tests pass for `getIndexList`.
+- [x] Task: Write failing tests for `getIndexList` (covering unique and normal indexes with multiple columns). 6714072
+- [x] Task: Verify tests pass for `getIndexList`. 6714072
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Implement Test Cases' (Protocol in workflow.md)
 
 ## Phase 3: Validation and Quality Gates
