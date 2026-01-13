@@ -56,6 +56,9 @@ public class SimpleCondition implements Condition {
     }
 
 
+    /**
+     * 条件值得短写别名
+     */
     @JsonIgnore
     public Object getV() {
         return value;

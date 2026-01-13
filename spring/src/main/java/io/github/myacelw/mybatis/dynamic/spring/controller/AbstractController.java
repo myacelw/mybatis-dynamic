@@ -3,7 +3,6 @@ package io.github.myacelw.mybatis.dynamic.spring.controller;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
 import io.github.myacelw.mybatis.dynamic.spring.service.BaseService;
 import io.github.myacelw.mybatis.dynamic.spring.vo.QueryRequest;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,17 +29,17 @@ public abstract class AbstractController<ID, T> {
     }
 
     @PostMapping("/insert")
-    public Optional<ID> insert(@RequestBody @Valid T data) {
+    public Optional<ID> insert(@RequestBody T data) {
         return Optional.of(service.insert(data));
     }
 
     @PostMapping("/update")
-    public void update(@RequestBody @Valid T data) {
+    public void update(@RequestBody T data) {
         service.update(data);
     }
 
     @PostMapping("/onlyUpdateNonNull")
-    public void onlyUpdateNonNull(@RequestBody @Valid T data) {
+    public void onlyUpdateNonNull(@RequestBody T data) {
         service.onlyUpdateNonNull(data);
     }
 
@@ -50,12 +49,12 @@ public abstract class AbstractController<ID, T> {
     }
 
     @PostMapping("/batchInsert")
-    public List<ID> batchInsert(@RequestBody @Valid List<T> data) {
+    public List<ID> batchInsert(@RequestBody List<T> data) {
         return service.batchInsert(data);
     }
 
     @PostMapping("/batchUpdate")
-    public void batchUpdate(@RequestBody @Valid List<T> data) {
+    public void batchUpdate(@RequestBody List<T> data) {
         service.batchUpdate(data);
     }
 
