@@ -203,7 +203,10 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
     @SneakyThrows
     @Override
     public boolean isIdentifierReserved(String identifier) {
-        return false;
+        if (identifier == null) {
+            return false;
+        }
+        return getMetaDataInfo().getKeywords().contains(identifier.toUpperCase());
     }
 
     @SneakyThrows
