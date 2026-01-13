@@ -11,8 +11,8 @@ This plan outlines the steps to create comprehensive integration tests for the `
 ## Phase 2: Implement Test Cases (TDD Approach)
 - [x] Task: Write failing tests for `getDatabaseProductName` and `getIdentifierQuoteString`. ab2fc1e
 - [x] Task: Verify tests pass for `getDatabaseProductName` and `getIdentifierQuoteString` (implementation already exists). ab2fc1e
-- [ ] Task: Write failing tests for `getTable` (covering both existing and non-existing tables).
-- [ ] Task: Verify tests pass for `getTable`.
+- [x] Task: Write failing tests for `getTable` (covering both existing and non-existing tables). 4d14a30
+- [x] Task: Verify tests pass for `getTable`. 4d14a30
 - [ ] Task: Write failing tests for `getColumns` (covering various data types, nullability, and auto-increment).
 - [ ] Task: Verify tests pass for `getColumns`.
 - [ ] Task: Write failing tests for `getIndexList` (covering unique and normal indexes with multiple columns).
