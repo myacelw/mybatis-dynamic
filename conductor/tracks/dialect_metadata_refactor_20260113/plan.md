@@ -7,7 +7,7 @@ Define the new contracts and set up the caching mechanism to ensure performance 
 - [x] Task: Implement a thread-safe caching structure in `DataBaseMetaDataHelperImpl` to store `DatabaseMetaData` properties (e.g., quote string, keyword sets, case-sensitivity flags) keyed by the database connection URL or DataSource identity [37b3c5d]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
 
-## Phase 2: Implement Dynamic Metadata Logic
+## Phase 2: Implement Dynamic Metadata Logic [checkpoint: 64c532b]
 Implement the core logic for interacting with JDBC `DatabaseMetaData` and managing keywords.
 
 - [x] Task: Implement `getIdentifierQuoteString` and `getIdentifierInMeta` in `DataBaseMetaDataHelperImpl` using JDBC metadata flags (`storesUpperCaseIdentifiers`, etc.) [64a023f]
