@@ -20,77 +20,6 @@ import java.util.*;
 @Slf4j
 public abstract class AbstractDataBaseDialect implements DataBaseDialect {
 
-    /**
-     * 关键字
-     */
-    public static final Set<String> KEYWORD = new HashSet<>(Arrays.asList(
-            // A
-            "ABSOLUTE", "ACTION", "ADD", "ADMINDB", "ALL", "ALLOCATE", "ALPHANUMERIC", "ALTER", "AND", "ANY", "ARE", "AS", "ASC",
-            "ASSERTION", "AT", "AUTHORIZATION", "AUTOINCREMENT", "AVG",
-            // B
-            "BAND", "BEGIN", "BETWEEN", "BINARY", "BIT", "BIT_LENGTH", "BNOT", "BOR", "BOTH", "BXOR", "BY", "BYTE",
-            // C
-            "CASCADE", "CASCADED", "CASE", "CAST", "CATALOG", "CHAR", "CHARACTER", "CHAR_LENGTH", "CHARACTER_LENGTH", "CHECK",
-            "CLOSE", "COALESCE", "COLLATE", "COLLATION", "COLUMN", "COMMIT", "COMP", "COMPRESSION", "CONNECT", "CONNECTION",
-            "CONSTRAINT", "CONSTRAINTS", "CONTAINER", "CONTINUE", "CONVERT", "CORRESPONDING", "COUNT", "COUNTER", "CREATE",
-            "CREATEDB", "CROSS", "CURRENCY", "CURRENT", "CURRENT_DATE", "CURRENT_TIME", "CURRENT_TIMESTAMP", "CURRENT_USER",
-            "CURSOR", "CALL", "CONDITION",
-            // D
-            "DATABASE", "DATE", "DATETIME", "DAY", "DEALLOCATE", "DEC", "DECIMAL", "DECLARE", "DEFAULT", "DEFERRABLE",
-            "DEFERRED", "DELETE", "DESC", "DESCRIBE", "DESCRIPTOR", "DIAGNOSTICS", "DISALLOW", "DISCONNECT",
-            "DISTINCT", "DOMAIN", "DOUBLE", "DROP",
-            // E
-            "ELSE", "END", "END-EXEC", "ESCAPE", "EXCEPT", "EXCEPTION", "EXCLUSIVECONNECT", "EXEC", "EXECUTE",
-            "EXISTS", "EXTERNAL", "EXTRACT",
-            // F
-            "FALSE", "FETCH", "FIRST", "FLOAT", "FLOAT4", "FLOAT8", "FOR", "FOREIGN", "FOUND", "FROM", "FULL",
-            // G
-            "GENERAL", "GET", "GLOBAL", "GO", "GOTO", "GRANT", "GROUP", "GUID",
-            // H
-            "HAVING", "HOUR",
-            // I
-            "IDENTITY", "IEEEDOUBLE", "EEESINGLE", "IGNORE", "IMAGE", "IMMEDIATE", "IN", "INDEX", "INDICATOR", "INHERITABLE",
-            "INITIALLY", "INNER", "INPUT", "INSENSITIVE", "INSERT", "INT", "INTEGER", "INTEGERT", "INTEGER2", "INTEGER4",
-            "INTERSECT", "INTERVAL", "INTO", "IS", "ISOLATION",
-            // J
-            "JOIN",
-            // K
-            "KEY",
-            // L
-            "LANGUAGE", "LAST", "LEADING", "LEFT", "LEVEL", "LIKE", "LOCAL", "LOGICAL", "LOGICAL1", "LONG", "LONGBINARY",
-            "LONGCHAR", "LONGTEXT", "LOWER",
-            // M
-            "MATCH", "MAX", "MEMO", "MIN", "MINUTE", "MODULE",/*"MONEY",*/"MONTH",/*"NAMES",*/"NATIONAL", "NATURAL", "NCHAR", "NEXT",
-            // N
-            "NO", "NOT", "NOTE", "NULL", "NULLIF", "NUMBER", "NUMERIC",
-            // O
-            "OBJECT", "OCTET_LENGTH", "OF", "OLEOBJECT", "ON", "ONLY", "OPEN", "OPTION", "OR", "ORDER", "OUTER", "OUTPUT",
-            "OVERLAPS", "OWNERACCESS",
-            // P
-            "PAD", "PATH", "PARAMETERS", "PARTIAL", "PASSWORD", "PERCENT", "PIVOT", "POSITION", "PRECISION", "PREPARE",
-            "PRESERVE", "PRIMARY", "PRIOR", "PRIVILEGES", "PROC", "PROCEDURE", "PUBLIC",
-            // R
-            "READ", "REAL", "REFERENCES", "RELATIVE", "RESTRICT", "REVOKE", "RIGHT", "ROLLBACK", "ROWS",
-            // S
-            "SCHEMA", "SCROLL", "SECOND", "SECTION", "SELECT", "SELECTSCHEMA", "SELECTSECURITY", "SESSION", "SESSION_USER",
-            "SET", "SHORT", "SINGLE", "SIZE", "SMALLINT", "SOME", "SPACE", "SQL", "SQLCODE", "SQLERROR", "SQLSTATE",
-            "STRING", "SUBSTRING", "SUM", "SYSTEM_USER", "SYSDATE", "SYSTIMESTAMP",
-            // T
-            "TABLE", "TABLEID", "TEMPORARY", "TEXT", "THEN", "TIME", "TIMESTAMP", "TIMEZONE_HOUR", "TIMEZONE_MINUTE",
-            "TO", "TOP", "TRAILING", "TRANSACTION", "TRANSFORM", "TRANSLATE", "TRANSLATION", "TRIM", "TRUE",
-            // U
-            "USER",
-            //V
-            "VALUE",
-            // others
-            "ALTERCOLUMN", "ALTERTABLE", "ADDCONSTRAINT", "BACKUPDATABASE", "CREATEDATABASE", "CREATEINDEX",
-            "CREATEORREPLACEVIEW", "CREATETABLE", "CREATEPROCEDURE", "CREATEUNIQUEINDEX", "CREATEVIEW", "DROPCOLUMN",
-            "DROPCONSTRAINT", "DROPDATABASE", "DROPDEFAULT", "DROPINDEX", "DROPTABLE", "DROPVIEW", "FOREIGNKEY",
-            "FULLOUTERJOIN", "GROUPBY", "INNERJOIN", "INSERTINTO", "INSERTINTOSELECT", "ISNULL", "ISNOTNULL",
-            "LEFTJOIN", "LIMIT", "NOTNULL", "ORDERBY", "OUTERJOIN", "PRIMARYKEY", "RIGHTJOIN", "ROWNUM", "SELECTDISTINCT",
-            "SELECTINTO", "SELECTTOP", "TRUNCATETABLE", "UNION", "UNIONALL", "UNIQUE", "UPDATE", "VALUES", "VIEW", "WHERE"));
-
-
     protected String getSchemaTableSql(Table table) {
         if (table.getSchema() != null && !table.getSchema().isEmpty()) {
             return table.getSchema() + "." + table.getTableName();
@@ -108,40 +37,15 @@ public abstract class AbstractDataBaseDialect implements DataBaseDialect {
         }
     }
 
-    /**
-     * 表名在元数据表中是大写存储吗？
-     */
-    protected Boolean isTableNameUpperCase() {
-        return false;
-    }
-
-    /**
-     * 元数据中的表名，没有逃逸字符包裹时全小写或者全大写存储。
-     */
     @Override
     public String getTableNameInMeta(Table table) {
-        if (table.getTableName().charAt(0) == getEscapeCharacter()) {
-            return unWrapper(table.getTableName());
-        }
-        if (isTableNameUpperCase() == null) {
-            return table.getTableName();
-        } else if (isTableNameUpperCase()) {
-            return table.getTableName().toUpperCase();
-        } else {
-            return table.getTableName().toLowerCase();
-        }
+        return table.getTableName();
     }
 
     @Override
     public String getSchemaNameInMeta(Table table) {
         if (StringUtil.hasText(table.getSchema())) {
-            if (isTableNameUpperCase() == null) {
-                return table.getSchema();
-            } else if (isTableNameUpperCase()) {
-                return table.getSchema().toUpperCase();
-            } else {
-                return table.getSchema().toLowerCase();
-            }
+            return table.getSchema();
         }
         return null;
     }
@@ -378,40 +282,5 @@ public abstract class AbstractDataBaseDialect implements DataBaseDialect {
 
     protected String getDataTypeDefinition(Column c) {
         return c.getDataTypeDefinition();
-    }
-
-    /**
-     * escape 字符
-     */
-    protected abstract char getEscapeCharacter();
-
-    /**
-     * 存在中文等非法字符，或者为数据库关键字时进行包装处理
-     */
-    @Override
-    public String wrapper(String name) {
-        if (name == null) {
-            return null;
-        }
-        String w = String.valueOf(getEscapeCharacter());
-        if (name.startsWith(w) && name.endsWith(w)) {
-            return name;
-        }
-        if (!name.matches("[a-zA-Z_][a-zA-Z0-9_]*") || KEYWORD.contains(name.toUpperCase())) {
-            return w + name + w;
-        }
-        return name;
-    }
-
-    @Override
-    public String unWrapper(String name) {
-        if (name == null || name.isEmpty()) {
-            return name;
-        }
-        char w = getEscapeCharacter();
-        if (name.charAt(0) == w && name.charAt(name.length() - 1) == w) {
-            return name.substring(1, name.length() - 1);
-        }
-        return name;
     }
 }

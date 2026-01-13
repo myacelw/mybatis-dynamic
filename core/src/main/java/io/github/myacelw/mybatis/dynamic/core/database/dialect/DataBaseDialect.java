@@ -93,18 +93,6 @@ public interface DataBaseDialect {
         return PRIORITY_DEFAULT;
     }
 
-    String wrapper(String name);
-
-    String unWrapper(String name);
-
-    static String unAllWrapper(String name) {
-        String result = name;
-        for (DataBaseDialect d : getInstances()) {
-            result = d.unWrapper(result);
-        }
-        return result;
-    }
-
     static List<DataBaseDialect> getInstances() {
         ServiceLoader<DataBaseDialect> loader = ServiceLoader.load(DataBaseDialect.class);
         List<DataBaseDialect> dataBaseList = new ArrayList<>();
