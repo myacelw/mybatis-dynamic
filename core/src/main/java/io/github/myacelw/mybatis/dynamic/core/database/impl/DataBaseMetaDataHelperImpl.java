@@ -6,13 +6,16 @@ import io.github.myacelw.mybatis.dynamic.core.metadata.table.Column;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Index;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.SneakyThrows;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -23,10 +26,96 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
 
+    private static final Set<String> STANDARD_KEYWORDS = new HashSet<>(Arrays.asList(
+            // A
+            "ABSOLUTE", "ACTION", "ADD", "ADMINDB", "ALL", "ALLOCATE", "ALPHANUMERIC", "ALTER", "AND", "ANY", "ARE", "AS", "ASC",
+            "ASSERTION", "AT", "AUTHORIZATION", "AUTOINCREMENT", "AVG",
+            // B
+            "BAND", "BEGIN", "BETWEEN", "BINARY", "BIT", "BIT_LENGTH", "BNOT", "BOR", "BOTH", "BXOR", "BY", "BYTE",
+            // C
+            "CASCADE", "CASCADED", "CASE", "CAST", "CATALOG", "CHAR", "CHARACTER", "CHAR_LENGTH", "CHARACTER_LENGTH", "CHECK",
+            "CLOSE", "COALESCE", "COLLATE", "COLLATION", "COLUMN", "COMMIT", "COMP", "COMPRESSION", "CONNECT", "CONNECTION",
+            "CONSTRAINT", "CONSTRAINTS", "CONTAINER", "CONTINUE", "CONVERT", "CORRESPONDING", "COUNT", "COUNTER", "CREATE",
+            "CREATEDB", "CROSS", "CURRENCY", "CURRENT", "CURRENT_DATE", "CURRENT_TIME", "CURRENT_TIMESTAMP", "CURRENT_USER",
+            "CURSOR", "CALL", "CONDITION",
+            // D
+            "DATABASE", "DATE", "DATETIME", "DAY", "DEALLOCATE", "DEC", "DECIMAL", "DECLARE", "DEFAULT", "DEFERRABLE",
+            "DEFERRED", "DELETE", "DESC", "DESCRIBE", "DESCRIPTOR", "DIAGNOSTICS", "DISALLOW", "DISCONNECT",
+            "DISTINCT", "DOMAIN", "DOUBLE", "DROP",
+            // E
+            "ELSE", "END", "END-EXEC", "ESCAPE", "EXCEPT", "EXCEPTION", "EXCLUSIVECONNECT", "EXEC", "EXECUTE",
+            "EXISTS", "EXTERNAL", "EXTRACT",
+            // F
+            "FALSE", "FETCH", "FIRST", "FLOAT", "FLOAT4", "FLOAT8", "FOR", "FOREIGN", "FOUND", "FROM", "FULL",
+            // G
+            "GENERAL", "GET", "GLOBAL", "GO", "GOTO", "GRANT", "GROUP", "GUID",
+            // H
+            "HAVING", "HOUR",
+            // I
+            "IDENTITY", "IEEEDOUBLE", "EEESINGLE", "IGNORE", "IMAGE", "IMMEDIATE", "IN", "INDEX", "INDICATOR", "INHERITABLE",
+            "INITIALLY", "INNER", "INPUT", "INSENSITIVE", "INSERT", "INT", "INTEGER", "INTEGERT", "INTEGER2", "INTEGER4",
+            "INTERSECT", "INTERVAL", "INTO", "IS", "ISOLATION",
+            // J
+            "JOIN",
+            // K
+            "KEY",
+            // L
+            "LANGUAGE", "LAST", "LEADING", "LEFT", "LEVEL", "LIKE", "LOCAL", "LOGICAL", "LOGICAL1", "LONG", "LONGBINARY",
+            "LONGCHAR", "LONGTEXT", "LOWER",
+            // M
+            "MATCH", "MAX", "MEMO", "MIN", "MINUTE", "MODULE",/*"MONEY",*/"MONTH",/*"NAMES",*/"NATIONAL", "NATURAL", "NCHAR", "NEXT",
+            // N
+            "NO", "NOT", "NOTE", "NULL", "NULLIF", "NUMBER", "NUMERIC",
+            // O
+            "OBJECT", "OCTET_LENGTH", "OF", "OLEOBJECT", "ON", "ONLY", "OPEN", "OPTION", "OR", "ORDER", "OUTER", "OUTPUT",
+            "OVERLAPS", "OWNERACCESS",
+            // P
+            "PAD", "PATH", "PARAMETERS", "PARTIAL", "PASSWORD", "PERCENT", "PIVOT", "POSITION", "PRECISION", "PREPARE",
+            "PRESERVE", "PRIMARY", "PRIOR", "PRIVILEGES", "PROC", "PROCEDURE", "PUBLIC",
+            // R
+            "READ", "REAL", "REFERENCES", "RELATIVE", "RESTRICT", "REVOKE", "RIGHT", "ROLLBACK", "ROWS",
+            // S
+            "SCHEMA", "SCROLL", "SECOND", "SECTION", "SELECT", "SELECTSCHEMA", "SELECTSECURITY", "SESSION", "SESSION_USER",
+            "SET", "SHORT", "SINGLE", "SIZE", "SMALLINT", "SOME", "SPACE", "SQL", "SQLCODE", "SQLERROR", "SQLSTATE",
+            "STRING", "SUBSTRING", "SUM", "SYSTEM_USER", "SYSDATE", "SYSTIMESTAMP",
+            // T
+            "TABLE", "TABLEID", "TEMPORARY", "TEXT", "THEN", "TIME", "TIMESTAMP", "TIMEZONE_HOUR", "TIMEZONE_MINUTE",
+            "TO", "TOP", "TRAILING", "TRANSACTION", "TRANSFORM", "TRANSLATE", "TRANSLATION", "TRIM", "TRUE",
+            // U
+            "USER",
+            //V
+            "VALUE",
+            // others
+            "ALTERCOLUMN", "ALTERTABLE", "ADDCONSTRAINT", "BACKUPDATABASE", "CREATEDATABASE", "CREATEINDEX",
+            "CREATEORREPLACEVIEW", "CREATETABLE", "CREATEPROCEDURE", "CREATEUNIQUEINDEX", "CREATEVIEW", "DROPCOLUMN",
+            "DROPCONSTRAINT", "DROPDATABASE", "DROPDEFAULT", "DROPINDEX", "DROPTABLE", "DROPVIEW", "FOREIGNKEY",
+            "FULLOUTERJOIN", "GROUPBY", "INNERJOIN", "INSERTINTO", "INSERTINTOSELECT", "ISNULL", "ISNOTNULL",
+            "LEFTJOIN", "LIMIT", "NOTNULL", "ORDERBY", "OUTERJOIN", "PRIMARYKEY", "RIGHTJOIN", "ROWNUM", "SELECTDISTINCT",
+            "SELECTINTO", "SELECTTOP", "TRUNCATETABLE", "UNION", "UNIONALL", "UNIQUE", "UPDATE", "VALUES", "VIEW", "WHERE"));
+
+    private static final Map<DataSource, MetaDataInfo> CACHE = new ConcurrentHashMap<>();
+
     final SqlSessionFactory sqlSessionFactory;
 
     public DataBaseMetaDataHelperImpl(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
+    }
+
+    @Value
+    @Builder
+    private static class MetaDataInfo {
+        String identifierQuoteString;
+        Set<String> keywords;
+        // Case sensitivity for unquoted identifiers
+        boolean supportsMixedCaseIdentifiers;
+        boolean storesUpperCaseIdentifiers;
+        boolean storesLowerCaseIdentifiers;
+        boolean storesMixedCaseIdentifiers;
+        // Case sensitivity for quoted identifiers
+        boolean supportsMixedCaseQuotedIdentifiers;
+        boolean storesUpperCaseQuotedIdentifiers;
+        boolean storesLowerCaseQuotedIdentifiers;
+        boolean storesMixedCaseQuotedIdentifiers;
     }
 
     @SneakyThrows
