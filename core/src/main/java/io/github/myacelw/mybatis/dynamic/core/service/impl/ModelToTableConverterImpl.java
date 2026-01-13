@@ -1,5 +1,7 @@
 package io.github.myacelw.mybatis.dynamic.core.service.impl;
 
+import io.github.myacelw.mybatis.dynamic.core.database.DataBaseMetaDataHelper;
+import io.github.myacelw.mybatis.dynamic.core.database.DataBaseMetaDataHelperHolder;
 import io.github.myacelw.mybatis.dynamic.core.database.dialect.DataBaseDialect;
 import io.github.myacelw.mybatis.dynamic.core.database.dialect.MysqlDataBaseDialect;
 import io.github.myacelw.mybatis.dynamic.core.exception.model.ModelException;
@@ -32,6 +34,8 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
 
     private final DataBaseDialect dialect;
 
+    private final DataBaseMetaDataHelper metaDataHelper;
+
     private final String tablePrefix;
 
     private final String seqPrefix;
@@ -63,8 +67,9 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
             new ObjectColumnTypeHandler()
     };
 
-    public ModelToTableConverterImpl(DataBaseDialect dialect, String tablePrefix, String seqPrefix, String indexPrefix, List<ColumnTypeHandler> columnTypeHandlers) {
+    public ModelToTableConverterImpl(DataBaseDialect dialect, DataBaseMetaDataHelper metaDataHelper, String tablePrefix, String seqPrefix, String indexPrefix, List<ColumnTypeHandler> columnTypeHandlers) {
         this.dialect = dialect == null ? new MysqlDataBaseDialect() : dialect;
+        this.metaDataHelper = metaDataHelper == null ? DataBaseMetaDataHelperHolder.getMetaDataHelper() : metaDataHelper;
         this.tablePrefix = tablePrefix == null ? "" : tablePrefix;
         this.seqPrefix = seqPrefix == null ? "" : seqPrefix;
         this.indexPrefix = indexPrefix == null ? "" : indexPrefix;
@@ -75,11 +80,22 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
         this.columnTypeHandlers.addAll(Arrays.asList(DEFAULT_COLUMN_TYPE_HANDLERS));
     }
 
+    public ModelToTableConverterImpl(DataBaseDialect dialect, String tablePrefix, String seqPrefix, String indexPrefix, List<ColumnTypeHandler> columnTypeHandlers) {
+        this(dialect, null, tablePrefix, seqPrefix, indexPrefix, columnTypeHandlers);
+    }
+
+    /**
+     * @param dialect 数据库方言
+     */
+    public ModelToTableConverterImpl(DataBaseDialect dialect, DataBaseMetaDataHelper metaDataHelper) {
+        this(dialect, metaDataHelper, "", "", "", null);
+    }
+
     /**
      * @param dialect 数据库方言
      */
     public ModelToTableConverterImpl(DataBaseDialect dialect) {
-        this(dialect, "", "", "", null);
+        this(dialect, null, "", "", "", null);
     }
 
     /**
@@ -115,9 +131,9 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
         //注意：表有可能改名，此时创建的索引前缀中的表名可能和当前表名不一致
         String name;
         if (dialect instanceof MysqlDataBaseDialect) {
-            name = indexPrefix + dialect.unWrapper(columnName);
+            name = indexPrefix + unWrapper(columnName);
         } else {
-            name = indexPrefix + dialect.unWrapper(tableName) + "_" + dialect.unWrapper(columnName);
+            name = indexPrefix + unWrapper(tableName) + "_" + unWrapper(columnName);
         }
 
         if (name.length() > 64) {
@@ -131,12 +147,22 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
      * 存在中文等非法字符，或者为数据库关键字时进行包装处理
      */
     protected String wrapper(String name) {
-        return this.dialect.wrapper(name);
+        if (metaDataHelper != null) {
+            return metaDataHelper.wrapIdentifier(name);
+        }
+        return name;
+    }
+
+    protected String unWrapper(String name) {
+        if (metaDataHelper != null) {
+            return metaDataHelper.unwrapIdentifier(name);
+        }
+        return name;
     }
 
     @Override
     public String reWrapper(String name) {
-        return wrapper(dialect.unWrapper(name));
+        return wrapper(unWrapper(name));
     }
 
     /**

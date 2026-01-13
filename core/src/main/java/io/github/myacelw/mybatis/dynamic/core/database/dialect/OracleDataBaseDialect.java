@@ -22,16 +22,6 @@ public class OracleDataBaseDialect extends AbstractDataBaseDialect {
     }
 
     @Override
-    protected char getEscapeCharacter() {
-        return '"';
-    }
-
-    @Override
-    protected Boolean isTableNameUpperCase() {
-        return true;
-    }
-
-    @Override
     public boolean supportAutoIncrement() {
         return false;
     }
@@ -50,7 +40,7 @@ public class OracleDataBaseDialect extends AbstractDataBaseDialect {
         List<String> columnSqlList = new ArrayList<>();
         for (Column column : table.getColumns()) {
             if (column.getAlterOrDropStrategy() != AlterOrDropStrategy.DROP) {
-                String columnSql = column.getColumnName() + " " + getDataTypeDefinition(column) + getDefaultValueAndAdditionalDDlSql(table, column);
+                String columnSql = wrapper(column.getColumnName()) + " " + getDataTypeDefinition(column) + getDefaultValueAndAdditionalDDlSql(table, column);
                 columnSqlList.add(columnSql);
             }
         }
@@ -73,7 +63,7 @@ public class OracleDataBaseDialect extends AbstractDataBaseDialect {
 
     @Override
     public Sql getDropIndexSql(Table table, String indexName) {
-        String sql = "DROP INDEX " + getSchemaIndexSql(table, indexName);
+        String sql = "DROP INDEX " + getSchemaIndexSql(table, wrapper(indexName));
         return new Sql(sql, true);
     }
 

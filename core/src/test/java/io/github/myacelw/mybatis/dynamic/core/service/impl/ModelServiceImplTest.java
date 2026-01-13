@@ -127,7 +127,11 @@ public class ModelServiceImplTest {
 
     @AfterEach
     public void a() {
-        this.service.delete(m);
+        try {
+            tableService.getSqlHelper().update(null, "DROP SCHEMA " + schema + " CASCADE", null);
+            tableService.getSqlHelper().update(null, "CREATE SCHEMA " + schema, null);
+        } catch (Exception e) {
+        }
     }
 
     @Test
@@ -239,7 +243,7 @@ public class ModelServiceImplTest {
         // 创建或更新模型对应数据库表
         modelService.update(model);
 
-        List<Column> columns = tableService.getCurrentTableColumns(new Table(tableService.getDialect().wrapper("d_index测试"), schema));
+        List<Column> columns = tableService.getCurrentTableColumns(new Table(tableService.getMetaDataHelper().wrapIdentifier("d_index测试"), schema));
         Optional<String> index = columns.stream().filter(t -> t.getColumnName().equalsIgnoreCase("name")).map(t -> t.getIndexName()).findFirst();
         assertTrue(index.isPresent());
         log.info("index name: {}", index);
@@ -249,7 +253,7 @@ public class ModelServiceImplTest {
         f3.getColumnDefinition().setIndex(true);
         modelService.update(model);
 
-        List<Column> columns3 = tableService.getCurrentTableColumns(new Table(tableService.getDialect().wrapper("d_index测试"), schema));
+        List<Column> columns3 = tableService.getCurrentTableColumns(new Table(tableService.getMetaDataHelper().wrapIdentifier("d_index测试"), schema));
         Optional<String> index3 = columns3.stream().filter(t -> t.getColumnName().equalsIgnoreCase("add_Index")).map(t -> t.getIndexName()).findFirst();
         assertTrue(index3.isPresent());
         log.info("index3 name: {}", index3);
@@ -309,7 +313,7 @@ public class ModelServiceImplTest {
 
         // ========
 
-        List<Column> columns = tableService.getCurrentTableColumns(tableService.getDialect().wrapper("d_column_alert_strategy测试"), schema);
+        List<Column> columns = tableService.getCurrentTableColumns(tableService.getMetaDataHelper().wrapIdentifier("d_column_alert_strategy测试"), schema);
         Optional<Integer> maximumLength = columns.stream().filter(t -> t.getColumnName().equalsIgnoreCase("name")).map(t -> t.getCharacterMaximumLength()).findFirst();
         assertEquals(20, maximumLength.get());
 

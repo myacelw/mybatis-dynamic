@@ -32,11 +32,6 @@ public class MysqlDataBaseDialect extends AbstractDataBaseDialect {
     }
 
     @Override
-    protected char getEscapeCharacter() {
-        return '`';
-    }
-
-    @Override
     public boolean isAlertColumnIncludeComment() {
         return true;
     }
@@ -98,7 +93,7 @@ public class MysqlDataBaseDialect extends AbstractDataBaseDialect {
     }
 
     protected String doColumnSql(Table table, Column column) {
-        String sql = column.getColumnName() + " "
+        String sql = wrapper(column.getColumnName()) + " "
                 + getDataTypeDefinition(column)
                 + getDefaultValueAndAdditionalDDlSql(table, column);
 
@@ -130,7 +125,7 @@ public class MysqlDataBaseDialect extends AbstractDataBaseDialect {
 
     @Override
     public Sql getDropIndexSql(Table table, String indexName) {
-        String sql = "DROP INDEX " + indexName + " ON " + getSchemaTableSql(table);
+        String sql = "DROP INDEX " + wrapper(indexName) + " ON " + getSchemaTableSql(table);
         return new Sql(sql, true);
     }
 

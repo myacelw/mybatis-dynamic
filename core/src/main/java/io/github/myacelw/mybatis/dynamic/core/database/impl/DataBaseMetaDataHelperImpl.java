@@ -250,21 +250,29 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
         if (identifier == null) {
             return null;
         }
+        String quote = getIdentifierQuoteString();
+        boolean actuallyQuoted = isQuoted;
+        String name = identifier;
+        if (quote != null && !quote.isEmpty() && identifier.startsWith(quote) && identifier.endsWith(quote)) {
+            actuallyQuoted = true;
+            name = identifier.substring(quote.length(), identifier.length() - quote.length());
+        }
+
         MetaDataInfo info = getMetaDataInfo();
-        if (isQuoted) {
+        if (actuallyQuoted) {
             if (info.isStoresUpperCaseQuotedIdentifiers()) {
-                return identifier.toUpperCase();
+                return name.toUpperCase();
             } else if (info.isStoresLowerCaseQuotedIdentifiers()) {
-                return identifier.toLowerCase();
+                return name.toLowerCase();
             }
         } else {
             if (info.isStoresUpperCaseIdentifiers()) {
-                return identifier.toUpperCase();
+                return name.toUpperCase();
             } else if (info.isStoresLowerCaseIdentifiers()) {
-                return identifier.toLowerCase();
+                return name.toLowerCase();
             }
         }
-        return identifier;
+        return name;
     }
 
 

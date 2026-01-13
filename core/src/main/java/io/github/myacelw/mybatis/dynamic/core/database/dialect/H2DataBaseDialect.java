@@ -21,15 +21,6 @@ public class H2DataBaseDialect extends AbstractDataBaseDialect {
     }
 
     @Override
-    protected char getEscapeCharacter() {
-        return '`';
-    }
-
-    protected Boolean isTableNameUpperCase() {
-        return null;
-    }
-
-    @Override
     public boolean supportAutoIncrement() {
         return true;
     }
@@ -41,7 +32,7 @@ public class H2DataBaseDialect extends AbstractDataBaseDialect {
 
     @Override
     public Sql getDropIndexSql(Table table, String indexName) {
-        String sql = "DROP INDEX " + getSchemaIndexSql(table, indexName) + " ON " + getSchemaTableSql(table);
+        String sql = "DROP INDEX " + getSchemaIndexSql(table, wrapper(indexName)) + " ON " + getSchemaTableSql(table);
         return new Sql(sql);
     }
 
@@ -50,12 +41,12 @@ public class H2DataBaseDialect extends AbstractDataBaseDialect {
         List<Sql> sqlList = new ArrayList<>();
 
         if (oldColumn != null && !oldColumn.getColumnName().equals(column.getColumnName())) {
-            String sql = "ALTER TABLE " + getSchemaTableSql(table) + " ALTER COLUMN " + oldColumn.getColumnName() + " RENAME TO " + column.getColumnName();
+            String sql = "ALTER TABLE " + getSchemaTableSql(table) + " ALTER COLUMN " + wrapper(oldColumn.getColumnName()) + " RENAME TO " + wrapper(column.getColumnName());
             sqlList.add(new Sql(sql));
         }
         if (oldColumn == null || !oldColumn.getDataTypeDefinition().equals(column.getDataTypeDefinition()) || !Objects.equals(getDefaultValueAndAdditionalDDlSql(table, column), getDefaultValueAndAdditionalDDlSql(table, oldColumn))) {
             String sql = "ALTER TABLE " + getSchemaTableSql(table) + " ALTER COLUMN ";
-            sql += column.getColumnName();
+            sql += wrapper(column.getColumnName());
             sql += " ";
             sql += getDataTypeDefinition(column);
             sql += getDefaultValueAndAdditionalDDlSql(table, column);

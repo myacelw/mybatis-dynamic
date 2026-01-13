@@ -1,10 +1,11 @@
 package io.github.myacelw.mybatis.dynamic.spring;
 
+import io.github.myacelw.mybatis.dynamic.core.database.DataBaseMetaDataHelperHolder;
 import io.github.myacelw.mybatis.dynamic.core.database.dialect.DataBaseDialect;
-import io.github.myacelw.mybatis.dynamic.core.service.*;
 import io.github.myacelw.mybatis.dynamic.core.service.*;
 import io.github.myacelw.mybatis.dynamic.core.service.filler.Filler;
 import io.github.myacelw.mybatis.dynamic.core.service.handler.ColumnTypeHandler;
+import io.github.myacelw.mybatis.dynamic.core.service.impl.ModelServiceImpl;
 import io.github.myacelw.mybatis.dynamic.spring.controller.AbstractController;
 import io.github.myacelw.mybatis.dynamic.spring.filler.CreatorFiller;
 import io.github.myacelw.mybatis.dynamic.spring.filler.ModifierFiller;
@@ -105,6 +106,9 @@ public class DynamicModelAutoConfiguration {
                 .interceptors(interceptors)
                 .disableAlterComment(disableAlterComment)
                 .build();
+        if (modelService instanceof ModelServiceImpl) {
+            DataBaseMetaDataHelperHolder.setMetaDataHelper(((ModelServiceImpl) modelService).getTableManager().getMetaDataHelper());
+        }
         return modelService;
     }
 

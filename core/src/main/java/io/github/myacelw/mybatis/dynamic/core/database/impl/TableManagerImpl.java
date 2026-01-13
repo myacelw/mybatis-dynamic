@@ -106,7 +106,7 @@ public class TableManagerImpl implements TableManager {
     }
 
     public Table queryTable(Table table) {
-        return metaDataHelper.getTable(dialect.getTableNameInMeta(table), dialect.getSchemaNameInMeta(table));
+        return metaDataHelper.getTable(metaDataHelper.getIdentifierInMeta(table.getTableName(), false), metaDataHelper.getIdentifierInMeta(table.getSchema(), false));
     }
 
     public List<Column> getCurrentTableColumns(String tableName, String schemaName) {
@@ -114,8 +114,8 @@ public class TableManagerImpl implements TableManager {
     }
 
     public List<Column> getCurrentTableColumns(Table table) {
-        List<Column> columns = metaDataHelper.getColumns(dialect.getTableNameInMeta(table), dialect.getSchemaNameInMeta(table));
-        List<Index> indexList = metaDataHelper.getIndexList(dialect.getTableNameInMeta(table), dialect.getSchemaNameInMeta(table));
+        List<Column> columns = metaDataHelper.getColumns(metaDataHelper.getIdentifierInMeta(table.getTableName(), false), metaDataHelper.getIdentifierInMeta(table.getSchema(), false));
+        List<Index> indexList = metaDataHelper.getIndexList(metaDataHelper.getIdentifierInMeta(table.getTableName(), false), metaDataHelper.getIdentifierInMeta(table.getSchema(), false));
 
         Map<String, Index> indexMap = new HashMap<>();
         indexList.stream().filter(t -> t.getColumnNames().size() == 1)
@@ -129,12 +129,12 @@ public class TableManagerImpl implements TableManager {
                 // 过滤掉主键索引
                 if (table.getPrimaryKeyColumns() == null || table.getPrimaryKeyColumns().stream().noneMatch(t -> t.equalsIgnoreCase(c.getColumnName()))) {
                     c.setIndex(true);
-                    c.setIndexName(dialect.wrapper(index.getIndexName()));
+                    c.setIndexName(metaDataHelper.wrapIdentifier(index.getIndexName()));
                     c.setIndexType(index.getIndexType());
                 }
             }
 
-            c.setColumnName(dialect.wrapper(c.getColumnName()));
+            // c.setColumnName(metaDataHelper.wrapIdentifier(c.getColumnName()));
         }
         return columns;
     }
@@ -191,15 +191,19 @@ public class TableManagerImpl implements TableManager {
         List<Sql> sqlList = new ArrayList<>();
 
         for (Column newColumn : table.getColumns()) {
+            String newColumnName = getUnquotedColumnName(newColumn);
             Column oldColumn = currentColumns.stream()
-                    .filter(t -> t.getColumnName().equalsIgnoreCase(newColumn.getColumnName()))
+                    .filter(t -> t.getColumnName().equalsIgnoreCase(newColumnName))
                     .findFirst()
                     .orElseGet(() -> {
                                 if (newColumn.getOldColumnNames() == null) {
                                     return null;
                                 }
                                 return newColumn.getOldColumnNames().stream()
-                                        .map(oldName -> currentColumns.stream().filter(t -> t.getColumnName().equalsIgnoreCase(oldName)).findFirst().orElse(null))
+                                        .map(oldName -> {
+                                            String unquotedOldName = metaDataHelper.unwrapIdentifier(oldName);
+                                            return currentColumns.stream().filter(t -> t.getColumnName().equalsIgnoreCase(unquotedOldName)).findFirst().orElse(null);
+                                        })
                                         .filter(Objects::nonNull)
                                         .findFirst()
                                         .orElse(null);
@@ -250,8 +254,12 @@ public class TableManagerImpl implements TableManager {
         return result;
     }
 
+    private String getUnquotedColumnName(Column c) {
+        return metaDataHelper.unwrapIdentifier(c.getColumnName());
+    }
+
     private boolean isColumnChanged(Column newColumn, Column oldColumn) {
-        boolean nameEqual = newColumn.getColumnName().equalsIgnoreCase(oldColumn.getColumnName());
+        boolean nameEqual = getUnquotedColumnName(newColumn).equalsIgnoreCase(oldColumn.getColumnName());
         boolean dataTypeEqual = newColumn.getDataType().equalsIgnoreCase(oldColumn.getDataType()) || (isInt(newColumn) && isInt(oldColumn)) || "USER-DEFINED".equals(oldColumn.getDataType());
         boolean lengthEqual = Objects.equals(newColumn.getCharacterMaximumLength(), oldColumn.getCharacterMaximumLength());
         boolean precisionEqual = newColumn.getNumericPrecision() == null || Objects.equals(newColumn.getNumericPrecision(), oldColumn.getNumericPrecision());

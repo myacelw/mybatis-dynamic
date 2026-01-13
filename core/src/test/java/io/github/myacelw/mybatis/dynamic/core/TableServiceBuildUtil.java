@@ -1,5 +1,6 @@
 package io.github.myacelw.mybatis.dynamic.core;
 
+import io.github.myacelw.mybatis.dynamic.core.database.DataBaseMetaDataHelperHolder;
 import io.github.myacelw.mybatis.dynamic.core.database.dialect.*;
 
 import io.github.myacelw.mybatis.dynamic.core.database.impl.DataBaseMetaDataHelperImpl;
@@ -57,7 +58,9 @@ public class TableServiceBuildUtil {
             dataSource = dataSourceForH2(h2Name);
             dialect = new H2DataBaseDialect();
         }
-        return new TableManagerImpl(new DataBaseMetaDataHelperImpl(sqlSessionFactory(dataSource)), new MybatisHelperImpl(sqlSessionFactory(dataSource), 0, 120), dialect);
+        DataBaseMetaDataHelperImpl metaDataHelper = new DataBaseMetaDataHelperImpl(sqlSessionFactory(dataSource));
+        DataBaseMetaDataHelperHolder.setMetaDataHelper(metaDataHelper);
+        return new TableManagerImpl(metaDataHelper, new MybatisHelperImpl(sqlSessionFactory(dataSource), 0, 120), dialect);
     }
 
     private static DataSource dataSourceForOceanBase() {

@@ -1,6 +1,7 @@
 package io.github.myacelw.mybatis.dynamic.core.metadata.table;
 
-import io.github.myacelw.mybatis.dynamic.core.database.dialect.DataBaseDialect;
+import io.github.myacelw.mybatis.dynamic.core.database.DataBaseMetaDataHelper;
+import io.github.myacelw.mybatis.dynamic.core.database.DataBaseMetaDataHelperHolder;
 import io.github.myacelw.mybatis.dynamic.core.util.Assert;
 import io.github.myacelw.mybatis.dynamic.core.util.StringUtil;
 import lombok.Data;
@@ -70,7 +71,7 @@ public class SelectColumn implements Cloneable, Comparable<SelectColumn> {
     public static SelectColumn column(String column, String property, Class<?> javaType, TypeHandler<?> typeHandler, JdbcType jdbcType) {
         Assert.notNull(column, "column can not be null");
         if (!StringUtil.hasText(property)) {
-            property = DataBaseDialect.unAllWrapper(column);
+            property = unWrapper(column);
         }
 
         SelectColumn s = new SelectColumn();
@@ -81,6 +82,26 @@ public class SelectColumn implements Cloneable, Comparable<SelectColumn> {
         s.type = Type.COLUMN;
         s.jdbcType = jdbcType;
         return s;
+    }
+
+    private static String unWrapper(String column) {
+        DataBaseMetaDataHelper metaDataHelper = DataBaseMetaDataHelperHolder.getMetaDataHelper();
+        if (metaDataHelper != null) {
+            return metaDataHelper.unwrapIdentifier(column);
+        }
+        // fallback
+        if (column == null || column.isEmpty()) {
+            return column;
+        }
+        char first = column.charAt(0);
+        char last = column.charAt(column.length() - 1);
+        if ((first == '`' && last == '`') || (first == '"' && last == '"')) {
+            return column.substring(1, column.length() - 1);
+        }
+        if (first == '[' && last == ']') {
+            return column.substring(1, column.length() - 1);
+        }
+        return column;
     }
 
     public static SelectColumn association(String columnPrefix, String property, List<SelectColumn> composites, Class<?> javaType) {
