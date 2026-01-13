@@ -1,0 +1,8 @@
+{
+  "track_id": "metadata_helper_tests_20260113",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-01-13T10:00:00Z",
+  "updated_at": "2026-01-13T10:00:00Z",
+  "description": "为 io.github.myacelw.mybatis.dynamic.core.database.impl.DataBaseMetaDataHelperImpl 类生成测试用例。"
+}
