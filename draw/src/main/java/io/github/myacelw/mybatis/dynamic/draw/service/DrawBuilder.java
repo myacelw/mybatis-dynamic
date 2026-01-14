@@ -3,7 +3,10 @@ package io.github.myacelw.mybatis.dynamic.draw.service;
 
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.*;
+import io.github.myacelw.mybatis.dynamic.core.metadata.table.Column;
+import io.github.myacelw.mybatis.dynamic.core.service.ModelService;
 import io.github.myacelw.mybatis.dynamic.draw.vo.*;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.eclipse.elk.alg.layered.options.LayeredOptions;
 import org.eclipse.elk.core.RecursiveGraphLayoutEngine;
@@ -21,7 +24,10 @@ import java.util.stream.Collectors;
  *
  * @author liuwei
  */
+@RequiredArgsConstructor
 public class DrawBuilder {
+
+    private final ModelService modelService;
 
     @Setter
     private int headHeight = 36;
@@ -118,7 +124,7 @@ public class DrawBuilder {
     private void addPorts(Model model, List<? extends Field> fields, Node node) {
         for (Field field : fields) {
             if (field instanceof BasicField) {
-                Port port = getPort((BasicField) field);
+                Port port = getPort(model, (BasicField) field);
                 node.getPorts().add(port);
             } else if (field instanceof ToOneField) {
                 Port port = getToOnePort(node, (ToOneField) field);
@@ -181,15 +187,17 @@ public class DrawBuilder {
 
         properties.forEach((key, value) -> port.putProperty(key.name(), value));
 
-        Edge edge = new Edge();
-        edge.setId(node.getId() + "." + field.getName());
-        edge.setSourceNodeId(node.getId());
-        edge.setSourcePortId(port.getId());
-        edge.setTargetNodeId(field.getTargetModel());
-        edge.setCenterText("*");
-        edge.setTitle("目标表: " + field.getTargetModel()
-                + "\n" + "外键: " + String.join(", ", field.getJoinTargetFields()));
-        edges.add(edge);
+        if (!Objects.equals(field.getTargetModel(), node.getId())) {
+            Edge edge = new Edge();
+            edge.setId(node.getId() + "." + field.getName());
+            edge.setSourceNodeId(node.getId());
+            edge.setSourcePortId(port.getId());
+            edge.setTargetNodeId(field.getTargetModel());
+            edge.setCenterText("*");
+            edge.setTitle("目标表: " + field.getTargetModel()
+                    + "\n" + "外键: " + String.join(", ", field.getJoinTargetFields()));
+            edges.add(edge);
+        }
         return port;
     }
 
@@ -215,7 +223,7 @@ public class DrawBuilder {
         properties.put(PropertyName.columnType, "");
 
         properties.forEach((key, value) -> port.putProperty(key.name(), value));
-        
+
         if (!Objects.equals(field.getTargetModel(), node.getId())) {
             Edge edge = new Edge();
             edge.setId(node.getId() + "." + field.getName());
@@ -228,7 +236,7 @@ public class DrawBuilder {
         return port;
     }
 
-    private Port getPort(BasicField field) {
+    private Port getPort(Model model, BasicField field) {
         Port port = new Port();
         port.setId(field.getName());
 
@@ -241,7 +249,9 @@ public class DrawBuilder {
         properties.put(PropertyName.javaClass, field.getJavaClass() == null ? "" : field.getJavaClass().getSimpleName());
         properties.put(PropertyName.columnName, field.getColumnName());
 
-        properties.put(PropertyName.columnType, field.getColumnDefinition().getColumnType() != null ? field.getColumnDefinition().getColumnType() : "");
+        Column column = modelService.getModelToTableConverter() != null ? modelService.getModelToTableConverter().convertToColumn(model, field) : null;
+
+        properties.put(PropertyName.columnType, column != null ? column.getDataTypeDefinition() : "");
 
         properties.forEach((key, value) -> port.putProperty(key.name(), value));
         port.setTitle(properties.entrySet().stream().map(entry -> entry.getKey().getDisplayName() + ": " + entry.getValue()).collect(Collectors.joining("\n")));

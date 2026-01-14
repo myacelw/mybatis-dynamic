@@ -19,6 +19,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.myacelw</groupId>
+            <artifactId>mybatis-dynamic-draw</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!-- mybatis-spring-boot-starter 也可以改为使用 mybatisplus -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

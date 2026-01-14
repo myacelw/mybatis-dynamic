@@ -42,6 +42,7 @@ public class ModelServiceImpl implements ModelService {
 
     protected final TableManager tableManager;
 
+    @Getter
     protected final ModelToTableConverter modelToTableConverter;
 
     protected final Map<String, Filler> fillers;
@@ -120,9 +121,9 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public Model getModelForClass(Class<?> entityClass) {
+    public Model getModelForClass(@NonNull Class<?> entityClass) {
         Model model = class2ModelTransfer.getModelForClass(entityClass);
-
+        model.init(modelToTableConverter);
         if (disableAlterComment == Boolean.TRUE) {
             model.getTableDefine().setDisableAlterComment(true);
             for (Field field : model.getFields()) {

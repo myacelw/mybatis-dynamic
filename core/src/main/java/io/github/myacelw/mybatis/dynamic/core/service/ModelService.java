@@ -142,4 +142,6 @@ public interface ModelService extends DataManagerGetter {
         return (DataManager) getDataManager(entityClass, sqlSession);
     }
 
+    ModelToTableConverter getModelToTableConverter();
+
 }

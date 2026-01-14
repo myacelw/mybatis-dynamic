@@ -64,6 +64,7 @@ export function initGraph(initDisplayMode) {
                     stroke: '#5F95FF',
                     fill: '#5F95FF',
                     height: HEAD_LINE_HEIGHT,
+                    width: nodeWidth,
                 },
                 label: {
                     event: 'label:dblclick',

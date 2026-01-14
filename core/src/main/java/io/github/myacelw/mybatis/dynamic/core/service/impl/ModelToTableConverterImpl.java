@@ -217,12 +217,12 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
                     GroupField groupField = (GroupField) field;
                     groupField.getFields().forEach(subField -> {
                         if (white || fieldWhiteList.contains(field.getName() + "." + subField.getName())) {
-                            Column column = convertColumn(model, subField);
+                            Column column = convertToColumn(model, subField);
                             table.getColumns().add(column);
                         }
                     });
                 } else if (white && field instanceof BasicField) {
-                    Column column = convertColumn(model, (BasicField) field);
+                    Column column = convertToColumn(model, (BasicField) field);
                     if (model.isPrimaryKeyField(field.getName())) {
                         column.setNotNull(true);
                     }
@@ -232,7 +232,8 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
         }
     }
 
-    protected Column convertColumn(Model model, BasicField field) {
+    @Override
+    public Column convertToColumn(Model model, BasicField field) {
         Column column = new Column();
         column.setColumnName(field.getColumnName());
         column.setComment(getComment(field.getColumnDefinition().getComment()));

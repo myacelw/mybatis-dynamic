@@ -1,12 +1,15 @@
 package io.github.myacelw.mybatis.dynamic.draw.controller;
 
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
+import io.github.myacelw.mybatis.dynamic.core.metadata.table.Table;
 import io.github.myacelw.mybatis.dynamic.core.service.ModelService;
+import io.github.myacelw.mybatis.dynamic.core.service.ModelToTableConverter;
 import io.github.myacelw.mybatis.dynamic.draw.service.DrawBuilder;
 import io.github.myacelw.mybatis.dynamic.draw.vo.DisplayMode;
 import io.github.myacelw.mybatis.dynamic.draw.vo.Draw;
 import io.github.myacelw.mybatis.dynamic.draw.vo.PropertyName;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +28,10 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/draw")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DrawController {
 
-    private ModelService modelService;
+    final ModelService modelService;
 
     /**
      * 显示模式列表
@@ -58,7 +61,7 @@ public class DrawController {
                 .filter(t -> moduleGroup == null || "ALL".equals(moduleGroup) || Objects.equals(t.getExtPropertyValueForString(Model.EXT_PROPERTY_MODULE_GROUP), moduleGroup))
                 .collect(Collectors.toList());
 
-        DrawBuilder drawBuilder = new DrawBuilder();
+        DrawBuilder drawBuilder = new DrawBuilder(modelService);
         drawBuilder.setHeadHeight(headHeight);
         drawBuilder.setPortHeight(portHeight);
         drawBuilder.setWidth(width);
