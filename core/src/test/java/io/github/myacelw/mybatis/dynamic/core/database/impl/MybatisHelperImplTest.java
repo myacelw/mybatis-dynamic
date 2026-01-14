@@ -17,15 +17,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class MybatisHelperImplTest {
 
-    String schema = "test_mybatis_helper";
-    String tableName = "test_createorupgradetable";
-    String comment = "test_createOrUpgradeTable comment2";
 
     @ParameterizedTest
     @ValueSource(strings = {"H2"/*, "MYSQL", "POSTGRESQL", "OCEANBASE"*/})
     void getTables(Database db) {
         TableManagerImpl tableService = TableServiceBuildUtil.createTableService(db);
-        createTable(tableService);
+
+        String schema = tableService.getMetaDataHelper().getWrappedIdentifierInMeta("test_mybatis_helper");
+        String tableName = tableService.getMetaDataHelper().getWrappedIdentifierInMeta("test_createorupgradetable");
+        String comment = "test_createOrUpgradeTable comment2";
+
+
+        createTable(tableService, schema, tableName, comment);
 
         Table table = tableService.getMetaDataHelper().getTable(tableName, schema);
         List<Column> columns = tableService.getMetaDataHelper().getColumns(tableName, schema);
@@ -38,10 +41,10 @@ class MybatisHelperImplTest {
         assertEquals(comment, table.getComment());
 
         assertEquals(7, columns.size());
-        assertEquals("id", columns.get(0).getColumnName());
-        assertEquals("name", columns.get(1).getColumnName());
-        assertEquals("age", columns.get(2).getColumnName());
-        assertEquals("birthday", columns.get(3).getColumnName());
+        assertEquals(tableService.getMetaDataHelper().getWrappedIdentifierInMeta("id"), columns.get(0).getColumnName());
+        assertEquals(tableService.getMetaDataHelper().getWrappedIdentifierInMeta("name"), columns.get(1).getColumnName());
+        assertEquals(tableService.getMetaDataHelper().getWrappedIdentifierInMeta("age"), columns.get(2).getColumnName());
+        assertEquals(tableService.getMetaDataHelper().getWrappedIdentifierInMeta("birthday"), columns.get(3).getColumnName());
         assertEquals("年龄", columns.get(2).getComment());
         assertEquals("生日", columns.get(3).getComment());
 //        assertEquals(DataType.VARCHAR, columns.get(0).getDataTypeObj());
@@ -53,7 +56,7 @@ class MybatisHelperImplTest {
 
     }
 
-    private void createTable(TableManagerImpl tableService) {
+    private void createTable(TableManagerImpl tableService, String schema, String tableName, String comment) {
         SqlSessionFactory sqlSessionFactory = tableService.getSqlHelper().getSqlSessionFactory();
 
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {

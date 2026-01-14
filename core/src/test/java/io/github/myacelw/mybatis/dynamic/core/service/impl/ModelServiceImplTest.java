@@ -462,7 +462,7 @@ public class ModelServiceImplTest {
 
         List<Map> actualItemData = this.tableService.getSqlHelper().queryList(null, "select * from " + (schema == null ? "" : schema + ".") + "d_secret_field_test", null, Map.class);
         System.out.println(actualItemData.get(0));
-        assertEquals("SECRET: YWJjMTIz", actualItemData.get(0).get("secret_field"));
+        assertEquals("SECRET: YWJjMTIz", actualItemData.get(0).get(manager.getModel().findBasicField("secretField").getColumnName()));
     }
 
 }

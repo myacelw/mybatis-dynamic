@@ -256,8 +256,8 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
     @SneakyThrows
     @Override
     public Table getTable(String tableName, String schema) {
-        tableName = unwrapIdentifier(tableName);
-        schema = unwrapIdentifier(schema);
+        tableName = unwrapIdentifier(getWrappedIdentifierInMeta(tableName));
+        schema = unwrapIdentifier(getWrappedIdentifierInMeta(schema));
 
         try (Connection connection = sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
             CatalogAndSchema catalogAndSchema = getCatalogAndSchema(schema, connection);
@@ -275,8 +275,8 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
     @SneakyThrows
     @Override
     public List<Column> getColumns(String tableName, String schema) {
-        tableName = unwrapIdentifier(tableName);
-        schema = unwrapIdentifier(schema);
+        tableName = unwrapIdentifier(getWrappedIdentifierInMeta(tableName));
+        schema = unwrapIdentifier(getWrappedIdentifierInMeta(schema));
 
         try (Connection connection = sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
             CatalogAndSchema catalogAndSchema = getCatalogAndSchema(schema, connection);
@@ -329,8 +329,8 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
     @SneakyThrows
     @Override
     public List<Index> getIndexList(String tableName, String schema) {
-        tableName = unwrapIdentifier(tableName);
-        schema = unwrapIdentifier(schema);
+        tableName = unwrapIdentifier(getWrappedIdentifierInMeta(tableName));
+        schema = unwrapIdentifier(getWrappedIdentifierInMeta(schema));
 
         try (Connection connection = sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
             CatalogAndSchema catalogAndSchema = getCatalogAndSchema(schema, connection);
@@ -343,16 +343,23 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
                     String columnName = resultSet.getString("COLUMN_NAME");
                     if (indexName != null && columnName != null) {
                         ColumnNameAndOrdinalPosition columnNameAndOrdinalPosition = new ColumnNameAndOrdinalPosition(columnName, ordinalPosition);
-                        indexColumnMap.computeIfAbsent(indexName, k -> new ArrayList<>()).add(columnNameAndOrdinalPosition);
 
-                        Index index = new Index();
-                        index.setIndexName(indexName);
-                        if (!resultSet.getBoolean("NON_UNIQUE")) {
-                            index.setIndexType(IndexType.UNIQUE);
-                        } else {
-                            index.setIndexType(IndexType.NORMAL);
+                        if(indexColumnMap.containsKey(indexName)) {
+                            indexColumnMap.get(indexName).add(columnNameAndOrdinalPosition);
+                        }else{
+                            List<ColumnNameAndOrdinalPosition> columnNameAndOrdinalPositions = new ArrayList<>();
+                            columnNameAndOrdinalPositions.add(columnNameAndOrdinalPosition);
+                            indexColumnMap.put(indexName, columnNameAndOrdinalPositions);
+
+                            Index index = new Index();
+                            index.setIndexName(indexName);
+                            if (!resultSet.getBoolean("NON_UNIQUE")) {
+                                index.setIndexType(IndexType.UNIQUE);
+                            } else {
+                                index.setIndexType(IndexType.NORMAL);
+                            }
+                            indexList.add(index);
                         }
-                        indexList.add(index);
                     }
                 }
                 indexList.forEach(index -> index.setColumnNames(

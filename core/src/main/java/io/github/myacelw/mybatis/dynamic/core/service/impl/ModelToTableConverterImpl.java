@@ -88,6 +88,8 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
      */
     @Override
     public String getTableName(@NonNull String modelName, String customTableName) {
+        String tablePrefix = this.tablePrefix == null ? "" : this.tablePrefix;
+
         String name;
         if (StringUtil.hasText(customTableName)) {
             name = customTableName.replace("${tablePrefix}", tablePrefix);
@@ -117,6 +119,7 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
      */
     @Override
     public String getIndexName(@NonNull String tableName, @NonNull String columnName, String customIndexName) {
+        String indexPrefix = this.indexPrefix == null ? "" : this.indexPrefix;
 
         //注意：表有可能改名，此时创建的索引前缀中的表名可能和当前表名不一致
         String name;
@@ -181,11 +184,13 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
         table.setKeyGeneratorMode(model.getUsedKeyGeneratorModel(dialect));
 
         if (table.getKeyGeneratorMode() == KeyGeneratorMode.SEQUENCE) {
-            if (StringUtil.hasText(model.getTableDefine().getKeyGeneratorSequenceName())) {
-                table.setKeyGeneratorSequenceName(model.getTableDefine().getKeyGeneratorSequenceName());
-            } else {
-                table.setKeyGeneratorSequenceName(seqPrefix + table.getTableName());
+            String seqName = model.getTableDefine().getKeyGeneratorSequenceName();
+            if (!StringUtil.hasText(seqName)) {
+                String seqPrefix = this.seqPrefix == null ? "" : this.seqPrefix;
+                seqName = seqPrefix + table.getTableName();
             }
+            table.setKeyGeneratorSequenceName(getWrappedIdentifierInMeta(seqName));
+
         }
     }
 

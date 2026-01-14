@@ -119,7 +119,7 @@ public class TableManagerImpl implements TableManager {
 
         Map<String, Index> indexMap = new HashMap<>();
         indexList.stream().filter(t -> t.getColumnNames().size() == 1)
-                .forEach(t -> indexMap.put(t.getColumnNames().get(0).toLowerCase(), t));
+                .forEach(t -> indexMap.put(t.getColumnNames().get(0), t));
 
         for (Column c : columns) {
             c.setColumnName(metaDataHelper.getWrappedIdentifierInMeta(c.getColumnName()));

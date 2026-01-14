@@ -165,15 +165,9 @@ public class ModelServiceBuilder {
             }
         }
         ModelToTableConverterImpl modelToTableConverter = new ModelToTableConverterImpl(dialect, dataBaseMetaDataHelper, columnTypeHandlers);
-        if (tablePrefix != null) {
-            modelToTableConverter.setTablePrefix(tablePrefix);
-        }
-        if (seqPrefix != null) {
-            modelToTableConverter.setSeqPrefix(seqPrefix);
-        }
-        if (indexPrefix != null) {
-            modelToTableConverter.setIndexPrefix(indexPrefix);
-        }
+        modelToTableConverter.setTablePrefix(tablePrefix);
+        modelToTableConverter.setSeqPrefix(seqPrefix);
+        modelToTableConverter.setIndexPrefix(indexPrefix);
 
         Class2ModelTransferImpl class2ModelTransfer = new Class2ModelTransferImpl(commentAnnotationClass, commentAnnotationFieldName);
 

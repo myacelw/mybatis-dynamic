@@ -48,7 +48,12 @@ public class TableManagerImplTest {
         columns.add(c("update_time", DataType.TIMESTAMP.name(), null, null, null, true, null));
         columns.add(c("text2", dataType.name(), null, null, null, false, JsonTypeHandler.class));
         columns.add(c("json2", dataType.name(), null, null, null, false, JsonTypeHandler.class));
-        table.getColumns().add(c("Add1", DataType.VARCHAR.name(), 20, null, null, true, null));
+
+        for (Column column : columns) {
+            column.setColumnName(tableService.getMetaDataHelper().getWrappedIdentifierInMeta(column.getColumnName()));
+        }
+
+        //table.getColumns().add(c("Add1", DataType.VARCHAR.name(), 20, null, null, true, null));
 
         table.setColumns(columns);
         table.setPrimaryKeyColumns(Collections.singletonList("id"));
@@ -61,6 +66,11 @@ public class TableManagerImplTest {
         table.getColumns().add(c("Add1", DataType.VARCHAR.name(), 20, null, null, true, null));
         table.getColumns().add(c("add2", DataType.VARCHAR.name(), 20, null, null, true, null));
         table.getColumns().add(c("add3", DataType.VARCHAR.name(), 20, null, null, true, null));
+
+        for (Column column : table.getColumns()) {
+            column.setColumnName(tableService.getMetaDataHelper().getWrappedIdentifierInMeta(column.getColumnName()));
+        }
+
         tableService.createOrUpgradeTable(table);
         assertColumnsEqual(tableService, table.getTableName(), null, table.getColumns(), db);
     }
@@ -138,7 +148,12 @@ public class TableManagerImplTest {
         columns.add(c("update_time", DataType.TIMESTAMP.name(), null, null, null, true, null));
         columns.add(c("text2", dataType.name(), null, null, null, false, JsonTypeHandler.class));
         columns.add(c("json2", dataType.name(), null, null, null, false, JsonTypeHandler.class));
-        table.getColumns().add(c("Add1", DataType.VARCHAR.name(), 20, null, null, true, null));
+
+        for (Column column : columns) {
+            column.setColumnName(tableService.getMetaDataHelper().getWrappedIdentifierInMeta(column.getColumnName()));
+        }
+
+        //table.getColumns().add(c("Add1", DataType.VARCHAR.name(), 20, null, null, true, null));
 
         table.setColumns(columns);
 
@@ -149,6 +164,11 @@ public class TableManagerImplTest {
         table.getColumns().add(c("Add1", DataType.VARCHAR.name(), 20, null, null, true, null));
         table.getColumns().add(c("add2", DataType.VARCHAR.name(), 20, null, null, true, null));
         table.getColumns().add(c("add3", DataType.VARCHAR.name(), 20, null, null, true, null));
+
+        for (Column column : table.getColumns()) {
+            column.setColumnName(tableService.getMetaDataHelper().getWrappedIdentifierInMeta(column.getColumnName()));
+        }
+
         tableService.createOrUpgradeTable(table);
         assertColumnsEqual(tableService, table.getTableName(), table.getSchema(), table.getColumns(), db);
     }
@@ -178,6 +198,9 @@ public class TableManagerImplTest {
         List<Column> columns = new ArrayList<>();
         columns.add(c1);
         columns.add(c2);
+        for (Column column : columns) {
+            column.setColumnName(tableService.getMetaDataHelper().getWrappedIdentifierInMeta(column.getColumnName()));
+        }
 
         table.setColumns(columns);
 

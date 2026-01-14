@@ -43,21 +43,26 @@ class DataBaseMetaDataHelperImplTest {
 
     @Test
     void getTable_ExistingTable() {
-        Table table = metaDataHelper.getTable("test_table", null);
+
+        String tableName = metaDataHelper.getWrappedIdentifierInMeta("test_table");
+
+        Table table = metaDataHelper.getTable(tableName, null);
         assertNotNull(table);
-        assertEquals("test_table", table.getTableName());
+        assertEquals(tableName, table.getTableName());
         assertEquals("Test table comment", table.getComment());
     }
 
     @Test
     void getTable_NonExistingTable() {
-        Table table = metaDataHelper.getTable("non_existing_table", null);
+        String tableName = metaDataHelper.getWrappedIdentifierInMeta("non_existing_table");
+        Table table = metaDataHelper.getTable(tableName, null);
         assertNull(table);
     }
 
     @Test
     void getColumns() {
-        List<Column> columns = metaDataHelper.getColumns("test_table", null);
+        String tableName = metaDataHelper.getWrappedIdentifierInMeta("test_table");
+        List<Column> columns = metaDataHelper.getColumns(tableName, null);
         assertNotNull(columns);
         assertEquals(4, columns.size());
 
@@ -84,7 +89,8 @@ class DataBaseMetaDataHelperImplTest {
 
     @Test
     void getIndexList() {
-        List<Index> indexList = metaDataHelper.getIndexList("test_table", null);
+        String tableName = metaDataHelper.getWrappedIdentifierInMeta("test_table");
+        List<Index> indexList = metaDataHelper.getIndexList(tableName, null);
         assertNotNull(indexList);
         // H2 might report the primary key as an index as well.
         // uk_test_id_name, idx_test_name, and potentially PRIMARY_KEY_...
@@ -94,13 +100,13 @@ class DataBaseMetaDataHelperImplTest {
         assertNotNull(ukIndex);
         assertEquals(io.github.myacelw.mybatis.dynamic.core.metadata.enums.IndexType.UNIQUE, ukIndex.getIndexType());
         assertEquals(2, ukIndex.getColumnNames().size());
-        assertTrue(ukIndex.getColumnNames().contains("id"));
-        assertTrue(ukIndex.getColumnNames().contains("name"));
+        assertTrue(ukIndex.getColumnNames().contains(metaDataHelper.getWrappedIdentifierInMeta("id")));
+        assertTrue(ukIndex.getColumnNames().contains(metaDataHelper.getWrappedIdentifierInMeta("name")));
 
         Index idxIndex = indexList.stream().filter(i -> "idx_test_name".equalsIgnoreCase(i.getIndexName())).findFirst().orElse(null);
         assertNotNull(idxIndex);
         assertEquals(io.github.myacelw.mybatis.dynamic.core.metadata.enums.IndexType.NORMAL, idxIndex.getIndexType());
         assertEquals(1, idxIndex.getColumnNames().size());
-        assertEquals("name", idxIndex.getColumnNames().get(0));
+        assertEquals(metaDataHelper.getWrappedIdentifierInMeta("name"), idxIndex.getColumnNames().get(0));
     }
 }
