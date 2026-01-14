@@ -61,9 +61,9 @@ This phase covers batch operations, recursive queries, and other specialized exe
 - [x] Task: Integration Test `QueryCursorExecution` [0708f73]
     - [x] Write integration test for `QueryCursorExecution` with H2
     - [x] Verify test passes
-- [ ] Task: Integration Test `QueryCallBackExecution`
-    - [ ] Write integration test for `QueryCallBackExecution` with H2
-    - [ ] Verify test passes
+- [x] Task: Integration Test `QueryCallBackExecution` [0b5f37d]
+    - [x] Write integration test for `QueryCallBackExecution` with H2
+    - [x] Verify test passes
 - [ ] Task: Integration Test `VectorRetrievalExecution`
     - [ ] Write integration test for `VectorRetrievalExecution` with H2
     - [ ] Verify test passes
