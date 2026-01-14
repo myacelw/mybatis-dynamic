@@ -39,11 +39,12 @@ public class DrawController {
     @GetMapping("/data/displayModes.json")
     public List<DisplayMode> getDisplayModes() {
         List<DisplayMode> displayModes = new ArrayList<>();
-        displayModes.add(new DisplayMode("名称-类型", PropertyName.name.name(), PropertyName.comment.name(), PropertyName.name.name(), PropertyName.javaClass.name()));
-        displayModes.add(new DisplayMode("名称-描述", PropertyName.name_comment.name(), null, PropertyName.name.name(), PropertyName.comment.name()));
-        displayModes.add(new DisplayMode("描述-名称", PropertyName.comment.name(), PropertyName.name.name(), PropertyName.comment.name(), PropertyName.name.name()));
-        displayModes.add(new DisplayMode("描述-类型", PropertyName.comment.name(), PropertyName.name.name(), PropertyName.comment.name(), PropertyName.fieldType.name()));
-        displayModes.add(new DisplayMode("数据库表", PropertyName.tableName.name(), PropertyName.comment.name(), PropertyName.columnName.name(), PropertyName.columnType.name()));
+        displayModes.add(new DisplayMode("类图(名称-类型)", PropertyName.name.name(), PropertyName.comment.name(), PropertyName.name.name(), PropertyName.javaClass.name()));
+        displayModes.add(new DisplayMode("类图(名称-描述)", PropertyName.name_comment.name(), null, PropertyName.name.name(), PropertyName.comment.name()));
+        displayModes.add(new DisplayMode("类图(描述-名称)", PropertyName.comment.name(), PropertyName.name.name(), PropertyName.comment.name(), PropertyName.name.name()));
+        displayModes.add(new DisplayMode("类图(描述-类型)", PropertyName.comment.name(), PropertyName.name.name(), PropertyName.comment.name(), PropertyName.fieldType.name()));
+        displayModes.add(new DisplayMode("数据库表(列名-类型)", PropertyName.tableName.name(), PropertyName.comment.name(), PropertyName.columnName.name(), PropertyName.columnType.name()));
+        displayModes.add(new DisplayMode("数据库表(列名-描述)", PropertyName.tableName.name(), PropertyName.comment.name(), PropertyName.columnName.name(), PropertyName.comment.name()));
         return displayModes;
     }
 
