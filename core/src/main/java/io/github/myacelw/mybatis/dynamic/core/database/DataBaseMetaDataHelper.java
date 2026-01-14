@@ -3,7 +3,6 @@ package io.github.myacelw.mybatis.dynamic.core.database;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Column;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Index;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Table;
-import lombok.SneakyThrows;
 
 import java.util.List;
 
@@ -13,30 +12,16 @@ import java.util.List;
  * @author liuwei
  */
 public interface DataBaseMetaDataHelper {
-    @SneakyThrows
-    Table getTable(String tableName, String schema);
 
-    @SneakyThrows
     String getDatabaseProductName();
 
-    @SneakyThrows
-    String getIdentifierQuoteString();
-
-    @SneakyThrows
-    boolean isIdentifierReserved(String identifier);
-
-    @SneakyThrows
-    String wrapIdentifier(String identifier);
-
-    @SneakyThrows
     String unwrapIdentifier(String identifier);
 
-    @SneakyThrows
-    String getIdentifierInMeta(String identifier, boolean isQuoted);
+    String getWrappedIdentifierInMeta(String identifier);
 
-    @SneakyThrows
+    Table getTable(String tableName, String schema);
+
     List<Column> getColumns(String tableName, String schema);
 
-    @SneakyThrows
     List<Index> getIndexList(String tableName, String schema);
 }

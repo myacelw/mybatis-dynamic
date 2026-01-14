@@ -42,12 +42,6 @@ class DataBaseMetaDataHelperImplTest {
     }
 
     @Test
-    void getIdentifierQuoteString() {
-        String quoteString = metaDataHelper.getIdentifierQuoteString();
-        assertEquals("\"", quoteString);
-    }
-
-    @Test
     void getTable_ExistingTable() {
         Table table = metaDataHelper.getTable("test_table", null);
         assertNotNull(table);

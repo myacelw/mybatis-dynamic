@@ -26,6 +26,10 @@ public class MysqlDataBaseDialect extends AbstractDataBaseDialect {
         return false;
     }
 
+    public boolean supportSameIndexNameInTable() {
+        return false;
+    }
+
     @Override
     public String getName() {
         return "mysql";
@@ -93,7 +97,7 @@ public class MysqlDataBaseDialect extends AbstractDataBaseDialect {
     }
 
     protected String doColumnSql(Table table, Column column) {
-        String sql = wrapper(column.getColumnName()) + " "
+        String sql = column.getColumnName() + " "
                 + getDataTypeDefinition(column)
                 + getDefaultValueAndAdditionalDDlSql(table, column);
 
@@ -125,7 +129,7 @@ public class MysqlDataBaseDialect extends AbstractDataBaseDialect {
 
     @Override
     public Sql getDropIndexSql(Table table, String indexName) {
-        String sql = "DROP INDEX " + wrapper(indexName) + " ON " + getSchemaTableSql(table);
+        String sql = "DROP INDEX " + indexName + " ON " + getSchemaTableSql(table);
         return new Sql(sql, true);
     }
 

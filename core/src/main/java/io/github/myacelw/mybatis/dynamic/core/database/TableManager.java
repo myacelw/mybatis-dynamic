@@ -9,6 +9,8 @@ import io.github.myacelw.mybatis.dynamic.core.metadata.table.Table;
  */
 public interface TableManager {
 
+    DataBaseMetaDataHelper getMetaDataHelper();
+
     /**
      * 创建或更新表结构
      */

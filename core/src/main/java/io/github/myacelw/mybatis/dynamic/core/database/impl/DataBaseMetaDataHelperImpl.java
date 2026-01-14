@@ -120,22 +120,6 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
 
     @SneakyThrows
     @Override
-    public Table getTable(String tableName, String schema) {
-        try (Connection connection = sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
-            CatalogAndSchema catalogAndSchema = getCatalogAndSchema(schema, connection);
-            try (ResultSet resultSet = connection.getMetaData().getTables(catalogAndSchema.catalog, catalogAndSchema.schema, tableName, new String[]{"TABLE"})) {
-                if (resultSet.next()) {
-                    Table table = new Table(resultSet.getString("TABLE_NAME"), schema);
-                    table.setComment(resultSet.getString("REMARKS"));
-                    return table;
-                }
-            }
-        }
-        return null;
-    }
-
-    @SneakyThrows
-    @Override
     public String getDatabaseProductName() {
         try (Connection connection = sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
             DatabaseMetaData metaData = connection.getMetaData();
@@ -143,13 +127,13 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
         }
     }
 
-    @SneakyThrows
-    @Override
-    public String getIdentifierQuoteString() {
+
+    private String getIdentifierQuoteString() {
         return getMetaDataInfo().getIdentifierQuoteString();
     }
 
-    private MetaDataInfo getMetaDataInfo() throws SQLException {
+    @SneakyThrows
+    private MetaDataInfo getMetaDataInfo() {
         DataSource dataSource = sqlSessionFactory.getConfiguration().getEnvironment().getDataSource();
         MetaDataInfo info = CACHE.get(dataSource);
         if (info != null) {
@@ -200,18 +184,14 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
         }
     }
 
-    @SneakyThrows
-    @Override
-    public boolean isIdentifierReserved(String identifier) {
+    private boolean isIdentifierReserved(String identifier) {
         if (identifier == null) {
             return false;
         }
         return getMetaDataInfo().getKeywords().contains(identifier.toUpperCase());
     }
 
-    @SneakyThrows
-    @Override
-    public String wrapIdentifier(String identifier) {
+    private String wrapIdentifier(String identifier) {
         if (identifier == null || identifier.isEmpty()) {
             return identifier;
         }
@@ -228,7 +208,6 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
         return identifier;
     }
 
-    @SneakyThrows
     @Override
     public String unwrapIdentifier(String identifier) {
         if (identifier == null || identifier.isEmpty()) {
@@ -244,18 +223,17 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
         return identifier;
     }
 
-    @SneakyThrows
     @Override
-    public String getIdentifierInMeta(String identifier, boolean isQuoted) {
+    public String getWrappedIdentifierInMeta(String identifier) {
         if (identifier == null) {
             return null;
         }
         String quote = getIdentifierQuoteString();
-        boolean actuallyQuoted = isQuoted;
-        String name = identifier;
+
+        boolean actuallyQuoted = false;
+        String name = wrapIdentifier(identifier);
         if (quote != null && !quote.isEmpty() && identifier.startsWith(quote) && identifier.endsWith(quote)) {
             actuallyQuoted = true;
-            name = identifier.substring(quote.length(), identifier.length() - quote.length());
         }
 
         MetaDataInfo info = getMetaDataInfo();
@@ -275,10 +253,31 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
         return name;
     }
 
+    @SneakyThrows
+    @Override
+    public Table getTable(String tableName, String schema) {
+        tableName = unwrapIdentifier(tableName);
+        schema = unwrapIdentifier(schema);
+
+        try (Connection connection = sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
+            CatalogAndSchema catalogAndSchema = getCatalogAndSchema(schema, connection);
+            try (ResultSet resultSet = connection.getMetaData().getTables(catalogAndSchema.catalog, catalogAndSchema.schema, tableName, new String[]{"TABLE"})) {
+                if (resultSet.next()) {
+                    Table table = new Table(resultSet.getString("TABLE_NAME"), schema);
+                    table.setComment(resultSet.getString("REMARKS"));
+                    return table;
+                }
+            }
+        }
+        return null;
+    }
 
     @SneakyThrows
     @Override
     public List<Column> getColumns(String tableName, String schema) {
+        tableName = unwrapIdentifier(tableName);
+        schema = unwrapIdentifier(schema);
+
         try (Connection connection = sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
             CatalogAndSchema catalogAndSchema = getCatalogAndSchema(schema, connection);
             List<Column> columns = new ArrayList<>();
@@ -330,6 +329,9 @@ public class DataBaseMetaDataHelperImpl implements DataBaseMetaDataHelper {
     @SneakyThrows
     @Override
     public List<Index> getIndexList(String tableName, String schema) {
+        tableName = unwrapIdentifier(tableName);
+        schema = unwrapIdentifier(schema);
+
         try (Connection connection = sqlSessionFactory.getConfiguration().getEnvironment().getDataSource().getConnection()) {
             CatalogAndSchema catalogAndSchema = getCatalogAndSchema(schema, connection);
             List<Index> indexList = new ArrayList<>();

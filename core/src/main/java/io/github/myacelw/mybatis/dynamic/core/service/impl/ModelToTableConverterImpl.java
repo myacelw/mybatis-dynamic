@@ -1,9 +1,7 @@
 package io.github.myacelw.mybatis.dynamic.core.service.impl;
 
 import io.github.myacelw.mybatis.dynamic.core.database.DataBaseMetaDataHelper;
-import io.github.myacelw.mybatis.dynamic.core.database.DataBaseMetaDataHelperHolder;
 import io.github.myacelw.mybatis.dynamic.core.database.dialect.DataBaseDialect;
-import io.github.myacelw.mybatis.dynamic.core.database.dialect.MysqlDataBaseDialect;
 import io.github.myacelw.mybatis.dynamic.core.exception.model.ModelException;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.AlterOrDropStrategy;
@@ -17,6 +15,7 @@ import io.github.myacelw.mybatis.dynamic.core.service.ModelToTableConverter;
 import io.github.myacelw.mybatis.dynamic.core.service.handler.*;
 import io.github.myacelw.mybatis.dynamic.core.util.StringUtil;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -32,18 +31,20 @@ import java.util.List;
 @Slf4j
 public class ModelToTableConverterImpl implements ModelToTableConverter {
 
-    private final DataBaseDialect dialect;
+    protected final DataBaseDialect dialect;
 
-    private final DataBaseMetaDataHelper metaDataHelper;
+    protected final DataBaseMetaDataHelper metaDataHelper;
 
-    private final String tablePrefix;
+    protected final List<ColumnTypeHandler> columnTypeHandlers;
 
-    private final String seqPrefix;
+    @Setter
+    protected String tablePrefix = "";
 
-    private final String indexPrefix;
+    @Setter
+    protected String seqPrefix = "";
 
-
-    private final List<ColumnTypeHandler> columnTypeHandlers;
+    @Setter
+    protected String indexPrefix = "";
 
     private final static ColumnTypeHandler[] DEFAULT_COLUMN_TYPE_HANDLERS = new ColumnTypeHandler[]{
             new StringColumnTypeHandler(),
@@ -67,12 +68,9 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
             new ObjectColumnTypeHandler()
     };
 
-    public ModelToTableConverterImpl(DataBaseDialect dialect, DataBaseMetaDataHelper metaDataHelper, String tablePrefix, String seqPrefix, String indexPrefix, List<ColumnTypeHandler> columnTypeHandlers) {
-        this.dialect = dialect == null ? new MysqlDataBaseDialect() : dialect;
-        this.metaDataHelper = metaDataHelper == null ? DataBaseMetaDataHelperHolder.getMetaDataHelper() : metaDataHelper;
-        this.tablePrefix = tablePrefix == null ? "" : tablePrefix;
-        this.seqPrefix = seqPrefix == null ? "" : seqPrefix;
-        this.indexPrefix = indexPrefix == null ? "" : indexPrefix;
+    public ModelToTableConverterImpl(@NonNull DataBaseDialect dialect, @NonNull DataBaseMetaDataHelper metaDataHelper, List<ColumnTypeHandler> columnTypeHandlers) {
+        this.dialect = dialect;
+        this.metaDataHelper = metaDataHelper;
         this.columnTypeHandlers = new ArrayList<>();
         if (columnTypeHandlers != null) {
             this.columnTypeHandlers.addAll(columnTypeHandlers);
@@ -80,22 +78,9 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
         this.columnTypeHandlers.addAll(Arrays.asList(DEFAULT_COLUMN_TYPE_HANDLERS));
     }
 
-    public ModelToTableConverterImpl(DataBaseDialect dialect, String tablePrefix, String seqPrefix, String indexPrefix, List<ColumnTypeHandler> columnTypeHandlers) {
-        this(dialect, null, tablePrefix, seqPrefix, indexPrefix, columnTypeHandlers);
-    }
-
-    /**
-     * @param dialect 数据库方言
-     */
-    public ModelToTableConverterImpl(DataBaseDialect dialect, DataBaseMetaDataHelper metaDataHelper) {
-        this(dialect, metaDataHelper, "", "", "", null);
-    }
-
-    /**
-     * @param dialect 数据库方言
-     */
-    public ModelToTableConverterImpl(DataBaseDialect dialect) {
-        this(dialect, null, "", "", "", null);
+    @Override
+    public String getSchemaName(String schema) {
+        return getWrappedIdentifierInMeta(schema);
     }
 
     /**
@@ -103,10 +88,13 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
      */
     @Override
     public String getTableName(@NonNull String modelName, String customTableName) {
+        String name;
         if (StringUtil.hasText(customTableName)) {
-            return customTableName.replace("${tablePrefix}", tablePrefix);
+            name = customTableName.replace("${tablePrefix}", tablePrefix);
+        } else {
+            name = tablePrefix + StringUtil.toUnderlineCase(modelName);
         }
-        return wrapper(tablePrefix + StringUtil.toUnderlineCase(modelName)).toLowerCase();
+        return getWrappedIdentifierInMeta(name);
     }
 
     /**
@@ -114,10 +102,14 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
      */
     @Override
     public String getColumnName(@NonNull String fieldName, String customColumnName) {
+        String name;
+
         if (StringUtil.hasText(customColumnName)) {
-            return reWrapper(customColumnName);
+            name = customColumnName;
+        } else {
+            name = StringUtil.toUnderlineCase(fieldName);
         }
-        return wrapper(StringUtil.toUnderlineCase(fieldName)).toLowerCase();
+        return getWrappedIdentifierInMeta(name);
     }
 
     /**
@@ -125,44 +117,27 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
      */
     @Override
     public String getIndexName(@NonNull String tableName, @NonNull String columnName, String customIndexName) {
-        if (StringUtil.hasText(customIndexName)) {
-            return customIndexName.replace("${indexPrefix}", indexPrefix);
-        }
+
         //注意：表有可能改名，此时创建的索引前缀中的表名可能和当前表名不一致
         String name;
-        if (dialect instanceof MysqlDataBaseDialect) {
-            name = indexPrefix + unWrapper(columnName);
+        if (StringUtil.hasText(customIndexName)) {
+            name = customIndexName.replace("${indexPrefix}", indexPrefix);
         } else {
-            name = indexPrefix + unWrapper(tableName) + "_" + unWrapper(columnName);
+            if (dialect.supportSameIndexNameInTable()) {
+                name = indexPrefix + metaDataHelper.unwrapIdentifier(columnName);
+            } else {
+                name = indexPrefix + metaDataHelper.unwrapIdentifier(tableName) + "_" + metaDataHelper.unwrapIdentifier(columnName);
+            }
+            if (name.length() > 64) {
+                name = name.substring(0, 60) + Integer.toHexString(name.hashCode()).substring(0, 4);
+            }
         }
-
-        if (name.length() > 64) {
-            name = name.substring(0, 60) + Integer.toHexString(name.hashCode()).substring(0, 4);
-        }
-        return name.toLowerCase();
-    }
-
-
-    /**
-     * 存在中文等非法字符，或者为数据库关键字时进行包装处理
-     */
-    protected String wrapper(String name) {
-        if (metaDataHelper != null) {
-            return metaDataHelper.wrapIdentifier(name);
-        }
-        return name;
-    }
-
-    protected String unWrapper(String name) {
-        if (metaDataHelper != null) {
-            return metaDataHelper.unwrapIdentifier(name);
-        }
-        return name;
+        return getWrappedIdentifierInMeta(name.toLowerCase());
     }
 
     @Override
-    public String reWrapper(String name) {
-        return wrapper(unWrapper(name));
+    public String getWrappedIdentifierInMeta(String columnName) {
+        return metaDataHelper.getWrappedIdentifierInMeta(columnName);
     }
 
     /**

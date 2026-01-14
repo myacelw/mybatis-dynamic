@@ -124,9 +124,13 @@ public class Model implements ExtProperties, Cloneable, Serializable {
             this.primaryKeyFields = new String[]{};
         }
         tableName = converter.getTableName(name, tableName);
+        schema = converter.getSchemaName(schema);
         fields.forEach(t -> t.init(this, converter));
         if (tableDefine.getPartition() != null) {
             tableDefine.getPartition().init(this);
+        }
+        if (tableDefine.getOldTableNames() != null) {
+            tableDefine.setOldTableNames(tableDefine.getOldTableNames().stream().map(converter::getWrappedIdentifierInMeta).collect(Collectors.toList()));
         }
     }
 

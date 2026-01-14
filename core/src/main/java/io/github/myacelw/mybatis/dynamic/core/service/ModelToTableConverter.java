@@ -21,7 +21,7 @@ public interface ModelToTableConverter {
 
     String getIndexName(@NonNull String tableName, @NonNull String columnName, String customIndexName);
 
-    String reWrapper(String name);
+    String getWrappedIdentifierInMeta(String columnName);
 
-
+    String getSchemaName(String schema);
 }

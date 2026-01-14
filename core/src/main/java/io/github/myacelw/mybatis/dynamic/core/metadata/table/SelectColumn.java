@@ -1,7 +1,5 @@
 package io.github.myacelw.mybatis.dynamic.core.metadata.table;
 
-import io.github.myacelw.mybatis.dynamic.core.database.DataBaseMetaDataHelper;
-import io.github.myacelw.mybatis.dynamic.core.database.DataBaseMetaDataHelperHolder;
 import io.github.myacelw.mybatis.dynamic.core.util.Assert;
 import io.github.myacelw.mybatis.dynamic.core.util.StringUtil;
 import lombok.Data;
@@ -85,10 +83,6 @@ public class SelectColumn implements Cloneable, Comparable<SelectColumn> {
     }
 
     private static String unWrapper(String column) {
-        DataBaseMetaDataHelper metaDataHelper = DataBaseMetaDataHelperHolder.getMetaDataHelper();
-        if (metaDataHelper != null) {
-            return metaDataHelper.unwrapIdentifier(column);
-        }
         // fallback
         if (column == null || column.isEmpty()) {
             return column;

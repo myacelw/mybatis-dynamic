@@ -3,7 +3,6 @@ package io.github.myacelw.mybatis.dynamic.core.database.dialect;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Column;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Table;
 import io.github.myacelw.mybatis.dynamic.core.metadata.vo.Sql;
-import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,6 +19,13 @@ public interface DataBaseDialect {
     int PRIORITY_DEFAULT = 10;
 
     /**
+     * 数据库名称
+     *
+     * @return the name of the database
+     */
+    String getName();
+
+    /**
      * 是否支持自动增长
      *
      * @return true if the database supports auto increment.
@@ -34,13 +40,9 @@ public interface DataBaseDialect {
     boolean supportSequence();
 
     /**
-     * 数据库名称
-     *
-     * @return the name of the database
+     * 是否支持不同表间索引名相同
      */
-    String getName();
-
-    String getSchemaNameInMeta(Table table);
+    boolean supportSameIndexNameInTable();
 
     List<Sql> getCreateTableSql(Table table);
 
@@ -65,7 +67,7 @@ public interface DataBaseDialect {
 
     Sql getSetColumnCommentSql(Table table, Column column);
 
-    Sql getAddIndexSql(Table table, Column column, @NonNull String indexName);
+    Sql getAddIndexSql(Table table, Column column, String indexName);
 
     Sql getDropIndexSql(Table table, String indexName);
 
@@ -81,8 +83,6 @@ public interface DataBaseDialect {
      * 规范化列类型
      */
     void normalizeColumn(Column column);
-
-    String getTableNameInMeta(Table table);
 
     /**
      * 优先级

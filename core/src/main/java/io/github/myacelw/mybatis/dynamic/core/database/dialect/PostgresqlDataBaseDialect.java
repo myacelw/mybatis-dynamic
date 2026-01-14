@@ -52,7 +52,7 @@ public class PostgresqlDataBaseDialect extends AbstractDataBaseDialect {
 
     @Override
     public Sql getDropIndexSql(Table table, String indexName) {
-        String sql = "DROP INDEX " + getSchemaIndexSql(table, wrapper(indexName));
+        String sql = "DROP INDEX " + getSchemaIndexSql(table, indexName);
         return new Sql(sql, true);
     }
 
@@ -64,7 +64,7 @@ public class PostgresqlDataBaseDialect extends AbstractDataBaseDialect {
         boolean split = false;
         // 处理列名变更
         if (oldColumn != null && !oldColumn.getColumnName().equals(column.getColumnName())) {
-            sql += " RENAME COLUMN " + wrapper(oldColumn.getColumnName()) + " TO " + wrapper(column.getColumnName());
+            sql += " RENAME COLUMN " + oldColumn.getColumnName() + " TO " + column.getColumnName();
             split = true;
         }
 
@@ -74,11 +74,11 @@ public class PostgresqlDataBaseDialect extends AbstractDataBaseDialect {
                 sql += ", ";
             }
             sql += "ALTER COLUMN "; // ${columnName} TYPE ${dataType} USING ${columnName}::${dataType}";
-            sql += wrapper(column.getColumnName());
+            sql += column.getColumnName();
             sql += " TYPE ";
             sql += getDataTypeDefinition(column);
             sql += " USING ";
-            sql += wrapper(column.getColumnName());
+            sql += column.getColumnName();
             sql += "::";
             sql += getDataTypeDefinition(column);
 
@@ -91,7 +91,7 @@ public class PostgresqlDataBaseDialect extends AbstractDataBaseDialect {
                 sql += ", ";
             }
             sql += "ALTER COLUMN ";
-            sql += wrapper(column.getColumnName());
+            sql += column.getColumnName();
 
             if (StringUtil.hasText(column.getDefaultValue())) {
                 sql += " SET DEFAULT ";
@@ -130,9 +130,9 @@ public class PostgresqlDataBaseDialect extends AbstractDataBaseDialect {
     @Override
     public Sql getAddIndexSql(Table table, Column column, @NonNull String indexName) {
         if ("VECTOR".equalsIgnoreCase(column.getDataType())) {
-            return new Sql("CREATE INDEX " + wrapper(indexName) + " ON " + getSchemaTableSql(table) + " USING hnsw (" + wrapper(column.getColumnName()) + " vector_l2_ops) WITH ( m = 16, ef_construction = 64, ef_search = 10 )");
+            return new Sql("CREATE INDEX " + indexName + " ON " + getSchemaTableSql(table) + " USING hnsw (" + column.getColumnName() + " vector_l2_ops) WITH ( m = 16, ef_construction = 64, ef_search = 10 )");
         } else if (column.getIndexType() == IndexType.FULLTEXT) {
-            return new Sql("CREATE INDEX " + wrapper(indexName) + " ON " + getSchemaTableSql(table) + " USING gin(to_tsvector('chinese', " + wrapper(column.getColumnName()) + " ))");
+            return new Sql("CREATE INDEX " + indexName + " ON " + getSchemaTableSql(table) + " USING gin(to_tsvector('chinese', " + column.getColumnName() + " ))");
         }
         return super.getAddIndexSql(table, column, indexName);
     }

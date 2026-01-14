@@ -1,7 +1,5 @@
 package io.github.myacelw.mybatis.dynamic.core.database.dialect;
 
-import io.github.myacelw.mybatis.dynamic.core.database.DataBaseMetaDataHelper;
-import io.github.myacelw.mybatis.dynamic.core.database.DataBaseMetaDataHelperHolder;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.AlterOrDropStrategy;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.IndexType;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.KeyGeneratorMode;
@@ -22,12 +20,8 @@ import java.util.*;
 @Slf4j
 public abstract class AbstractDataBaseDialect implements DataBaseDialect {
 
-    protected String wrapper(String name) {
-        DataBaseMetaDataHelper helper = DataBaseMetaDataHelperHolder.getMetaDataHelper();
-        if (helper != null) {
-            return helper.wrapIdentifier(name);
-        }
-        return name;
+    public boolean supportSameIndexNameInTable() {
+        return true;
     }
 
     protected String getSchemaTableSql(Table table) {
@@ -48,20 +42,6 @@ public abstract class AbstractDataBaseDialect implements DataBaseDialect {
     }
 
     @Override
-    public String getTableNameInMeta(Table table) {
-        return table.getTableName();
-    }
-
-    @Override
-    public String getSchemaNameInMeta(Table table) {
-        if (StringUtil.hasText(table.getSchema())) {
-            return table.getSchema();
-        }
-        return null;
-    }
-
-
-    @Override
     public List<Sql> getCreateTableSql(Table table) {
         List<Sql> sqlList = new ArrayList<>();
 
@@ -70,7 +50,7 @@ public abstract class AbstractDataBaseDialect implements DataBaseDialect {
         List<String> columnSqlList = new ArrayList<>();
         for (Column column : table.getColumns()) {
             if (column.getAlterOrDropStrategy() != AlterOrDropStrategy.DROP) {
-                String columnSql = wrapper(column.getColumnName()) + " " + getDataTypeDefinition(column) + getDefaultValueAndAdditionalDDlSql(table, column);
+                String columnSql = column.getColumnName() + " " + getDataTypeDefinition(column) + getDefaultValueAndAdditionalDDlSql(table, column);
                 columnSqlList.add(columnSql);
             }
         }
@@ -131,7 +111,7 @@ public abstract class AbstractDataBaseDialect implements DataBaseDialect {
     @Override
     public List<Sql> getAddColumnSql(Table table, Column column) {
         String sql = "ALTER TABLE " + getSchemaTableSql(table) + " ADD ";
-        sql += wrapper(column.getColumnName());
+        sql += column.getColumnName();
         sql += " ";
         sql += getDataTypeDefinition(column);
         sql += getDefaultValueAndAdditionalDDlSql(table, column);
@@ -146,7 +126,7 @@ public abstract class AbstractDataBaseDialect implements DataBaseDialect {
 
     @Override
     public Sql getDropColumnSql(Table table, Column column) {
-        String sql = "ALTER TABLE " + getSchemaTableSql(table) + " DROP " + wrapper(column.getColumnName());
+        String sql = "ALTER TABLE " + getSchemaTableSql(table) + " DROP " + column.getColumnName();
         return new Sql(sql);
     }
 
@@ -155,13 +135,13 @@ public abstract class AbstractDataBaseDialect implements DataBaseDialect {
         List<Sql> sqlList = new ArrayList<>();
 
         if (oldColumn != null && !oldColumn.getColumnName().equals(column.getColumnName())) {
-            String sql = "ALTER TABLE " + getSchemaTableSql(table) + " RENAME COLUMN " + wrapper(oldColumn.getColumnName()) + " TO " + wrapper(column.getColumnName());
+            String sql = "ALTER TABLE " + getSchemaTableSql(table) + " RENAME COLUMN " + oldColumn.getColumnName() + " TO " + column.getColumnName();
             sqlList.add(new Sql(sql));
         }
         if (oldColumn == null || !oldColumn.getDataTypeDefinition().equals(column.getDataTypeDefinition()) || !Objects.equals(getDefaultValueAndAdditionalDDlSql(table, column), getDefaultValueAndAdditionalDDlSql(table, oldColumn))) {
             // ALTER TABLE table_name ALTER COLUMN column_name TYPE new_dat
             String sql = "ALTER TABLE " + getSchemaTableSql(table) + " MODIFY ";
-            sql += wrapper(column.getColumnName());
+            sql += column.getColumnName();
             sql += " ";
             sql += getDataTypeDefinition(column);
             sql += getDefaultValueAndAdditionalDDlSql(table, column);
@@ -201,12 +181,12 @@ public abstract class AbstractDataBaseDialect implements DataBaseDialect {
             sql += " " + column.getIndexType();
         }
 
-        sql += " INDEX " + wrapper(indexName) + " ON " + getSchemaTableSql(table) + " ( ";
+        sql += " INDEX " + indexName + " ON " + getSchemaTableSql(table) + " ( ";
 
         if (StringUtil.hasText(column.getCustomIndexColumn())) {
             sql += column.getCustomIndexColumn();
         } else {
-            sql += wrapper(column.getColumnName());
+            sql += column.getColumnName();
         }
         sql += " )";
 
@@ -223,7 +203,7 @@ public abstract class AbstractDataBaseDialect implements DataBaseDialect {
     @Override
     public Sql getSetColumnCommentSql(Table table, Column column) {
         //COMMENT ON COLUMN test_table.id IS '这是主键';
-        String sql = "COMMENT ON COLUMN " + getSchemaTableSql(table) + "." + wrapper(column.getColumnName()) + " IS '" + column.getComment() + "'";
+        String sql = "COMMENT ON COLUMN " + getSchemaTableSql(table) + "." + column.getColumnName() + " IS '" + column.getComment() + "'";
         return new Sql(sql, true);
     }
 

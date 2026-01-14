@@ -106,7 +106,7 @@ public class TableManagerImpl implements TableManager {
     }
 
     public Table queryTable(Table table) {
-        return metaDataHelper.getTable(metaDataHelper.getIdentifierInMeta(table.getTableName(), false), metaDataHelper.getIdentifierInMeta(table.getSchema(), false));
+        return metaDataHelper.getTable(table.getTableName(), table.getSchema());
     }
 
     public List<Column> getCurrentTableColumns(String tableName, String schemaName) {
@@ -114,27 +114,27 @@ public class TableManagerImpl implements TableManager {
     }
 
     public List<Column> getCurrentTableColumns(Table table) {
-        List<Column> columns = metaDataHelper.getColumns(metaDataHelper.getIdentifierInMeta(table.getTableName(), false), metaDataHelper.getIdentifierInMeta(table.getSchema(), false));
-        List<Index> indexList = metaDataHelper.getIndexList(metaDataHelper.getIdentifierInMeta(table.getTableName(), false), metaDataHelper.getIdentifierInMeta(table.getSchema(), false));
+        List<Column> columns = metaDataHelper.getColumns(table.getTableName(), table.getSchema());
+        List<Index> indexList = metaDataHelper.getIndexList(table.getTableName(), table.getSchema());
 
         Map<String, Index> indexMap = new HashMap<>();
         indexList.stream().filter(t -> t.getColumnNames().size() == 1)
                 .forEach(t -> indexMap.put(t.getColumnNames().get(0).toLowerCase(), t));
 
         for (Column c : columns) {
+            c.setColumnName(metaDataHelper.getWrappedIdentifierInMeta(c.getColumnName()));
             dialect.normalizeColumn(c);
-
             Index index = indexMap.get(c.getColumnName());
             if (index != null) {
                 // 过滤掉主键索引
                 if (table.getPrimaryKeyColumns() == null || table.getPrimaryKeyColumns().stream().noneMatch(t -> t.equalsIgnoreCase(c.getColumnName()))) {
                     c.setIndex(true);
-                    c.setIndexName(metaDataHelper.wrapIdentifier(index.getIndexName()));
+                    c.setIndexName(metaDataHelper.getWrappedIdentifierInMeta(index.getIndexName()));
                     c.setIndexType(index.getIndexType());
                 }
             }
 
-            // c.setColumnName(metaDataHelper.wrapIdentifier(c.getColumnName()));
+            // c.setColumnName(metaDataHelper.getWrappedIdentifierInMeta(c.getColumnName()));
         }
         return columns;
     }
@@ -191,9 +191,8 @@ public class TableManagerImpl implements TableManager {
         List<Sql> sqlList = new ArrayList<>();
 
         for (Column newColumn : table.getColumns()) {
-            String newColumnName = getUnquotedColumnName(newColumn);
             Column oldColumn = currentColumns.stream()
-                    .filter(t -> t.getColumnName().equalsIgnoreCase(newColumnName))
+                    .filter(t -> t.getColumnName().equalsIgnoreCase(newColumn.getColumnName()))
                     .findFirst()
                     .orElseGet(() -> {
                                 if (newColumn.getOldColumnNames() == null) {
@@ -201,8 +200,7 @@ public class TableManagerImpl implements TableManager {
                                 }
                                 return newColumn.getOldColumnNames().stream()
                                         .map(oldName -> {
-                                            String unquotedOldName = metaDataHelper.unwrapIdentifier(oldName);
-                                            return currentColumns.stream().filter(t -> t.getColumnName().equalsIgnoreCase(unquotedOldName)).findFirst().orElse(null);
+                                            return currentColumns.stream().filter(t -> t.getColumnName().equalsIgnoreCase(oldName)).findFirst().orElse(null);
                                         })
                                         .filter(Objects::nonNull)
                                         .findFirst()
@@ -254,12 +252,8 @@ public class TableManagerImpl implements TableManager {
         return result;
     }
 
-    private String getUnquotedColumnName(Column c) {
-        return metaDataHelper.unwrapIdentifier(c.getColumnName());
-    }
-
     private boolean isColumnChanged(Column newColumn, Column oldColumn) {
-        boolean nameEqual = getUnquotedColumnName(newColumn).equalsIgnoreCase(oldColumn.getColumnName());
+        boolean nameEqual = newColumn.getColumnName().equalsIgnoreCase(oldColumn.getColumnName());
         boolean dataTypeEqual = newColumn.getDataType().equalsIgnoreCase(oldColumn.getDataType()) || (isInt(newColumn) && isInt(oldColumn)) || "USER-DEFINED".equals(oldColumn.getDataType());
         boolean lengthEqual = Objects.equals(newColumn.getCharacterMaximumLength(), oldColumn.getCharacterMaximumLength());
         boolean precisionEqual = newColumn.getNumericPrecision() == null || Objects.equals(newColumn.getNumericPrecision(), oldColumn.getNumericPrecision());

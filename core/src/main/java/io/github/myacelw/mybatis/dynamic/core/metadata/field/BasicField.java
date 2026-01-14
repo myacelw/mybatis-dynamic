@@ -21,6 +21,7 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 基本类型字段
@@ -85,6 +86,14 @@ public class BasicField extends AbstractField implements Serializable, Field {
 
         if (columnDefinition.getIndex() == Boolean.TRUE) {
             columnDefinition.setIndexName(converter.getIndexName(model.getTableName(), columnName, columnDefinition.getIndexName()));
+        }
+
+        if (columnDefinition.getOldColumnNames() != null) {
+            columnDefinition.setOldColumnNames(
+                    columnDefinition.getOldColumnNames().stream()
+                            .map(converter::getWrappedIdentifierInMeta)
+                            .collect(Collectors.toList())
+            );
         }
     }
 

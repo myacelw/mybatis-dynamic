@@ -164,7 +164,17 @@ public class ModelServiceBuilder {
                 mergedFiller.put(filler.getName(), filler);
             }
         }
-        ModelToTableConverter modelToTableConverter = new ModelToTableConverterImpl(dialect, tablePrefix, seqPrefix, indexPrefix, columnTypeHandlers);
+        ModelToTableConverterImpl modelToTableConverter = new ModelToTableConverterImpl(dialect, dataBaseMetaDataHelper, columnTypeHandlers);
+        if (tablePrefix != null) {
+            modelToTableConverter.setTablePrefix(tablePrefix);
+        }
+        if (seqPrefix != null) {
+            modelToTableConverter.setSeqPrefix(seqPrefix);
+        }
+        if (indexPrefix != null) {
+            modelToTableConverter.setIndexPrefix(indexPrefix);
+        }
+
         Class2ModelTransferImpl class2ModelTransfer = new Class2ModelTransferImpl(commentAnnotationClass, commentAnnotationFieldName);
 
         ModelServiceImpl modelService = new ModelServiceImpl(
