@@ -20,7 +20,7 @@
     - [x] Update `DataChangeInterceptorGroup` to delegate these new hooks
 - [x] Task: Conductor - User Manual Verification 'Execution Engine' (Protocol in workflow.md)
 
-## Phase 3: Fluent API & Integration
+## Phase 3: Fluent API ## Phase 3: Fluent API & Integration Integration [checkpoint: 2130823]
 - [x] Task: Implement `BatchUpdateByConditionChain`
     - [x] Create `BatchUpdateByConditionChain` in `core` supporting `.add(condition, data)` and `.add(builder, data)`
 - [x] Task: Integrate with `DataManager`
@@ -28,7 +28,7 @@
 - [x] Task: Integrate with Spring Module
     - [x] Add `batchUpdateByCondition` methods to `BaseDao` in `spring` module
     - [x] Add `batchUpdateByCondition` methods to `BaseService` in `spring` module
-- [~] Task: Conductor - User Manual Verification 'Fluent API & Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Fluent API - [~] Task: Conductor - User Manual Verification 'Fluent API & Integration' (Protocol in workflow.md) Integration' (Protocol in workflow.md)
 
 ## Phase 4: Final Verification
 - [ ] Task: Comprehensive Integration Testing
