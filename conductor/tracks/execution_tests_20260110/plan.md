@@ -52,7 +52,7 @@ This phase covers the integration testing of standard data retrieval executions.
     - [x] Verify test passes
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Primary Query Executions' (Protocol in workflow.md) [45fb10c]
 
-## Phase 3: Specialized & Batch Executions
+## Phase 3: Specialized & Batch Executions [checkpoint: 45a0dcd]
 This phase covers batch operations, recursive queries, and other specialized execution types.
 
 - [x] Task: Integration Test `AggQueryExecution` [e2ff185]
@@ -86,4 +86,4 @@ This phase covers batch operations, recursive queries, and other specialized exe
 - [x] Task: Integration Test `CountRecursiveExecution` [97963af]
     - [x] Write integration test for `CountRecursiveExecution` with H2
     - [x] Verify test passes
-- [~] Task: Conductor - User Manual Verification 'Phase 3: Specialized & Batch Executions' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Specialized & Batch Executions' (Protocol in workflow.md) [45a0dcd]
