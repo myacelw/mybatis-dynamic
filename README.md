@@ -353,6 +353,28 @@ assertEquals(LocalDateTime.class, result.get(0).get("createTime").getClass());
 ##### 提供模型的高级数据查询接口，参见:
 `DataManager.queryChain().where(Condition condition).orderItems(List<OrderItem> orderItems).page(Page page).joins(List<Join> joins).exec()`
 
+##### 提供批量根据条件更新接口 (Batch Update By Condition)
+
+`DataManager` (Core) 和 `BaseDao`/`BaseService` (Spring) 提供了 `batchUpdateByConditionChain()` 方法，支持在一个批处理会话中执行多个带有不同更新数据和不同 WHERE 条件的更新语句。
+
+**示例:**
+
+```java
+// Core API
+dataManager.batchUpdateByConditionChain()
+        .add(c -> c.eq("id", "u1"), data1)
+        .add(c -> c.eq("id", "u2"), data2)
+        .exec();
+
+// Spring DAO API
+userDao.batchUpdateByConditionChain()
+        .add(c -> c.eq(User::getId, "u1"), data1)
+        .add(c -> c.eq(User::getId, "u2"), data2)
+        .exec();
+```
+
+该 API 能够自动处理不同更新项之间的 SQL 差异（例如 WHERE 条件不同），并利用 MyBatis 的 BATCH 执行器高效执行。
+
 #### Fluent Condition API (链式查询条件)
 
 `ConditionBuilder` 现在支持更加自然和强大的链式调用 API，可以方便地构造复杂的 `AND`、`OR`、`NOT` 组合条件，并自动处理逻辑优先级（AND 优先级高于 OR）。
