@@ -166,7 +166,7 @@ public class MybatisHelperImpl implements MybatisHelper {
     }
 
     @Override
-    public boolean batchInsert(String sql, List<Object> contexts, Integer batchSize, KeyGeneratorMode keyGeneratorMode, String keyGeneratorColumn, String keyGeneratorSequenceName) {
+    public boolean batchInsert(String sql, List<Object> contexts, int batchSize, KeyGeneratorMode keyGeneratorMode, String keyGeneratorColumn, String keyGeneratorSequenceName) {
         KeyGenerator keyGenerator = NoKeyGenerator.INSTANCE;
 
         if (keyGeneratorMode == KeyGeneratorMode.AUTO_INCREMENT) {
@@ -180,7 +180,7 @@ public class MybatisHelperImpl implements MybatisHelper {
     }
 
     @Override
-    public boolean batchUpdate(String sql, List<Object> contexts, Integer batchSize) {
+    public boolean batchUpdate(String sql, List<Object> contexts, int batchSize) {
         String msId = dynamicSql(sql, Integer.class, SqlCommandType.UPDATE, null, null);
         return executeBatch(contexts, batchSize, (session, entity) -> session.update(msId, entity));
     }
@@ -483,9 +483,10 @@ public class MybatisHelperImpl implements MybatisHelper {
                 consumer.accept(batchSqlSession, entity);
                 if ((i + 1) % batchSize == 0 || i == size - 1) {
                     batchSqlSession.flushStatements();
+                    batchSqlSession.commit();
+                    batchSqlSession.clearCache();
                 }
             }
-            batchSqlSession.commit();
             return true;
         }
     }

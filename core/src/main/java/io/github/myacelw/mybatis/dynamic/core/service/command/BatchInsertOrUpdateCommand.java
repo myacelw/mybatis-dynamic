@@ -23,4 +23,9 @@ public class BatchInsertOrUpdateCommand implements Command {
     //更新操作忽略的字段
     List<String> updateIgnoreFields;
 
+     /**
+      * 批量更新的大小，默认值为1000
+      */
+    int batchSize = 1000;
+
 }

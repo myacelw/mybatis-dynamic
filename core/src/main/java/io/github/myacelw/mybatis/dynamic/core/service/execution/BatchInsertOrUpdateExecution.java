@@ -48,7 +48,7 @@ public class BatchInsertOrUpdateExecution<ID> extends AbstractExecution<ID, Void
         }
 
         modelContext.getInterceptor().beforeBatchInsertOrUpdate((DataManager) dataManager, dataList);
-        batchInsertOrUpdate(modelContext, newDataList);
+        batchInsertOrUpdate(modelContext, newDataList, command.getBatchSize());
         modelContext.getInterceptor().beforeBatchInsertOrUpdate((DataManager) dataManager, dataList);
         modelContext.sendEvent(new BatchInsertDataEvent(dataManager.getModel(), dataList));
         return null;
@@ -68,9 +68,9 @@ public class BatchInsertOrUpdateExecution<ID> extends AbstractExecution<ID, Void
         return updateIgnoreColumns;
     }
 
-    private static void batchInsertOrUpdate(ModelContext modelContext, List<List<FieldValue>> fieldValuesList) {
+    private static void batchInsertOrUpdate(ModelContext modelContext, List<List<FieldValue>> fieldValuesList, int batchSize) {
         List<Object> contexts = fieldValuesList.stream().map(t -> getSqlContext(modelContext, t)).collect(Collectors.toList());
-        modelContext.getMybatisHelper().batchUpdate(SQL, contexts, 200);
+        modelContext.getMybatisHelper().batchUpdate(SQL, contexts, batchSize);
     }
 
     public static Map<String, Object> getSqlContext(ModelContext modelContext, List<FieldValue> fieldValues) {

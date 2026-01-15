@@ -58,7 +58,7 @@ public class BatchUpdateExecution<ID> extends AbstractExecution<ID, Void, BatchU
         }
 
         modelContext.getInterceptor().beforeBatchUpdate((DataManager) dataManager, dataList);
-        modelContext.getMybatisHelper().batchUpdate(UpdateExecution.SQL, sqlContextList, 2000);
+        modelContext.getMybatisHelper().batchUpdate(UpdateExecution.SQL, sqlContextList, command.getBatchSize());
         modelContext.getInterceptor().afterBatchUpdate((DataManager) dataManager, dataList);
         modelContext.sendEvent(new BatchUpdateDataEvent(dataManager.getModel(), dataList));
         return null;

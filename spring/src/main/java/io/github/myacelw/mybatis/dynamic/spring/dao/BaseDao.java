@@ -42,7 +42,7 @@ public interface BaseDao<ID, T> {
      * 指定Id插入数据
      */
     default ID insertDisableGenerateId(@NonNull T data) {
-        return getDataManager().insert(data, false);
+        return getDataManager().insertDisableGenerateId(data);
     }
 
     /**
@@ -69,28 +69,28 @@ public interface BaseDao<ID, T> {
      * @param data 数据
      */
     default void update(@NonNull T data) {
-        update().data(data).force().exec();
+        getDataManager().update(data);
     }
 
     /**
      * 更新非空字段数据
      */
     default void onlyUpdateNonNull(@NonNull T data) {
-        update().data(data).onlyUpdateNonNull().exec();
+        getDataManager().onlyUpdateNonNull(data);
     }
 
     /**
      * 批量更新数据
      */
     default void batchUpdate(@NonNull List<T> data) {
-        data.forEach(this::update);
+        getDataManager().batchUpdate(data);
     }
 
     /**
      * 批量更新非空字段数据
      */
     default void batchUpdateNonNull(@NonNull List<T> data) {
-        data.forEach(this::onlyUpdateNonNull);
+        getDataManager().batchUpdateNonNull(data);
     }
 
     /**
@@ -100,6 +100,15 @@ public interface BaseDao<ID, T> {
      */
     default ID insertOrUpdate(@NonNull T data) {
         return getDataManager().insertOrUpdate(data);
+    }
+
+    /**
+     * 批量插入或更新数据
+     *
+     * @param data 数据列表，每个元素可以是Map 或 实体对象
+     */
+    default void batchInsertOrUpdate(@NonNull List<T> data) {
+        getDataManager().batchInsertOrUpdate(data);
     }
 
     /**
@@ -132,6 +141,7 @@ public interface BaseDao<ID, T> {
 
     /**
      * 按ID删除数据，根据是否存在逻辑删除字段，执行逻辑删除或者物理删除
+     *
      * @param forcePhysicalDelete 是否强制物理删除，不考虑是否存在逻辑删除字段
      */
     default boolean delete(@NonNull ID id, boolean forcePhysicalDelete) {
@@ -140,6 +150,7 @@ public interface BaseDao<ID, T> {
 
     /**
      * 按条件批量删除，根据是否存在逻辑删除字段，执行逻辑删除或者物理删除
+     *
      * @param forcePhysicalDelete 是否强制物理删除，不考虑是否存在逻辑删除字段
      */
     default int delete(Condition condition, boolean forcePhysicalDelete) {
@@ -148,6 +159,7 @@ public interface BaseDao<ID, T> {
 
     /**
      * 按条件批量删除，根据是否存在逻辑删除字段，执行逻辑删除或者物理删除
+     *
      * @param forcePhysicalDelete 是否强制物理删除，不考虑是否存在逻辑删除字段
      */
     default int delete(Consumer<ConditionBuilder> b, boolean forcePhysicalDelete) {
@@ -156,6 +168,7 @@ public interface BaseDao<ID, T> {
 
     /**
      * 按ID列表批量删除，根据是否存在逻辑删除字段，执行逻辑删除或者物理删除
+     *
      * @param forcePhysicalDelete 是否强制物理删除，不考虑是否存在逻辑删除字段
      */
     default int batchDelete(@NonNull Collection<ID> idList, boolean forcePhysicalDelete) {
@@ -164,18 +177,19 @@ public interface BaseDao<ID, T> {
 
     /**
      * 按照ID查询数据
-     * @param id 数据ID
-     * @param selectFields 要查询的字段，空时查询所有字段
      */
-    default T getById(@NonNull ID id, List<String> selectFields) {
-        return getDataManager().getByIdChain(getEntityClass()).id(id).selectFields(selectFields).exec();
+    default T getById(@NonNull ID id) {
+        return getDataManager().getById(id, getEntityClass());
     }
 
     /**
      * 按照ID查询数据
+     *
+     * @param id           数据ID
+     * @param selectFields 要查询的字段，空时查询所有字段
      */
-    default T getById(@NonNull ID id) {
-        return getById(id, null);
+    default T getById(@NonNull ID id, List<String> selectFields) {
+        return getDataManager().getByIdChain(getEntityClass()).id(id).selectFields(selectFields).exec();
     }
 
     /**
@@ -222,8 +236,9 @@ public interface BaseDao<ID, T> {
 
     /**
      * 查询结果回调方式的查询，用于大数据量查询，如大数据量查询并生成Excel
+     *
      * @param condition 查询条件
-     * @param handler 结果处理器
+     * @param handler   结果处理器
      */
     default int queryCallBack(Condition condition, ResultHandler<T> handler) {
         return queryCallBack().where(condition).handler(handler).exec();
@@ -231,8 +246,9 @@ public interface BaseDao<ID, T> {
 
     /**
      * 查询结果回调方式的查询，用于大数据量查询，如大数据量查询并生成Excel
+     *
      * @param condition 查询条件构建器
-     * @param handler 结果处理器
+     * @param handler   结果处理器
      */
     default int queryCallBack(Consumer<ConditionBuilder> condition, ResultHandler<T> handler) {
         return queryCallBack().where(condition).handler(handler).exec();
@@ -247,6 +263,7 @@ public interface BaseDao<ID, T> {
 
     /**
      * 流式数据查询，通过回调接口处理返回数据
+     *
      * @param condition 查询条件
      */
     default Cursor<T> queryCursor(Condition condition) {
@@ -255,6 +272,7 @@ public interface BaseDao<ID, T> {
 
     /**
      * 流式数据查询，通过回调接口处理返回数据
+     *
      * @param condition 查询条件构建器
      */
     default Cursor<T> queryCursor(Consumer<ConditionBuilder> condition) {
@@ -270,10 +288,11 @@ public interface BaseDao<ID, T> {
 
     /**
      * 分页查询
-     * @param condition 查询条件构建器
+     *
+     * @param condition   查询条件构建器
      * @param pageCurrent 查询页号
-     * @param pageSize 每页条数
-     * @param orderItems 排序字段
+     * @param pageSize    每页条数
+     * @param orderItems  排序字段
      */
     default PageResult<T> page(Consumer<ConditionBuilder> condition, int pageCurrent, int pageSize, OrderItem... orderItems) {
         return page().where(condition).orderItems(orderItems).page(pageCurrent, pageSize).exec();

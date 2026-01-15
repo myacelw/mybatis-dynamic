@@ -73,7 +73,7 @@ public class BatchInsertExecution<ID> extends AbstractExecution<ID, List<ID>, Ba
         modelContext.getInterceptor().beforeBatchInsert((DataManager<Object>) dataManager, dataList);
 
         // 执行 insert 返回产生的值
-        List<Object> insertGenValueList = batchInsert(modelContext, keyGeneratorMode, fieldValuesList);
+        List<Object> insertGenValueList = batchInsert(modelContext, keyGeneratorMode, fieldValuesList, command.getBatchSize());
 
 
         // 处理主键生成
@@ -99,13 +99,13 @@ public class BatchInsertExecution<ID> extends AbstractExecution<ID, List<ID>, Ba
         return idList;
     }
 
-    private static List<Object> batchInsert(ModelContext modelContext, KeyGeneratorMode keyGeneratorMode, List<List<FieldValue>> fieldValuesList) {
+    private static List<Object> batchInsert(ModelContext modelContext, KeyGeneratorMode keyGeneratorMode, List<List<FieldValue>> fieldValuesList, int batchSize) {
         List<Object> contexts = new ArrayList<>();
         for (List<FieldValue> fieldValues : fieldValuesList) {
             contexts.add(InsertExecution.getSqlContext(modelContext, fieldValues));
         }
 
-        modelContext.getMybatisHelper().batchInsert(InsertExecution.SQL, contexts, 2000, keyGeneratorMode, "genValue", modelContext.getModel().getTableDefine().getKeyGeneratorSequenceName());
+        modelContext.getMybatisHelper().batchInsert(InsertExecution.SQL, contexts, batchSize, keyGeneratorMode, "genValue", modelContext.getModel().getTableDefine().getKeyGeneratorSequenceName());
         if (keyGeneratorMode == KeyGeneratorMode.AUTO_INCREMENT || keyGeneratorMode == KeyGeneratorMode.SEQUENCE) {
             List<Object> genValueList = new ArrayList<>();
             for (Object context : contexts) {

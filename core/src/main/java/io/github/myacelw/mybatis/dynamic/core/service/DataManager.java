@@ -4,8 +4,8 @@ import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.PageResult;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.ConditionBuilder;
-import io.github.myacelw.mybatis.dynamic.core.service.command.*;
 import io.github.myacelw.mybatis.dynamic.core.service.chain.*;
+import io.github.myacelw.mybatis.dynamic.core.service.command.*;
 import io.github.myacelw.mybatis.dynamic.core.service.impl.IdUtil;
 import io.github.myacelw.mybatis.dynamic.core.service.impl.ModelContext;
 import lombok.NonNull;
@@ -43,22 +43,21 @@ public interface DataManager<ID> {
     /**
      * 插入数据
      *
-     * @param data              数据，可以是Map 或 实体对象
-     * @param disableGenerateId 是否禁用自动生成ID；也就是直接使用data中设置的主键值插入数据
-     * @return 数据ID
-     */
-    default ID insert(@NonNull Object data, boolean disableGenerateId) {
-        return execCommand(new InsertCommand(data, disableGenerateId));
-    }
-
-    /**
-     * 插入数据
-     *
      * @param data 数据，可以是Map 或 实体对象
      * @return 数据ID
      */
     default ID insert(@NonNull Object data) {
-        return insert(data, false);
+        return execCommand(new InsertCommand(data, false));
+    }
+
+    /**
+     * 使用自定义的ID插入数据，禁用自动生成ID；也就是直接使用data中设置的主键值插入数据
+     *
+     * @param data              数据，可以是Map 或 实体对象
+     * @return 数据ID
+     */
+    default ID insertDisableGenerateId(@NonNull Object data) {
+        return execCommand(new InsertCommand(data, true));
     }
 
     /**
@@ -68,7 +67,9 @@ public interface DataManager<ID> {
      * @return 数据ID列表
      */
     default List<ID> batchInsert(@NonNull List<?> data) {
-        return execCommand(new BatchInsertCommand(data, false));
+        BatchInsertCommand command = new BatchInsertCommand();
+        command.setData(data);
+        return execCommand(command);
     }
 
     /**
@@ -98,6 +99,13 @@ public interface DataManager<ID> {
     }
 
     /**
+     * 更新非空字段数据
+     */
+    default void onlyUpdateNonNull(@NonNull Object data) {
+        updateChain().data(data).onlyUpdateNonNull().exec();
+    }
+
+    /**
      * 更新数据
      */
     default UpdateByConditionChain<ID> updateByConditionChain() {
@@ -121,18 +129,22 @@ public interface DataManager<ID> {
      *
      * @param data 数据列表，每个元素可以是Map 或 实体对象
      */
-    default void batchUpdate(@NonNull List<Map<String, Object>> data) {
-        batchUpdate(data, true);
+    default void batchUpdate(@NonNull List<?> data) {
+        BatchUpdateCommand command = new BatchUpdateCommand();
+        command.setData(data);
+        execCommand(command);
     }
 
     /**
-     * 批量更新数据
+     * 批量更新数据非空字段
      *
-     * @param data          数据列表，每个元素可以是Map 或 实体对象
-     * @param onlyUpdateNonNull 是否只更新非空字段
+     * @param data 数据列表，每个元素可以是Map 或 实体对象
      */
-    default void batchUpdate(@NonNull List<Map<String, Object>> data, boolean onlyUpdateNonNull) {
-        execCommand(new BatchUpdateCommand(data, onlyUpdateNonNull, null));
+    default void batchUpdateNonNull(@NonNull List<?> data) {
+        BatchUpdateCommand command = new BatchUpdateCommand();
+        command.setData(data);
+        command.setOnlyUpdateNonNull(true);
+        execCommand(command);
     }
 
     /**
@@ -142,6 +154,18 @@ public interface DataManager<ID> {
      */
     default ID insertOrUpdate(@NonNull Object data) {
         return execCommand(new InsertOrUpdateCommand(data));
+    }
+
+
+    /**
+     * 批量插入或更新数据
+     *
+     * @param data 数据列表，每个元素可以是Map 或 实体对象
+     */
+    default void batchInsertOrUpdate(@NonNull List<?> data) {
+        BatchInsertOrUpdateCommand command = new BatchInsertOrUpdateCommand();
+        command.setData(data);
+        execCommand(command);
     }
 
     /**

@@ -14,7 +14,6 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class BatchInsertCommand implements Command {
 
     @NonNull
@@ -24,4 +23,9 @@ public class BatchInsertCommand implements Command {
      * 禁用主键生成
      */
     private boolean disableGenerateId;
+
+     /**
+      * 批量插入的大小，默认值为1000
+      */
+    int batchSize = 1000;
 }

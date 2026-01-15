@@ -89,9 +89,9 @@ public interface MybatisHelper {
 
     int insert(SqlSession sqlSession, String sql, Object context, KeyGeneratorMode keyGeneratorMode, String keyGeneratorColumn, String keyGeneratorSequenceName);
 
-    boolean batchInsert(String sql, List<Object> contexts, Integer batchSize, KeyGeneratorMode keyGeneratorMode, String keyGeneratorColumn, String keyGeneratorSequenceName);
+    boolean batchInsert(String sql, List<Object> contexts, int batchSize, KeyGeneratorMode keyGeneratorMode, String keyGeneratorColumn, String keyGeneratorSequenceName);
 
-    boolean batchUpdate(String sql, List<Object> contexts, Integer batchSize);
+    boolean batchUpdate(String sql, List<Object> contexts, int batchSize);
 
     int update(SqlSession sqlSession, String sql, Object context);
 
