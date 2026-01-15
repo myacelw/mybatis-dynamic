@@ -30,7 +30,7 @@
     - [x] Add `batchUpdateByCondition` methods to `BaseService` in `spring` module
 - [x] Task: Conductor - User Manual Verification 'Fluent API - [~] Task: Conductor - User Manual Verification 'Fluent API & Integration' (Protocol in workflow.md) Integration' (Protocol in workflow.md)
 
-## Phase 4: Final Verification
+## Phase 4: Final Verification [checkpoint: 2a8650e]
 - [x] Task: Comprehensive Integration Testing
     - [x] Create integration tests in `sample` or `core` tests verifying mixed-condition batch updates
     - [x] Verify interceptors and events are fired correctly
