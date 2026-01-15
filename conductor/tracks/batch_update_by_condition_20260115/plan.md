@@ -31,7 +31,7 @@
 - [x] Task: Conductor - User Manual Verification 'Fluent API - [~] Task: Conductor - User Manual Verification 'Fluent API & Integration' (Protocol in workflow.md) Integration' (Protocol in workflow.md)
 
 ## Phase 4: Final Verification
-- [ ] Task: Comprehensive Integration Testing
-    - [ ] Create integration tests in `sample` or `core` tests verifying mixed-condition batch updates
-    - [ ] Verify interceptors and events are fired correctly
-- [ ] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)
+- [x] Task: Comprehensive Integration Testing
+    - [x] Create integration tests in `sample` or `core` tests verifying mixed-condition batch updates
+    - [x] Verify interceptors and events are fired correctly
+- [x] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)

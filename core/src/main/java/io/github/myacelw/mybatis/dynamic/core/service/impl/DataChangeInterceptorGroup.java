@@ -21,7 +21,7 @@ public class DataChangeInterceptorGroup implements DataChangeInterceptor {
     private final List<DataChangeInterceptor> interceptors;
 
     public DataChangeInterceptorGroup(List<DataChangeInterceptor> interceptors) {
-        this.interceptors = interceptors == null ? Collections.emptyList() : new ArrayList<>(interceptors);
+        this.interceptors = interceptors == null ? new ArrayList<>() : new ArrayList<>(interceptors);
     }
 
     /**

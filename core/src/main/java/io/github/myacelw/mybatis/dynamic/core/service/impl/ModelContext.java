@@ -77,8 +77,8 @@ public class ModelContext {
         this.mybatisHelper = mybatisHelper;
         this.permission = permission;
         this.fillers = fillers;
-        this.eventListeners = eventListeners;
-        this.interceptor = new DataChangeInterceptorGroup(interceptors == null ? Collections.emptyList() : interceptors);
+        this.eventListeners = eventListeners == null ? new ArrayList<>() : new ArrayList<>(eventListeners);
+        this.interceptor = new DataChangeInterceptorGroup(interceptors);
         this.dataManagerGetter = dataManagerGetter;
         this.sqlSession = sqlSession;
 
