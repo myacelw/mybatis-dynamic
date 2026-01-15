@@ -1,0 +1,8 @@
+{
+  "track_id": "execution_tests_20260110",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-01-10T11:45:00Z",
+  "updated_at": "2026-01-10T11:45:00Z",
+  "description": "对所有的 io.github.myacelw.mybatis.dynamic.core.service.execution.Execution 实现类 编写单元测试，完整实现测试每个Command 配置。"
+}
