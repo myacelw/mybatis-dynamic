@@ -100,6 +100,14 @@ public interface DataChangeInterceptor {
 
     }
 
+    default void beforeBatchUpdateByCondition(DataManager<Object> dataManager, List<?> updates) {
+
+    }
+
+    default void afterBatchUpdateByCondition(DataManager<Object> dataManager, List<?> updates) {
+
+    }
+
 
     default void beforeBatchInsertOrUpdate(DataManager<Object> dataManager, List<?> dataList) {
 

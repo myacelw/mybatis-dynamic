@@ -23,3 +23,4 @@ io.github.myacelw.mybatis.dynamic.core.service.execution.UpdateByConditionExecut
 io.github.myacelw.mybatis.dynamic.core.service.execution.CountRecursiveExecution
 io.github.myacelw.mybatis.dynamic.core.service.execution.ExistsExecution
 io.github.myacelw.mybatis.dynamic.core.service.execution.BatchUpdateExecution
+io.github.myacelw.mybatis.dynamic.core.service.execution.BatchUpdateByConditionExecution

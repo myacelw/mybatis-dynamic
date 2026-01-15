@@ -10,15 +10,15 @@
 - [x] Task: Conductor - User Manual Verification 'Foundations' (Protocol in workflow.md)
 
 ## Phase 2: Execution Engine
-- [ ] Task: Implement `BatchUpdateByConditionExecution`
-    - [ ] Create `BatchUpdateByConditionExecution` class in `core`
-    - [ ] Implement `exec` logic: loop through updates, generate SQL/Context for each, and call `MybatisHelper.batchUpdates`
-- [ ] Task: Register Execution Service
-    - [ ] Add `BatchUpdateByConditionExecution` to `META-INF/services/io.github.myacelw.mybatis.dynamic.core.service.execution.Execution`
-- [ ] Task: Add Interceptor Hooks
-    - [ ] Add `beforeBatchUpdateByCondition` and `afterBatchUpdateByCondition` to `DataChangeInterceptor`
-    - [ ] Update `DataChangeInterceptorGroup` to delegate these new hooks
-- [ ] Task: Conductor - User Manual Verification 'Execution Engine' (Protocol in workflow.md)
+- [x] Task: Implement `BatchUpdateByConditionExecution`
+    - [x] Create `BatchUpdateByConditionExecution` class in `core`
+    - [x] Implement `exec` logic: loop through updates, generate SQL/Context for each, and call `MybatisHelper.batchUpdates`
+- [x] Task: Register Execution Service
+    - [x] Add `BatchUpdateByConditionExecution` to `META-INF/services/io.github.myacelw.mybatis.dynamic.core.service.execution.Execution`
+- [x] Task: Add Interceptor Hooks
+    - [x] Add `beforeBatchUpdateByCondition` and `afterBatchUpdateByCondition` to `DataChangeInterceptor`
+    - [x] Update `DataChangeInterceptorGroup` to delegate these new hooks
+- [~] Task: Conductor - User Manual Verification 'Execution Engine' (Protocol in workflow.md)
 
 ## Phase 3: Fluent API & Integration
 - [ ] Task: Implement `BatchUpdateByConditionChain`

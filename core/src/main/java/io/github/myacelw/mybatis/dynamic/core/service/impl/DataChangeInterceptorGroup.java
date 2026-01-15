@@ -146,8 +146,22 @@ public class DataChangeInterceptorGroup implements DataChangeInterceptor {
     }
 
     public void afterBatchUpdate(DataManager<Object> dataManager, List<?> dataList) {
-        for (DataChangeInterceptor interceptor : interceptors) {
+        for (int i = interceptors.size() - 1; i >= 0; i--) {
+            DataChangeInterceptor interceptor = interceptors.get(i);
             interceptor.afterBatchUpdate(dataManager, dataList);
+        }
+    }
+
+    public void beforeBatchUpdateByCondition(DataManager<Object> dataManager, List<?> updates) {
+        for (DataChangeInterceptor interceptor : interceptors) {
+            interceptor.beforeBatchUpdateByCondition(dataManager, updates);
+        }
+    }
+
+    public void afterBatchUpdateByCondition(DataManager<Object> dataManager, List<?> updates) {
+        for (int i = interceptors.size() - 1; i >= 0; i--) {
+            DataChangeInterceptor interceptor = interceptors.get(i);
+            interceptor.afterBatchUpdateByCondition(dataManager, updates);
         }
     }
 
