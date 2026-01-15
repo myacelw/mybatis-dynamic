@@ -82,7 +82,7 @@ public class TableServiceBuildUtil {
 
     private static DataSource dataSourceForH2(String h2Name) {
         DataSourceProperties properties = new DataSourceProperties();
-        properties.setUrl("jdbc:h2:mem:" + h2Name);
+        properties.setUrl("jdbc:h2:mem:" + h2Name + ";MODE=MySQL");
         properties.setUsername("sa");
         return properties.initializeDataSourceBuilder().build();
     }
