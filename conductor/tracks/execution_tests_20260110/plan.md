@@ -68,8 +68,6 @@ This phase covers batch operations, recursive queries, and other specialized exe
 - [x] Task: Integration Test `BatchInsertExecution` [4f38100]
     - [x] Write integration test for `BatchInsertExecution` with H2
     - [x] Verify test passes
-    - [ ] Write integration test for `BatchInsertExecution` with H2
-    - [ ] Verify test passes
 - [x] Task: Integration Test `BatchUpdateExecution` [4b93c85]
     - [x] Write integration test for `BatchUpdateExecution` with H2
     - [x] Verify test passes
@@ -82,10 +80,10 @@ This phase covers batch operations, recursive queries, and other specialized exe
 - [x] Task: Integration Test `QueryRecursiveTreeExecution` [4147a13]
     - [x] Write integration test for `QueryRecursiveTreeExecution` with H2
     - [x] Verify test passes
-- [ ] Task: Integration Test `QueryOneRecursiveTreeExecution`
-    - [ ] Write integration test for `QueryOneRecursiveTreeExecution` with H2
-    - [ ] Verify test passes
-- [ ] Task: Integration Test `CountRecursiveExecution`
+- [x] Task: Integration Test `QueryOneRecursiveTreeExecution` [5e10b88]
+    - [x] Write integration test for `QueryOneRecursiveTreeExecution` with H2
+    - [x] Verify test passes
+- [~] Task: Integration Test `CountRecursiveExecution`
     - [ ] Write integration test for `CountRecursiveExecution` with H2
     - [ ] Verify test passes
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Specialized & Batch Executions' (Protocol in workflow.md)
