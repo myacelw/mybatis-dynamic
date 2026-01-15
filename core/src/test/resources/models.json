@@ -41,6 +41,12 @@
         "joinLocalField": "companyId"
       },
       {
+        "name": "children",
+        "type": "ToMany",
+        "targetModel": "Department",
+        "joinTargetField": "parentId"
+      },
+      {
         "name": "users",
         "type": "ToMany",
         "targetModel": "User",
