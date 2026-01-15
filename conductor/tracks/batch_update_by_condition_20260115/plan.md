@@ -1,13 +1,13 @@
 # Implementation Plan: BatchUpdateByCondition
 
-## Phase 1: Foundations
+## Phase 1: Foundations [checkpoint: cc0df89]
 - [x] Task: Implement Command and Event classes
     - [ ] Create `BatchUpdateByConditionCommand` and `UpdatePair` in `core`
     - [ ] Create `BatchUpdateByConditionDataEvent` in `core`
 - [x] Task: Extend `MybatisHelper` for Multi-SQL Batching
     - [ ] Add `batchUpdates(List<String> sqls, List<Object> contexts, int batchSize)` to `MybatisHelper` interface
     - [ ] Implement `batchUpdates` in `MybatisHelperImpl` to handle heterogeneous SQL statements in a single transaction/session
-- [~] Task: Conductor - User Manual Verification 'Foundations' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Foundations' (Protocol in workflow.md)
 
 ## Phase 2: Execution Engine
 - [ ] Task: Implement `BatchUpdateByConditionExecution`
