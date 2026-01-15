@@ -73,9 +73,9 @@ This phase covers batch operations, recursive queries, and other specialized exe
 - [x] Task: Integration Test `BatchUpdateExecution` [4b93c85]
     - [x] Write integration test for `BatchUpdateExecution` with H2
     - [x] Verify test passes
-- [ ] Task: Integration Test `BatchInsertOrUpdateExecution`
-    - [ ] Write integration test for `BatchInsertOrUpdateExecution` with H2
-    - [ ] Verify test passes
+- [x] Task: Integration Test `BatchInsertOrUpdateExecution` [c5660ee]
+    - [x] Write integration test for `BatchInsertOrUpdateExecution` with H2
+    - [x] Verify test passes
 - [ ] Task: Integration Test `QueryRecursiveListExecution`
     - [ ] Write integration test for `QueryRecursiveListExecution` with H2
     - [ ] Verify test passes
