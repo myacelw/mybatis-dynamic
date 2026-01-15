@@ -2,6 +2,8 @@ package io.github.myacelw.mybatis.dynamic.core.database;
 
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.KeyGeneratorMode;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.SelectColumn;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.SqlSession;
@@ -92,6 +94,15 @@ public interface MybatisHelper {
     boolean batchInsert(String sql, List<Object> contexts, int batchSize, KeyGeneratorMode keyGeneratorMode, String keyGeneratorColumn, String keyGeneratorSequenceName);
 
     boolean batchUpdate(String sql, List<Object> contexts, int batchSize);
+
+    @Data
+    @AllArgsConstructor
+    class BatchItem {
+        private String sql;
+        private Object context;
+    }
+
+    boolean batchUpdates(List<BatchItem> items, int batchSize);
 
     int update(SqlSession sqlSession, String sql, Object context);
 

@@ -185,6 +185,28 @@ public class MybatisHelperImpl implements MybatisHelper {
         return executeBatch(contexts, batchSize, (session, entity) -> session.update(msId, entity));
     }
 
+    @Override
+    public boolean batchUpdates(List<BatchItem> items, int batchSize) {
+        try (SqlSession batchSqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH)) {
+            int size = items.size();
+            for (int i = 0; i < size; i++) {
+                BatchItem item = items.get(i);
+                String sql = item.getSql();
+                Object context = item.getContext();
+
+                String msId = dynamicSql(sql, Integer.class, SqlCommandType.UPDATE, null, null);
+                batchSqlSession.update(msId, context);
+
+                if ((i + 1) % batchSize == 0 || i == size - 1) {
+                    batchSqlSession.flushStatements();
+                    batchSqlSession.commit();
+                    batchSqlSession.clearCache();
+                }
+            }
+            return true;
+        }
+    }
+
     /**
      * update语句执行
      *

@@ -75,7 +75,7 @@ public interface BaseDao<ID, T> {
     /**
      * 更新非空字段数据
      */
-    default void updateOnlyNonNull(@NonNull T data) {
+    default void onlyUpdateNonNull(@NonNull T data) {
         getDataManager().updateOnlyNonNull(data);
     }
 
