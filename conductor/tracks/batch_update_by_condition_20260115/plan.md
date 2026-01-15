@@ -21,14 +21,14 @@
 - [x] Task: Conductor - User Manual Verification 'Execution Engine' (Protocol in workflow.md)
 
 ## Phase 3: Fluent API & Integration
-- [ ] Task: Implement `BatchUpdateByConditionChain`
-    - [ ] Create `BatchUpdateByConditionChain` in `core` supporting `.add(condition, data)` and `.add(builder, data)`
-- [ ] Task: Integrate with `DataManager`
-    - [ ] Add `batchUpdateByConditionChain()` to `DataManager` and its implementation
-- [ ] Task: Integrate with Spring Module
-    - [ ] Add `batchUpdateByCondition` methods to `BaseDao` in `spring` module
-    - [ ] Add `batchUpdateByCondition` methods to `BaseService` in `spring` module
-- [ ] Task: Conductor - User Manual Verification 'Fluent API & Integration' (Protocol in workflow.md)
+- [x] Task: Implement `BatchUpdateByConditionChain`
+    - [x] Create `BatchUpdateByConditionChain` in `core` supporting `.add(condition, data)` and `.add(builder, data)`
+- [x] Task: Integrate with `DataManager`
+    - [x] Add `batchUpdateByConditionChain()` to `DataManager` and its implementation
+- [x] Task: Integrate with Spring Module
+    - [x] Add `batchUpdateByCondition` methods to `BaseDao` in `spring` module
+    - [x] Add `batchUpdateByCondition` methods to `BaseService` in `spring` module
+- [~] Task: Conductor - User Manual Verification 'Fluent API & Integration' (Protocol in workflow.md)
 
 ## Phase 4: Final Verification
 - [ ] Task: Comprehensive Integration Testing

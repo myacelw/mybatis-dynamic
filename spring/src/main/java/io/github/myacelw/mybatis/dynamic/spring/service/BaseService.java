@@ -73,6 +73,11 @@ public interface BaseService<ID, T> {
     void batchUpdateNonNull(@NonNull List<T> data);
 
     /**
+     * 按条件批量更新
+     */
+    BatchUpdateByConditionChain<ID> batchUpdateByConditionChain();
+
+    /**
      * 插入或者更新数据，根据是否存在id来决定是插入还是更新
      *
      * @param data 数据

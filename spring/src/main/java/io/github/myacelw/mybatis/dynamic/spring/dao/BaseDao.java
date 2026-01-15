@@ -103,6 +103,13 @@ public interface BaseDao<ID, T> {
     }
 
     /**
+     * 按条件批量更新
+     */
+    default BatchUpdateByConditionChain<ID> batchUpdateByConditionChain() {
+        return getDataManager().batchUpdateByConditionChain();
+    }
+
+    /**
      * 批量插入或更新数据
      *
      * @param data 数据列表，每个元素可以是Map 或 实体对象
