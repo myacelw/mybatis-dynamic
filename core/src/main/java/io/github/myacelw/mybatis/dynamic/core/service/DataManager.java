@@ -101,7 +101,7 @@ public interface DataManager<ID> {
     /**
      * 更新非空字段数据
      */
-    default void onlyUpdateNonNull(@NonNull Object data) {
+    default void updateOnlyNonNull(@NonNull Object data) {
         updateChain().data(data).onlyUpdateNonNull().exec();
     }
 
