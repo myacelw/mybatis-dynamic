@@ -485,6 +485,7 @@ public class MybatisHelperImpl implements MybatisHelper {
                     batchSqlSession.flushStatements();
                 }
             }
+            batchSqlSession.commit();
             return true;
         }
     }
