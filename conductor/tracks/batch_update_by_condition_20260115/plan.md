@@ -9,7 +9,7 @@
     - [ ] Implement `batchUpdates` in `MybatisHelperImpl` to handle heterogeneous SQL statements in a single transaction/session
 - [x] Task: Conductor - User Manual Verification 'Foundations' (Protocol in workflow.md)
 
-## Phase 2: Execution Engine
+## Phase 2: Execution Engine [checkpoint: a4dcbc4]
 - [x] Task: Implement `BatchUpdateByConditionExecution`
     - [x] Create `BatchUpdateByConditionExecution` class in `core`
     - [x] Implement `exec` logic: loop through updates, generate SQL/Context for each, and call `MybatisHelper.batchUpdates`
@@ -18,7 +18,7 @@
 - [x] Task: Add Interceptor Hooks
     - [x] Add `beforeBatchUpdateByCondition` and `afterBatchUpdateByCondition` to `DataChangeInterceptor`
     - [x] Update `DataChangeInterceptorGroup` to delegate these new hooks
-- [~] Task: Conductor - User Manual Verification 'Execution Engine' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Execution Engine' (Protocol in workflow.md)
 
 ## Phase 3: Fluent API & Integration
 - [ ] Task: Implement `BatchUpdateByConditionChain`
