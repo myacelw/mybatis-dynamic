@@ -48,7 +48,7 @@ public class InsertOrUpdateExecution<ID> extends AbstractExecution<ID, ID, Inser
         if (haveId && dataManager.getModel().isLogicDelete() && existsByIdIgnoreLogicDelete(dataManager, id)) {
             dataManager.delete(id, true);
         }
-        return dataManager.insert(data, true);
+        return dataManager.insertDisableGenerateId(data);
     }
 
     /**

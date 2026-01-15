@@ -254,7 +254,7 @@ public class ModelDataLoader {
         Map<String, Object> oldRowData = manager.getByIdChain().id(id).selectFields(manager.getModel().getPrimaryKeyFields()).nullNotThrowException().exec();
         if (oldRowData == null) {
             try {
-                manager.insert(rowData, true);
+                manager.insertDisableGenerateId(rowData);
             } catch (Exception e) {
                 throw new ModelDataLoaderException("写入模型'" + manager.getModel().getName() + "'初始化数据错误, " + e.getMessage() + ", 新增数据: " + ellipsisJson(rowData), e);
             }
