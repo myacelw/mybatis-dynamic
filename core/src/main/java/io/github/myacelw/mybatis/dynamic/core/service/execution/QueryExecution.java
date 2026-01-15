@@ -89,7 +89,8 @@ public class QueryExecution<ID, T> extends AbstractExecution<ID, List<T>, QueryC
         String whereSql = condition == null ? "" : condition.sql("r" + tableAsName, t -> convertColumnForRightField(modelContext, t), modelContext.getDialect());
         context.put("r" + tableAsName, condition);
 
-        String whereSql2 = additionalCondition == null ? "" : additionalCondition.sql("r" + tableAsName, t -> "t" + "." + convertColumnForRightField(modelContext, t), modelContext.getDialect());
+        String whereSql2 = additionalCondition == null ? "" : additionalCondition.sql("r" + tableAsName + "add", t -> "t" + "." + convertColumnForRightField(modelContext, t), modelContext.getDialect());
+        context.put("r" + tableAsName + "add", additionalCondition);
 
         String[] idColumns = convertColumnForAllField(modelContext, modelContext.getModel().getPrimaryKeyFields());
         Assert.isTrue(idColumns.length == parentIdFields.length, "idColumns.length != parentIdFields.length");
