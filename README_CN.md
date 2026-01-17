@@ -427,6 +427,26 @@ List<Map<String, Object>> results = dataManager.queryChain()
         .exec();
 ```
 
+### 批量操作 (Batch Operations)
+
+高效处理大量数据。
+
+```java
+List<User> userList = ...;
+
+// 批量插入
+userService.getDataManager().batchInsert(userList);
+
+// 批量更新 (根据 ID)
+userService.getDataManager().batchUpdate(userList);
+
+// 按条件批量更新
+userService.batchUpdateByConditionChain()
+        .add(c -> c.eq("status", "Active"), user1)
+        .add(c -> c.eq("status", "Inactive"), user2)
+        .exec();
+```
+
 ### 递归查询
 
 检索层次结构数据（例如部门树）。

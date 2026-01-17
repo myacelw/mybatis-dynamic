@@ -426,6 +426,26 @@ List<Map<String, Object>> results = dataManager.queryChain()
         .exec();
 ```
 
+### Batch Operations
+
+Efficiently handle large datasets.
+
+```java
+List<User> userList = ...;
+
+// Batch Insert
+userService.getDataManager().batchInsert(userList);
+
+// Batch Update (by ID)
+userService.getDataManager().batchUpdate(userList);
+
+// Batch Update by Condition
+userService.batchUpdateByConditionChain()
+        .add(c -> c.eq("status", "Active"), user1)
+        .add(c -> c.eq("status", "Inactive"), user2)
+        .exec();
+```
+
 ### Recursive Queries
 
 Retrieve hierarchical data (e.g., Department Tree).
