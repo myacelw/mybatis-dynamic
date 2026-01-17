@@ -1,16 +1,16 @@
 # Implementation Plan: Comprehensive README Overhaul
 
-## Phase 1: Structure & Core Content [checkpoint: TBD]
-- [~] Task: Analyze existing documentation and codebase
-    - [ ] Review current `README.md` and `GEMINI.md`.
-    - [ ] Analyze `sample` module for code examples.
-    - [ ] Identify key classes for Advanced Features (e.g., `ExtBean`, Interceptors).
-- [~] Task: Draft Main `README.md` Structure
-    - [ ] Create a new `README_NEW.md` (temporary) to start drafting.
-    - [ ] Write **Introduction** and **Key Features**.
-    - [ ] Write **Installation** (Maven/Gradle) and **Quick Start** sections.
-    - [ ] Write **Architecture Overview**.
-- [ ] Task: Conductor - User Manual Verification 'Structure & Core Content' (Protocol in workflow.md)
+## Phase 1: Structure & Core Content [checkpoint: f8e1c11]
+- [x] Task: Analyze existing documentation and codebase
+    - [x] Review current `README.md` and `GEMINI.md`.
+    - [x] Analyze `sample` module for code examples.
+    - [x] Identify key classes for Advanced Features (e.g., `ExtBean`, Interceptors).
+- [x] Task: Draft Main `README.md` Structure
+    - [x] Create a new `README_NEW.md` (temporary) to start drafting.
+    - [x] Write **Introduction** and **Key Features**.
+    - [x] Write **Installation** (Maven/Gradle) and **Quick Start** sections.
+    - [x] Write **Architecture Overview**.
+- [x] Task: Conductor - User Manual Verification 'Structure & Core Content' (Protocol in workflow.md)
 
 ## Phase 2: Advanced Features Documentation [checkpoint: TBD]
 - [ ] Task: Document Modeling & Extensibility
