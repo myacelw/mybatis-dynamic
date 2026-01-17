@@ -9,13 +9,13 @@
 - [x] Task: Conductor - User Manual Verification 'API Audit & Mapping' (Protocol in workflow.md)
 
 ## Phase 2: Content Generation (English) [checkpoint: TBD]
-- [ ] Task: Draft "Permission Management" Section
-    - [ ] Define Column and Row permissions.
-    - [ ] Provide `Permission` interface implementation example.
-    - [ ] Provide `CurrentUserHolder` integration example.
-- [ ] Task: Replace "Multi-Tenancy" in `README.md`
-    - [ ] Integrate the new content into the English README.
-- [ ] Task: Conductor - User Manual Verification 'Content Generation (English)' (Protocol in workflow.md)
+- [x] Task: Draft "Permission Management" Section
+    - [x] Define Column and Row permissions.
+    - [x] Provide `Permission` interface implementation example.
+    - [x] Provide `CurrentUserHolder` integration example.
+- [x] Task: Replace "Multi-Tenancy" in `README.md`
+    - [x] Integrate the new content into the English README.
+- [x] Task: Conductor - User Manual Verification 'Content Generation (English)' (Protocol in workflow.md)
 
 ## Phase 3: Content Generation (Chinese) [checkpoint: TBD]
 - [ ] Task: Translate & Localize "Permission Management"

@@ -474,9 +474,50 @@ public class MyInterceptor implements DataChangeInterceptor {
 
 Automatically populate fields (e.g., `createTime`, `updateUser`). Implement `Filler` or extend `AbstractCreatorFiller`.
 
-### Multi-Tenancy
+### Permission Management
 
-Isolate data using separate `ModelService` instances (different table prefixes) or Row-Level Permissions via `Permission` interface.
+The framework provides a robust permission system to control access to data (Row Permissions) and fields (Column Permissions).
+
+#### 1. Concepts
+
+- **Row Permissions (Data Rights)**: Filters data based on conditions (e.g., `tenant_id = 'T001'`). Applied automatically to Select, Update, and Delete operations.
+- **Column Permissions (Field Rights)**: Restricts which fields are visible (in Select) or modifiable (in Insert/Update).
+
+#### 2. Implementing Permissions
+
+Implement the `CurrentUserHolder` interface to provide user context and permissions.
+
+```java
+@Component
+public class MyUserHolder implements CurrentUserHolder {
+
+    @Override
+    public String getCurrentUserId() {
+        // Return current user ID from Security Context (e.g., Spring Security)
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    @Override
+    public Permission getCurrentUserPermission(Model model) {
+        // Return permissions based on the model and current user
+        if ("User".equals(model.getName())) {
+            // Row Permission: Only see users in the same tenant
+            Condition dataRights = SimpleCondition.eq("tenant_id", getCurrentTenantId());
+            
+            // Column Permission: Cannot see "password" or "salary"
+            // If list is null, all fields are accessible.
+            List<String> fieldRights = Arrays.asList("id", "name", "age", "tenant_id");
+            
+            return new Permission(fieldRights, dataRights);
+        }
+        return null; // No restrictions
+    }
+}
+```
+
+#### 3. Multi-Tenancy
+
+Multi-tenancy is a primary use case for Row Permissions. By returning a `dataRights` condition (e.g., `tenant_id = current_tenant_id`) in `getCurrentUserPermission`, you ensure strict data isolation across the application.
 
 ### Custom Type Handlers
 
