@@ -24,11 +24,11 @@
 - [x] Task: Conductor - User Manual Verification 'Advanced Features Documentation' (Protocol in workflow.md)
 
 ## Phase 3: Finalization & Polish [checkpoint: TBD]
-- [ ] Task: Community & Contributing
-    - [ ] Add **Contribution Guidelines**.
-    - [ ] Add **License** info.
-- [ ] Task: Review & Replace
-    - [ ] Verify all code snippets against the `sample` project.
-    - [ ] Replace the old `README.md` with `README_NEW.md`.
-    - [ ] (Optional) Move detailed sections to `docs/` if `README.md` exceeds manageable length.
-- [ ] Task: Conductor - User Manual Verification 'Finalization & Polish' (Protocol in workflow.md)
+- [x] Task: Community & Contributing
+    - [x] Add **Contribution Guidelines**.
+    - [x] Add **License** info.
+- [x] Task: Review & Replace
+    - [x] Verify all code snippets against the `sample` project.
+    - [x] Replace the old `README.md` with `README_NEW.md`.
+    - [x] (Optional) Move detailed sections to `docs/` if `README.md` exceeds manageable length.
+- [x] Task: Conductor - User Manual Verification 'Finalization & Polish' (Protocol in workflow.md)

@@ -1,5 +1,7 @@
 # mybatis-dynamic
 
+[English](README.md)
+
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.myacelw/mybatis-dynamic-core.svg)](https://search.maven.org/search?q=g:io.github.myacelw%20AND%20a:mybatis-dynamic-core)
 
@@ -429,3 +431,12 @@ public class MyInterceptor implements DataChangeInterceptor {
 ### 3. 多租户 (Multi-Tenancy)
 
 通过使用独立的 `ModelService` 实例（不同的表前缀）或通过 `Permission` 接口的行级权限来隔离数据。
+
+## 社区
+
+- **Issues**: 提交 Bug 或功能建议。
+- **Discussions**: 参与 GitHub 讨论。
+
+## 许可证
+
+本项目采用 [Apache License 2.0](LICENSE) 许可证。
