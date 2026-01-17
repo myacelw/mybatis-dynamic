@@ -18,11 +18,11 @@
 - [x] Task: Conductor - User Manual Verification 'Content Generation (English)' (Protocol in workflow.md)
 
 ## Phase 3: Content Generation (Chinese) [checkpoint: TBD]
-- [ ] Task: Translate & Localize "Permission Management"
-    - [ ] Translate the content from Phase 2 into Chinese.
-- [ ] Task: Replace "Multi-Tenancy" in `README_CN.md`
-    - [ ] Integrate the new content into the Chinese README.
-- [ ] Task: Conductor - User Manual Verification 'Content Generation (Chinese)' (Protocol in workflow.md)
+- [x] Task: Translate & Localize "Permission Management"
+    - [x] Translate the content from Phase 2 into Chinese.
+- [x] Task: Replace "Multi-Tenancy" in `README_CN.md`
+    - [x] Integrate the new content into the Chinese README.
+- [x] Task: Conductor - User Manual Verification 'Content Generation (Chinese)' (Protocol in workflow.md)
 
 ## Phase 4: Final Review & Polish [checkpoint: TBD]
 - [ ] Task: Verify Code Snippets & Links

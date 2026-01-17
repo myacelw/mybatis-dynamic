@@ -475,9 +475,50 @@ public class MyInterceptor implements DataChangeInterceptor {
 
 自动填充字段（例如 `createTime`, `updateUser`）。实现 `Filler` 接口或继承 `AbstractCreatorFiller`。
 
-### 多租户 (Multi-Tenancy)
+### 权限管理 (Permission Management)
 
-通过使用独立的 `ModelService` 实例（不同的表前缀）或通过 `Permission` 接口的行级权限来隔离数据。
+框架提供了强大的权限系统来控制对数据（行权限）和字段（列权限）的访问。
+
+#### 1. 概念
+
+- **行权限 (Data Rights)**: 基于条件过滤数据（例如 `tenant_id = 'T001'`）。自动应用于 Select、Update 和 Delete 操作。
+- **列权限 (Field Rights)**: 限制哪些字段可见（在 Select 中）或可修改（在 Insert/Update 中）。
+
+#### 2. 实现权限
+
+实现 `CurrentUserHolder` 接口以提供用户上下文和权限。
+
+```java
+@Component
+public class MyUserHolder implements CurrentUserHolder {
+
+    @Override
+    public String getCurrentUserId() {
+        // 从安全上下文（如 Spring Security）返回当前用户 ID
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    @Override
+    public Permission getCurrentUserPermission(Model model) {
+        // 根据模型和当前用户返回权限
+        if ("User".equals(model.getName())) {
+            // 行权限：只能查看同一租户下的用户
+            Condition dataRights = SimpleCondition.eq("tenant_id", getCurrentTenantId());
+            
+            // 列权限：不能查看 "password" 或 "salary"
+            // 如果列表为 null，则所有字段均可访问。
+            List<String> fieldRights = Arrays.asList("id", "name", "age", "tenant_id");
+            
+            return new Permission(fieldRights, dataRights);
+        }
+        return null; // 无限制
+    }
+}
+```
+
+#### 3. 多租户 (Multi-Tenancy)
+
+多租户是行权限的一个主要用例。通过在 `getCurrentUserPermission` 中返回一个 `dataRights` 条件（例如 `tenant_id = current_tenant_id`），您可以确保应用程序中严格的数据隔离。
 
 ### 自定义类型处理器 (Custom Type Handlers)
 
