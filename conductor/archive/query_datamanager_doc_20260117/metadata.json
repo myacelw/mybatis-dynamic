@@ -1,0 +1,8 @@
+{
+  "track_id": "query_datamanager_doc_20260117",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-01-17T15:00:00Z",
+  "updated_at": "2026-01-17T15:00:00Z",
+  "description": "README文档补充 关于数据查询 select选择关联表字段后，自动join的说明；join 方式默认为左关联但可以设置的说明；join 内的附加条件说明。数据查询条件的配置说明包括简单条件、and、or、not条件、存在条件、自定义条件都要说明。另外DataManager实现的数据管理接口都要简单进行进行介绍。重新组织文档结构。"
+}
