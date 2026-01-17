@@ -13,6 +13,7 @@ import io.github.myacelw.mybatis.dynamic.core.metadata.field.BasicField;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.Field;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.GroupField;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Table;
+import io.github.myacelw.mybatis.dynamic.core.metadata.vo.DDLPlan;
 import io.github.myacelw.mybatis.dynamic.core.service.*;
 import io.github.myacelw.mybatis.dynamic.core.service.filler.Filler;
 import lombok.Getter;
@@ -40,10 +41,11 @@ public class ModelServiceImpl implements ModelService {
 
     protected final MybatisHelper mybatisHelper;
 
-    protected final TableManager tableManager;
-
     @Getter
     protected final ModelToTableConverter modelToTableConverter;
+
+    @Getter
+    protected final TableManager tableManager;
 
     protected final Map<String, Filler> fillers;
 
@@ -68,6 +70,10 @@ public class ModelServiceImpl implements ModelService {
     @Setter
     protected Boolean disableAlterComment;
 
+    @Getter
+    @Setter
+    private boolean dryRun = false;
+
     protected final Map<String, DataManager<Object>> dataManagerMap = new ConcurrentHashMap<>();
 
     protected final Map<Class<?>, String> modelNameMap = new ConcurrentHashMap<>();
@@ -90,7 +96,13 @@ public class ModelServiceImpl implements ModelService {
 
         model.init(modelToTableConverter);
         Table table = modelToTableConverter.convertToTable(model, fieldWhiteList);
-        tableManager.createOrUpgradeTable(table);
+        DDLPlan plan = tableManager.getUpdatePlan(table);
+        if (dryRun) {
+            log.info("DRY RUN MODE: DDL SQL generated but not executed for model '{}'", model.getName());
+            plan.getSqlList().forEach(sql -> log.info("DRY RUN SQL: {}", sql.getSql()));
+        } else {
+            tableManager.executePlan(plan);
+        }
         EventListener.onEvent(eventListeners, new UpdateModelEvent(model, table));
     }
 

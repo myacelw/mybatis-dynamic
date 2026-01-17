@@ -58,6 +58,8 @@ public class ModelServiceBuilder {
      */
     Boolean disableAlterComment;
 
+    boolean dryRun = false;
+
     public static ModelServiceBuilder builder(SqlSessionFactory sqlSessionFactory) {
         return new ModelServiceBuilder(sqlSessionFactory);
     }
@@ -103,6 +105,11 @@ public class ModelServiceBuilder {
 
     public ModelServiceBuilder disableAlterComment(Boolean disableAlterComment) {
         this.disableAlterComment = disableAlterComment;
+        return this;
+    }
+
+    public ModelServiceBuilder dryRun(boolean dryRun) {
+        this.dryRun = dryRun;
         return this;
     }
 
@@ -179,10 +186,20 @@ public class ModelServiceBuilder {
                 mergedFiller, class2ModelTransfer
         );
 
-        modelService.setInterceptors(interceptors);
-        modelService.setPermissionGetter(permissionGetter);
-        modelService.setEventListeners(eventListeners);
-        modelService.setDisableAlterComment(disableAlterComment);
-        return modelService;
-    }
-}
+                modelService.setInterceptors(interceptors);
+
+                modelService.setPermissionGetter(permissionGetter);
+
+                modelService.setEventListeners(eventListeners);
+
+                modelService.setDisableAlterComment(disableAlterComment);
+
+                modelService.setDryRun(dryRun);
+
+                return modelService;
+
+            }
+
+        }
+
+        

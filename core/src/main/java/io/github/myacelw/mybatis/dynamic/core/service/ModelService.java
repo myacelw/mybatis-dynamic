@@ -1,5 +1,6 @@
 package io.github.myacelw.mybatis.dynamic.core.service;
 
+import io.github.myacelw.mybatis.dynamic.core.database.TableManager;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Permission;
 import lombok.NonNull;
@@ -143,5 +144,11 @@ public interface ModelService extends DataManagerGetter {
     }
 
     ModelToTableConverter getModelToTableConverter();
+
+    TableManager getTableManager();
+
+    boolean isDryRun();
+
+    void setDryRun(boolean dryRun);
 
 }

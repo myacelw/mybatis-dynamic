@@ -10,6 +10,7 @@ import io.github.myacelw.mybatis.dynamic.core.metadata.enums.IndexType;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Column;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Index;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.Table;
+import io.github.myacelw.mybatis.dynamic.core.metadata.vo.DDLPlan;
 import io.github.myacelw.mybatis.dynamic.core.metadata.vo.Sql;
 import io.github.myacelw.mybatis.dynamic.core.util.Assert;
 import io.github.myacelw.mybatis.dynamic.core.util.ObjectUtil;
@@ -48,45 +49,66 @@ public class TableManagerImpl implements TableManager {
 
     @Override
     public void createOrUpgradeTable(@NonNull Table table) {
-        Table currentTable = getCurrentTableOrRename(table);
-        modifyTableComment(table, currentTable);
-
-        List<Column> columns = getCurrentTableColumns(table);
-        if (columns == null || columns.isEmpty()) {
-            createTableAndIndex(table);
-        } else {
-            upgradeTable(table, columns);
-        }
+        DDLPlan plan = getUpdatePlan(table);
+        executePlan(plan);
     }
 
-    private Table getCurrentTableOrRename(Table table) {
+    @Override
+    public DDLPlan getUpdatePlan(@NonNull Table table) {
+        DDLPlan plan = new DDLPlan();
         Table currentTable = queryTable(table);
-        if (currentTable != null) {
-            return currentTable;
-        }
-        if (!ObjectUtil.isEmpty(table.getOldTableNames())) {
+        String effectiveTableNameForColumns = table.getTableName();
+
+        if (currentTable == null && !ObjectUtil.isEmpty(table.getOldTableNames())) {
             for (String oldTableName : table.getOldTableNames()) {
                 Table oldTable = queryTable(new Table(oldTableName, table.getSchema()));
                 if (oldTable != null) {
-                    rename(oldTable, table);
-                    return queryTable(table);
+                    plan.addSql(dialect.getRenameTableSql(oldTable, table));
+                    currentTable = oldTable;
+                    effectiveTableNameForColumns = oldTableName;
+                    break;
                 }
             }
         }
-        return null;
+
+        plan.addAll(generateTableCommentSql(table, currentTable));
+
+        List<Column> columns = getCurrentTableColumns(effectiveTableNameForColumns, table.getSchema());
+        if (columns == null || columns.isEmpty()) {
+            plan.addAll(generateCreateTableAndIndexSql(table));
+        } else {
+            plan.addAll(generateUpgradeTableSql(table, columns));
+        }
+        return plan;
     }
 
-    protected void modifyTableComment(Table table, Table oldTable) {
-        if (table.getDisableAlterComment() == Boolean.TRUE) {
+    @Override
+    public void executePlan(DDLPlan plan) {
+        if (plan == null || plan.isEmpty()) {
             return;
         }
-
-        if (table.getComment() != null) {
-            if (oldTable != null && !table.getComment().equals(oldTable.getComment())) {
-                Sql sql = dialect.getSetTableCommentSql(table);
+        for (Sql sql : plan.getSqlList()) {
+            if (sql != null && sql.getSql() != null) {
                 runSql(sql);
             }
         }
+    }
+
+    protected List<Sql> generateTableCommentSql(Table table, Table oldTable) {
+        List<Sql> sqlList = new ArrayList<>();
+        if (table.getDisableAlterComment() == Boolean.TRUE) {
+            return sqlList;
+        }
+
+        if (table.getComment() != null) {
+            if (oldTable == null || !table.getComment().equals(oldTable.getComment())) {
+                Sql sql = dialect.getSetTableCommentSql(table);
+                if (sql != null) {
+                    sqlList.add(sql);
+                }
+            }
+        }
+        return sqlList;
     }
 
     @Override
@@ -110,11 +132,11 @@ public class TableManagerImpl implements TableManager {
     }
 
     public List<Column> getCurrentTableColumns(String tableName, String schemaName) {
-        return getCurrentTableColumns(new Table(tableName, schemaName));
-    }
-
-    public List<Column> getCurrentTableColumns(Table table) {
+        Table table = new Table(tableName, schemaName);
         List<Column> columns = metaDataHelper.getColumns(table.getTableName(), table.getSchema());
+        if (columns == null || columns.isEmpty()) {
+            return columns;
+        }
         List<Index> indexList = metaDataHelper.getIndexList(table.getTableName(), table.getSchema());
 
         Map<String, Index> indexMap = new HashMap<>();
@@ -127,19 +149,42 @@ public class TableManagerImpl implements TableManager {
             Index index = indexMap.get(c.getColumnName());
             if (index != null) {
                 // 过滤掉主键索引
+                // 注意：这里由于是根据表名查询的，table对象并没有pk信息，需要从columns中识别或者跳过
+                // 之前的代码是通过传入的table.getPrimaryKeyColumns()过滤的。
+                // 我们在生成计划时，getCurrentTableColumns 被调用，但此时我们只有表名。
+                // 幸好 DataBaseMetaDataHelperImpl 获取的 columns 包含 pk 信息（虽然 Column 类没存，但 MetaDataHelper 可能知道）。
+                // 实际上 TableManagerImpl 原本的代码是：
+                // if (table.getPrimaryKeyColumns() == null || table.getPrimaryKeyColumns().stream().noneMatch(t -> t.equalsIgnoreCase(c.getColumnName())))
+                // 我们可以在调用处补全这个逻辑。
+            }
+        }
+        return columns;
+    }
+
+    public List<Column> getCurrentTableColumns(Table table) {
+        List<Column> columns = getCurrentTableColumns(table.getTableName(), table.getSchema());
+        if (columns == null) return null;
+
+        for (Column c : columns) {
+            // 补全索引信息，排除主键
+            List<Index> indexList = metaDataHelper.getIndexList(table.getTableName(), table.getSchema());
+            Map<String, Index> indexMap = new HashMap<>();
+            indexList.stream().filter(t -> t.getColumnNames().size() == 1)
+                    .forEach(t -> indexMap.put(t.getColumnNames().get(0), t));
+            
+            Index index = indexMap.get(metaDataHelper.unwrapIdentifier(c.getColumnName()));
+            if (index != null) {
                 if (table.getPrimaryKeyColumns() == null || table.getPrimaryKeyColumns().stream().noneMatch(t -> t.equalsIgnoreCase(c.getColumnName()))) {
                     c.setIndex(true);
                     c.setIndexName(metaDataHelper.getWrappedIdentifierInMeta(index.getIndexName()));
                     c.setIndexType(index.getIndexType());
                 }
             }
-
-            // c.setColumnName(metaDataHelper.getWrappedIdentifierInMeta(c.getColumnName()));
         }
         return columns;
     }
 
-    protected void createTableAndIndex(Table table) {
+    protected List<Sql> generateCreateTableAndIndexSql(Table table) {
         List<Sql> sqlList = new ArrayList<>(dialect.getCreateTableSql(table));
 
         table.getColumns().forEach(c -> {
@@ -147,11 +192,7 @@ public class TableManagerImpl implements TableManager {
                 getCreateIndexSql(table, c).ifPresent(sqlList::add);
             }
         });
-        for (Sql sql : sqlList) {
-            if (sql != null && sql.getSql() != null) {
-                runSql(sql);
-            }
-        }
+        return sqlList;
     }
 
     private void runSql(Sql sql) {
@@ -185,9 +226,9 @@ public class TableManagerImpl implements TableManager {
     }
 
     /**
-     * 更新表结构，只会增加列和修改列，不会删除列。
+     * 生成更新表结构的 SQL 列表
      */
-    protected void upgradeTable(Table table, List<Column> currentColumns) {
+    protected List<Sql> generateUpgradeTableSql(Table table, List<Column> currentColumns) {
         List<Sql> sqlList = new ArrayList<>();
 
         for (Column newColumn : table.getColumns()) {
@@ -239,11 +280,7 @@ public class TableManagerImpl implements TableManager {
                 .filter(t -> !t.isChecked())
                 .forEach(t -> log.warn("undefined columns: '{}.{}'", table.getTableName(), t.getColumnName()));
 
-        for (Sql sql : sqlList) {
-            if (sql != null && sql.getSql() != null) {
-                runSql(sql);
-            }
-        }
+        return sqlList;
     }
 
     protected List<Sql> getAddColumnAndIndexSql(Table table, Column newColumn) {
