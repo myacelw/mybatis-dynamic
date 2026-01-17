@@ -1,6 +1,6 @@
 # Implementation Plan: Aggregation Query Documentation
 
-## Phase 1: API Audit & Content Drafting [checkpoint: TBD]
+## Phase 1: API Audit & Content Drafting [checkpoint: 0442ee0]
 - [x] Task: Audit AggQuery API
     - [x] Review `AggQueryChain.java` and related classes in `core` to identify all available functions and methods.
 - [x] Task: Draft English Content
