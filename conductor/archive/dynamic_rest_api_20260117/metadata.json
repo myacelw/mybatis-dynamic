@@ -1,0 +1,8 @@
+{
+  "track_id": "dynamic_rest_api_20260117",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-17T14:45:00Z",
+  "updated_at": "2026-01-17T14:45:00Z",
+  "description": "Implement a generic DynamicModelController to provide zero-code REST API endpoints for all registered models."
+}

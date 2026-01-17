@@ -7,10 +7,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 *Link: [./tracks/refine_interfaces_20260115/](./tracks/refine_interfaces_20260115/)*
 
 
----
-
-- [x] **Track: Implement a generic DynamicModelController to provide zero-code REST API endpoints for all registered models.**
-*Link: [./tracks/dynamic_rest_api_20260117/](./tracks/dynamic_rest_api_20260117/)*
 
 ---
 
