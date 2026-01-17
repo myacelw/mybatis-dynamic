@@ -9,8 +9,6 @@ import io.github.myacelw.mybatis.dynamic.core.exception.crud.JoinFieldException;
 import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
 import io.github.myacelw.mybatis.dynamic.core.metadata.field.*;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.*;
-import io.github.myacelw.mybatis.dynamic.core.metadata.field.*;
-import io.github.myacelw.mybatis.dynamic.core.metadata.query.*;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.GroupCondition;
 import io.github.myacelw.mybatis.dynamic.core.metadata.table.SelectColumn;
@@ -351,7 +349,7 @@ public class QueryNode {
         }
 
         for (QueryNode child : children) {
-            result.addAll(child.getSelectColumnsForRefModel(plain, useFieldJavaType));
+            result.addAll(child.getSelectColumnsForRefModel(propertyPrefix, plain, useFieldJavaType));
         }
 
         //处理自定义返回列
@@ -370,7 +368,7 @@ public class QueryNode {
                 if (!columns.isEmpty()) {
                     sql = Condition.replacePlaceholders(valueExpression, null, customSelectField.getSqlTemplate(), columns.get(0));
                 }
-                result.add(SelectColumn.column(sql, customSelectField.getName(), customSelectField.getJavaType(), customSelectField.getTypeHandler(), customSelectField.getJdbcType()));
+                result.add(SelectColumn.column(sql, propertyPrefix + customSelectField.getName(), customSelectField.getJavaType(), customSelectField.getTypeHandler(), customSelectField.getJdbcType()));
             }
         }
 
@@ -400,21 +398,21 @@ public class QueryNode {
         return result;
     }
 
-    private List<SelectColumn> getSelectColumnsForRefModel(boolean plain, boolean useFieldJavaType) {
+    private List<SelectColumn> getSelectColumnsForRefModel(String propertyPrefix, boolean plain, boolean useFieldJavaType) {
         String fieldName = linkField.getName();
         Class<?> javaClass = linkField.getJavaClass();
 
         if (plain) {
-            return getSelectColumns(true, fieldName + ".", useFieldJavaType, null);
+            return getSelectColumns(true, propertyPrefix + fieldName + ".", useFieldJavaType, null);
         } else {
             List<SelectColumn> subs = getSelectColumns(false, "", useFieldJavaType, null);
             if (subs.isEmpty()) {
                 return Collections.emptyList();
             }
             if (linkField instanceof ToOneField) {
-                return Collections.singletonList(SelectColumn.association(null, fieldName, subs, javaClass));
+                return Collections.singletonList(SelectColumn.association(null, propertyPrefix + fieldName, subs, javaClass));
             } else {
-                return Collections.singletonList(SelectColumn.collection(null, fieldName, subs, javaClass));
+                return Collections.singletonList(SelectColumn.collection(null, propertyPrefix + fieldName, subs, javaClass));
             }
         }
     }
