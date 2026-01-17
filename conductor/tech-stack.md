@@ -11,6 +11,7 @@ The `mybatis-dynamic` project is built upon a robust and widely adopted technolo
 ## Frameworks
 
 *   **Spring Boot**: Used for simplified application development, dependency injection, and auto-configuration, particularly within the `spring` and `sample` modules.
+*   **SpringDoc OpenAPI**: Integration for automated API documentation.
 *   **MyBatis**: The core ORM framework upon which `mybatis-dynamic` builds its dynamic modeling and querying capabilities.
 
 ## Build Tool
