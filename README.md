@@ -387,6 +387,19 @@ The `ConditionBuilder` supports a wide range of operators:
 - **Logical**: `and`, `or`, `not` (nested).
 - **Exists**: `exists` (Subquery).
 
+**Optional Variants:**
+All the above operators (except Null Check and Exists) have an `Optional` variant (e.g., `eqOptional`, `likeOptional`, `inOptional`).
+These methods automatically ignore the condition if the provided value is `null`, an empty string, or an empty collection.
+
+```java
+// If name is null, "name = ?" is not added to SQL.
+// If age is null, "age > ?" is not added to SQL.
+userService.queryChain()
+    .where(c -> c.eqOptional("name", name)
+                 .gtOptional("age", age))
+    .exec();
+```
+
 #### 2. Examples
 
 **Complex Logic**

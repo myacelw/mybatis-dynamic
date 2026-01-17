@@ -389,6 +389,19 @@ List<User> users = userService.queryChain()
 - **逻辑**: `and`, `or`, `not` (嵌套).
 - **存在**: `exists` (子查询).
 
+**可选变体 (Optional Variants):**
+上述大多数操作符（空值检查和 Exists 除外）都有一个 `Optional` 变体（例如 `eqOptional`, `likeOptional`, `inOptional`）。
+如果传入的值为 `null`、空字符串或空集合，这些方法会自动忽略该条件，不将其添加到最终的 SQL 中。
+
+```java
+// 如果 name 为 null，则不会将 "name = ?" 添加到 SQL 中。
+// 如果 age 为 null，则不会将 "age > ?" 添加到 SQL 中。
+userService.queryChain()
+    .where(c -> c.eqOptional("name", name)
+                 .gtOptional("age", age))
+    .exec();
+```
+
 #### 2. 示例
 
 **复杂逻辑**
