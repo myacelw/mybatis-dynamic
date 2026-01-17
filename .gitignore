@@ -3,6 +3,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 pom.xml.versionsBackup
+.flattened-pom.xml
+test.mv.db
 
 ### IntelliJ IDEA ###
 .idea/

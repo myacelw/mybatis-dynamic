@@ -3,28 +3,38 @@ name: Publish to Maven Central
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*' # 当你推送 v1.0.0 等标签时触发
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
+          # 这里的 server-id 必须和你 pom.xml 中的 <distributionManagement> 里的 ID 一致
           server-id: ossrh
-          server-username: OSSRH_USERNAME
-          server-password: OSSRH_PASSWORD
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }} # 自动导入 GPG
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          # GPG 配置：setup-java 会自动处理私钥导入
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: GPG_PASSPHRASE
 
-      - name: Publish to Central Portal
-        run: mvn --batch-mode clean deploy -P release
+      - name: Publish to Maven Central
+        run: |
+          # 使用 -P release 激活你 pom.xml 中的签名和发布配置
+          # -DskipTests 跳过测试以加快发布速度
+          mvn clean deploy -P release -DskipTests \
+            -DretryFailedDeploymentCount=5
         env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          # 将 GitHub Secrets 映射给 Maven
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
