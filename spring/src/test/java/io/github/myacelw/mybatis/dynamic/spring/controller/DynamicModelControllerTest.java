@@ -5,6 +5,8 @@ import io.github.myacelw.mybatis.dynamic.core.metadata.query.PageResult;
 import io.github.myacelw.mybatis.dynamic.core.service.DataManager;
 import io.github.myacelw.mybatis.dynamic.core.service.ModelService;
 import io.github.myacelw.mybatis.dynamic.core.service.chain.PageChain;
+import io.github.myacelw.mybatis.dynamic.core.metadata.Permission;
+import io.github.myacelw.mybatis.dynamic.spring.hook.CurrentUserHolder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -32,15 +34,24 @@ public class DynamicModelControllerTest {
     @MockBean
     private ModelService modelService;
 
+    @MockBean
+    private CurrentUserHolder currentUserHolder;
+
     private DataManager<Object> dataManager;
 
     @BeforeEach
     public void setup() {
         dataManager = Mockito.mock(DataManager.class);
         when(modelService.getDataManager(anyString(), any())).thenReturn(dataManager);
-        Model model = new Model();
+        io.github.myacelw.mybatis.dynamic.core.metadata.Model model = new io.github.myacelw.mybatis.dynamic.core.metadata.Model();
         model.setName("User");
         when(dataManager.getModel()).thenReturn(model);
+
+        // Stub getModel for the new controller logic
+        when(modelService.getModel("User")).thenReturn(model);
+
+        // Stub createDataManager to return our mock dataManager
+        when(modelService.createDataManager(eq(model), any(), any())).thenReturn(dataManager);
     }
 
     @Test
@@ -88,5 +99,28 @@ public class DynamicModelControllerTest {
         mockMvc.perform(get("/api/dynamic/User?name=zhang&page=1&size=10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total").value(0));
+    }
+
+    @Test
+    public void testPermissionIntegration() throws Exception {
+        io.github.myacelw.mybatis.dynamic.core.metadata.Model model = new io.github.myacelw.mybatis.dynamic.core.metadata.Model();
+        model.setName("User");
+        when(modelService.getModel("User")).thenReturn(model);
+
+        io.github.myacelw.mybatis.dynamic.core.metadata.Permission permission = new io.github.myacelw.mybatis.dynamic.core.metadata.Permission();
+        when(currentUserHolder.getCurrentUserPermission(model)).thenReturn(permission);
+
+        DataManager<Object> dm = Mockito.mock(DataManager.class);
+        // Expect createDataManager to be called with the permission
+        when(modelService.createDataManager(eq(model), eq(permission), any())).thenReturn(dm);
+
+        // Mock getById on the new DM
+        when(dm.getById(any())).thenReturn(Collections.emptyMap());
+
+        mockMvc.perform(get("/api/dynamic/User/1"))
+                .andExpect(status().isOk());
+
+        // Verify createDataManager was called with permission
+        Mockito.verify(modelService).createDataManager(eq(model), eq(permission), any());
     }
 }
