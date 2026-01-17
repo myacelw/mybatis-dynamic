@@ -205,11 +205,26 @@ public class User {
 }
 ```
 
-**查询:**
+**查询 (自动 Join):**
+当选择关联实体的字段时，框架会自动触发 **左连接 (Left Join)**。
+
 ```java
-// 获取用户及其部门
+// 自动关联 'department' 表以获取部门名称
 List<User> users = userService.queryChain()
-        .joins(Join.of("department"))
+        .select(User.Fields.name, "department.name")
+        .exec();
+```
+
+**显式 Join 配置:**
+您可以自定义连接类型（例如 INNER JOIN）并添加 ON 条件。
+
+```java
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.Join;
+import io.github.myacelw.mybatis.dynamic.core.metadata.enums.JoinType;
+
+List<User> users = userService.queryChain()
+        .joins(Join.of("department", JoinType.INNER)
+                   .and(c -> c.eq("department.active", true)))
         .exec();
 ```
 
@@ -363,15 +378,20 @@ List<User> users = userService.queryChain()
 
 构建具有自动逻辑优先级 (`AND` > `OR`) 的复杂查询。
 
-#### 简单查询
-```java
-List<User> users = userService.queryChain()
-        .where(c -> c.eq(User.Fields.name, "John"))
-        .asc(User.Fields.age)
-        .exec();
-```
+#### 1. 条件操作符
 
-#### 复杂逻辑
+`ConditionBuilder` 支持广泛的操作符：
+
+- **简单**: `eq` (等于), `ne` (不等于), `gt` (大于), `gte`, `lt`, `lte`.
+- **字符串**: `like`, `startsWith` (前缀), `endsWith` (后缀), `contains` (包含).
+- **空值检查**: `isNull`, `isNotNull`, `isBlank`, `isNotBlank`.
+- **集合**: `in`, `notIn`.
+- **逻辑**: `and`, `or`, `not` (嵌套).
+- **存在**: `exists` (子查询).
+
+#### 2. 示例
+
+**复杂逻辑**
 ```java
 // WHERE (age > 18 AND status = 'Active') OR role = 'Admin'
 userService.queryChain()
@@ -380,19 +400,12 @@ userService.queryChain()
         .exec();
 ```
 
-#### 关联查询 (Joins)
-使用 `.joins()` 获取相关实体。
-
+**Exists 子查询**
 ```java
-// 获取用户及其部门
-List<User> users = userService.queryChain()
-        .joins(Join.of("department"))
-        .exec();
-
-// 获取学生及其课程 (通过 StudentCourse)
-List<Student> students = studentService.queryChain()
-        .joins(Join.of("studentCourses.course")) 
-        .exec();
+// 查找至少有一笔订单金额大于 100 的用户
+userService.queryChain()
+    .where(c -> c.exists("orders", sub -> sub.gt("amount", 100)))
+    .exec();
 ```
 
 ### 使用 Map 的 DataManager

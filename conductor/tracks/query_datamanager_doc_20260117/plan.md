@@ -10,14 +10,14 @@
 - [x] Task: Conductor - User Manual Verification 'Analysis & Reorganization' (Protocol in workflow.md)
 
 ## Phase 2: Power User Documentation (Advanced Queries) [checkpoint: TBD]
-- [ ] Task: Document Auto-Joins & Join Configuration
-    - [ ] Explain automatic join triggering via field selection.
-    - [ ] Document `Join` type configuration and additional conditions.
-- [ ] Task: Comprehensive Query Condition Guide
-    - [ ] Document simple conditions (eq, gt, like, etc.).
-    - [ ] Document logical operators (and, or, not) with precedence explanation.
-    - [ ] Document `Exists` and `Custom` conditions.
-- [ ] Task: Conductor - User Manual Verification 'Power User Documentation' (Protocol in workflow.md)
+- [x] Task: Document Auto-Joins & Join Configuration
+    - [x] Explain automatic join triggering via field selection.
+    - [x] Document `Join` type configuration and additional conditions.
+- [x] Task: Comprehensive Query Condition Guide
+    - [x] Document simple conditions (eq, gt, like, etc.).
+    - [x] Document logical operators (and, or, not) with precedence explanation.
+    - [x] Document `Exists` and `Custom` conditions.
+- [x] Task: Conductor - User Manual Verification 'Power User Documentation' (Protocol in workflow.md)
 
 ## Phase 3: Power User Documentation (DataManager & Batch) [checkpoint: TBD]
 - [ ] Task: Summarize DataManager API

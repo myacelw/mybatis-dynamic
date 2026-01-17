@@ -203,11 +203,26 @@ public class User {
 }
 ```
 
-**Querying:**
+**Querying (Auto-Join):**
+Selecting a field from a related entity automatically triggers a **Left Join**.
+
 ```java
-// Fetch User and their Department
+// Automatically joins 'department' table to fetch department name
 List<User> users = userService.queryChain()
-        .joins(Join.of("department"))
+        .select(User.Fields.name, "department.name")
+        .exec();
+```
+
+**Explicit Join Configuration:**
+You can customize the join type (e.g., INNER JOIN) and add ON conditions.
+
+```java
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.Join;
+import io.github.myacelw.mybatis.dynamic.core.metadata.enums.JoinType;
+
+List<User> users = userService.queryChain()
+        .joins(Join.of("department", JoinType.INNER)
+                   .and(c -> c.eq("department.active", true)))
         .exec();
 ```
 
@@ -361,13 +376,35 @@ List<User> users = userService.queryChain()
 
 Construct complex queries with automatic logical precedence (`AND` > `OR`).
 
+#### 1. Condition Operators
+
+The `ConditionBuilder` supports a wide range of operators:
+
+- **Simple**: `eq` (equal), `ne` (not equal), `gt` (greater than), `gte`, `lt`, `lte`.
+- **String**: `like`, `startsWith`, `endsWith`, `contains`.
+- **Null Check**: `isNull`, `isNotNull`, `isBlank`, `isNotBlank`.
+- **Collection**: `in`, `notIn`.
+- **Logical**: `and`, `or`, `not` (nested).
+- **Exists**: `exists` (Subquery).
+
+#### 2. Examples
+
+**Complex Logic**
 ```java
 // WHERE (age > 18 AND status = 'Active') OR role = 'Admin'
 userService.queryChain()
         .where(c -> c.bracket(b -> b.gt("age", 18).eq("status", "Active"))
                      .or(b -> b.eq("role", "Admin")))
-        .joins(Join.of("mainDepartment")) // Join related tables
+        .joins(Join.of("mainDepartment")) 
         .exec();
+```
+
+**Exists Subquery**
+```java
+// Find users who have at least one order with amount > 100
+userService.queryChain()
+    .where(c -> c.exists("orders", sub -> sub.gt("amount", 100)))
+    .exec();
 ```
 
 ### DataManager with Maps
