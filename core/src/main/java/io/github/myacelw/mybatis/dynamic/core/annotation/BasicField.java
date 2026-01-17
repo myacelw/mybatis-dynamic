@@ -65,6 +65,13 @@ public @interface BasicField {
     int ddlNumericScale() default Integer.MIN_VALUE;
 
     /**
+     * DDL语句默认值片段。
+     * 1、插入数据时如果没有赋值，则会使用默认值。
+     * 2、表格插入新列时会将老数据的此列初始化为默认值。
+     */
+    String ddlDefaultValue() default "";
+
+    /**
      * 是否非空属性；如果不启用自动DDL则可忽略
      */
     boolean ddlNotNull() default false;

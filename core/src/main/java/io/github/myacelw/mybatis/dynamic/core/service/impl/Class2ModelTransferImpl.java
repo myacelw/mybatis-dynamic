@@ -462,6 +462,9 @@ public class Class2ModelTransferImpl implements Class2ModelTransfer {
         if (StringUtil.hasText(basic.ddlColumnType())) {
             field.getColumnDefinition().setColumnType(basic.ddlColumnType());
         }
+        if (StringUtil.hasText(basic.ddlDefaultValue())) {
+            field.getColumnDefinition().setDefaultValue(basic.ddlDefaultValue());
+        }
         field.getColumnDefinition().setNotNull(basic.ddlNotNull());
         field.getColumnDefinition().setIndex(basic.ddlIndex());
         if (StringUtil.hasText(basic.ddlIndexName())) {
