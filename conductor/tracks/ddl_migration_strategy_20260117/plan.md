@@ -8,9 +8,9 @@ Update the configuration and modify the core DDL generation logic to support int
 - [x] Task: Define new configuration properties in `DynamicModelProperties`. [44f1cb0]
     - [x] Add `mybatis-dynamic.ddl.dry-run` (default: false).
     - [x] Add `mybatis-dynamic.ddl.log-path` (default: "./ddl-logs").
-- [ ] Task: Refactor `ModelToTableConverter` to return generated DDL instead of executing it directly.
-    - [ ] Introduce a `DDLPlan` object to hold the list of SQL statements.
-    - [ ] Update `ModelService.update()` to handle the execution logic based on the `dry-run` flag.
+- [x] Task: Refactor `ModelToTableConverter` to return generated DDL instead of executing it directly. [8257355]
+    - [x] Introduce a `DDLPlan` object to hold the list of SQL statements.
+    - [x] Update `ModelService.update()` to handle the execution logic based on the `dry-run` flag.
 - [ ] Task: Write unit tests to verify that DDL is generated but not executed when `dry-run` is active.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Configuration & Core Interception' (Protocol in workflow.md)
 
