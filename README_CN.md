@@ -145,6 +145,25 @@ public class UserController {
 }
 ```
 
+### 零代码 REST API
+
+框架提供了一个通用的 `DynamicModelController`，自动为所有已注册的模型暴露 REST 端点。
+
+**端点 (Endpoints):**
+- `GET /api/dynamic/{modelName}`: 列表查询，支持分页/过滤 (`?name=John&page=1&size=10`)。
+- `GET /api/dynamic/{modelName}/{id}`: 根据 ID 获取。
+- `POST /api/dynamic/{modelName}`: 创建。
+- `PUT /api/dynamic/{modelName}`: 更新。
+- `DELETE /api/dynamic/{modelName}/{id}`: 删除。
+
+**配置 (Configuration):**
+默认启用。禁用方式：
+```yaml
+mybatis-dynamic:
+  rest:
+    enabled: false
+```
+
 ## 进阶数据管理 (Advanced Data Management)
 
 ### 高级实体建模

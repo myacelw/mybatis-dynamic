@@ -145,6 +145,25 @@ public class UserController {
 }
 ```
 
+### Zero-Code REST API
+
+The framework provides a generic `DynamicModelController` that automatically exposes REST endpoints for all registered models.
+
+**Endpoints:**
+- `GET /api/dynamic/{modelName}`: List with pagination/filtering (`?name=John&page=1&size=10`).
+- `GET /api/dynamic/{modelName}/{id}`: Get by ID.
+- `POST /api/dynamic/{modelName}`: Create.
+- `PUT /api/dynamic/{modelName}`: Update.
+- `DELETE /api/dynamic/{modelName}/{id}`: Delete.
+
+**Configuration:**
+Enabled by default. To disable:
+```yaml
+mybatis-dynamic:
+  rest:
+    enabled: false
+```
+
 ## Advanced Data Management
 
 ### Advanced Entity Modeling
