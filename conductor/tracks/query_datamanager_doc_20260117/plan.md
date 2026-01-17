@@ -1,6 +1,6 @@
 # Implementation Plan: Query & DataManager Documentation Overhaul
 
-## Phase 1: Analysis & Reorganization [checkpoint: TBD]
+## Phase 1: Analysis & Reorganization [checkpoint: 151c4d2]
 - [x] Task: Audit DataManager & ConditionBuilder APIs
     - [x] List all `DataManager` methods (CRUD, Batch, Tree, etc.) from `core`.
     - [x] List all condition operators in `ConditionBuilder` (simple, logical, exists, custom).
