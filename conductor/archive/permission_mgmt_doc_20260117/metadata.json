@@ -1,0 +1,8 @@
+{
+  "track_id": "permission_mgmt_doc_20260117",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-01-17T15:30:00Z",
+  "updated_at": "2026-01-17T15:30:00Z",
+  "description": "README文档， “多租户”章节应该改成“权限管理”章节，包括字段权限也就是列权限，和数据查询、修改、删除的行权限。"
+}
