@@ -19,7 +19,7 @@
     - [x] Document `Exists` and `Custom` conditions.
 - [x] Task: Conductor - User Manual Verification 'Power User Documentation' (Protocol in workflow.md)
 
-## Phase 3: Power User Documentation (DataManager & Batch) [checkpoint: TBD]
+## Phase 3: Power User Documentation (DataManager & Batch) [checkpoint: 255966f]
 - [x] Task: Summarize DataManager API
     - [x] Provide method signatures and brief descriptions for all key `DataManager` methods.
 - [x] Task: Document Batch & Hierarchical Operations
