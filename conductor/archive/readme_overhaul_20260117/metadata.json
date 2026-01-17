@@ -1,0 +1,8 @@
+{
+  "track_id": "readme_overhaul_20260117",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-01-17T00:00:00Z",
+  "updated_at": "2026-01-17T00:00:00Z",
+  "description": "帮我重写写一下README.md ,要更有条理，更全面；对于 ExtBean 接口实现 实体模型 动态字段扩展功能等高级功能也要介绍。"
+}

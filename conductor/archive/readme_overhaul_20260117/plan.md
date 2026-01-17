@@ -1,0 +1,34 @@
+# Implementation Plan: Comprehensive README Overhaul
+
+## Phase 1: Structure & Core Content [checkpoint: f8e1c11]
+- [x] Task: Analyze existing documentation and codebase
+    - [x] Review current `README.md` and `GEMINI.md`.
+    - [x] Analyze `sample` module for code examples.
+    - [x] Identify key classes for Advanced Features (e.g., `ExtBean`, Interceptors).
+- [x] Task: Draft Main `README.md` Structure
+    - [x] Create a new `README_NEW.md` (temporary) to start drafting.
+    - [x] Write **Introduction** and **Key Features**.
+    - [x] Write **Installation** (Maven/Gradle) and **Quick Start** sections.
+    - [x] Write **Architecture Overview**.
+- [x] Task: Conductor - User Manual Verification 'Structure & Core Content' (Protocol in workflow.md)
+
+## Phase 2: Advanced Features Documentation [checkpoint: f8e1c11]
+- [x] Task: Document Modeling & Extensibility
+    - [x] Write section for **Entity Models** (Concept & Usage).
+    - [x] Write section for **ExtBean Interface** implementation.
+    - [x] Write section for **Dynamic Field Extensions**.
+- [x] Task: Document Technical Deep Dives
+    - [x] Write section for **Custom Type Handlers**.
+    - [x] Write section for **Database Integration** & **Performance Tuning**.
+    - [x] Write section for **Interceptors/Plugins**.
+- [x] Task: Conductor - User Manual Verification 'Advanced Features Documentation' (Protocol in workflow.md)
+
+## Phase 3: Finalization & Polish [checkpoint: TBD]
+- [x] Task: Community & Contributing
+    - [x] Add **Contribution Guidelines**.
+    - [x] Add **License** info.
+- [x] Task: Review & Replace
+    - [x] Verify all code snippets against the `sample` project.
+    - [x] Replace the old `README.md` with `README_NEW.md`.
+    - [x] (Optional) Move detailed sections to `docs/` if `README.md` exceeds manageable length.
+- [x] Task: Conductor - User Manual Verification 'Finalization & Polish' (Protocol in workflow.md)
