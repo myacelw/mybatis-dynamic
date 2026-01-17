@@ -9,7 +9,7 @@
     - [x] Restructure `README_CN.md` into Beginner, Power User, and Architect sections.
 - [x] Task: Conductor - User Manual Verification 'Analysis & Reorganization' (Protocol in workflow.md)
 
-## Phase 2: Power User Documentation (Advanced Queries) [checkpoint: TBD]
+## Phase 2: Power User Documentation (Advanced Queries) [checkpoint: 29f2311]
 - [x] Task: Document Auto-Joins & Join Configuration
     - [x] Explain automatic join triggering via field selection.
     - [x] Document `Join` type configuration and additional conditions.
