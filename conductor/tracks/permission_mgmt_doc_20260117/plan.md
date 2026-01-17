@@ -1,6 +1,6 @@
 # Implementation Plan: Permission Management Documentation Overhaul
 
-## Phase 1: API Audit & Mapping [checkpoint: TBD]
+## Phase 1: API Audit & Mapping [checkpoint: 063c65e]
 - [x] Task: Audit Permission-related Interfaces
     - [x] List all methods in `Permission.java` and `CurrentUserHolder.java` from `core` and `spring`.
     - [x] Verify usage of these interfaces in `DataManager` and `BaseDao`.
