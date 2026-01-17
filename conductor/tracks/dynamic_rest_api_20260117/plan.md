@@ -12,7 +12,7 @@ Focus on ensuring `ModelService` or a helper can easily translate URL parameters
 - [x] Task: Write unit tests for `RestRequestParser` with various parameter combinations. [621a776]
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Core Service Support' (Protocol in workflow.md) [0681a79]
 
-## Phase 2: Dynamic Controller Implementation
+## Phase 2: Dynamic Controller Implementation [checkpoint: 1bdf780]
 Implement the generic controller in the `spring` module.
 
 - [x] Task: Implement `DynamicModelController` in `io.github.myacelw.mybatis.dynamic.spring.controller`. [cb1695c]
@@ -26,8 +26,8 @@ Implement the generic controller in the `spring` module.
     - [x] Inject `CurrentUserHolder` (optional).
     - [x] Retrieve `Permission` using `currentUserHolder.getCurrentUserPermission(model)`.
     - [x] Use `modelService.createDataManager(model, permission, null)` instead of `getDataManager`.
-- [ ] Task: Add configuration properties to enable/disable the dynamic controller (e.g., `mybatis-dynamic.rest.enabled`).
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Dynamic Controller Implementation' (Protocol in workflow.md)
+- [x] Task: Add configuration properties to enable/disable the dynamic controller (e.g., `mybatis-dynamic.rest.enabled`). [Impl in DynamicModelController]
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Dynamic Controller Implementation' (Protocol in workflow.md)
 
 ## Phase 3: Integration and Sample Verification
 Verify the functionality using the `sample` module.
