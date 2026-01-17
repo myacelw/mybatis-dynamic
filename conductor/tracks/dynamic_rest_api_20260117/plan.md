@@ -2,20 +2,20 @@
 
 This plan outlines the steps to implement a generic REST API controller that enables CRUD operations for any model registered in `mybatis-dynamic` without requiring manual controller code.
 
-## Phase 1: Core Service Support for Generic Operations
+## Phase 1: Core Service Support for Generic Operations [checkpoint: 0681a79]
 Focus on ensuring `ModelService` or a helper can easily translate URL parameters into `mybatis-dynamic` conditions and query chains.
 
 - [x] Task: Create `RestRequestParser` utility to parse query parameters into `Condition` and `Page`. [621a776]
     - [x] Implement parsing of simple operators (eq, gt, lt, like, etc.) using `field=op:value` syntax.
     - [x] Implement parsing of `page` and `size` parameters.
     - [x] Implement parsing of `sort` parameters (e.g., `field,asc`).
-- [ ] Task: Write unit tests for `RestRequestParser` with various parameter combinations.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Core Service Support' (Protocol in workflow.md)
+- [x] Task: Write unit tests for `RestRequestParser` with various parameter combinations. [621a776]
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Core Service Support' (Protocol in workflow.md) [0681a79]
 
 ## Phase 2: Dynamic Controller Implementation
 Implement the generic controller in the `spring` module.
 
-- [ ] Task: Implement `DynamicModelController` in `io.github.myacelw.mybatis.dynamic.spring.controller`.
+- [~] Task: Implement `DynamicModelController` in `io.github.myacelw.mybatis.dynamic.spring.controller`.
     - [ ] Add `@RestController` and `@RequestMapping("/api/dynamic/{modelName}")`.
     - [ ] Implement `GET /` for list/search with pagination and sorting.
     - [ ] Implement `GET /{id}` for retrieval by ID.
