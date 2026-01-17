@@ -12,16 +12,16 @@
     - [x] Write **Architecture Overview**.
 - [x] Task: Conductor - User Manual Verification 'Structure & Core Content' (Protocol in workflow.md)
 
-## Phase 2: Advanced Features Documentation [checkpoint: TBD]
-- [ ] Task: Document Modeling & Extensibility
-    - [ ] Write section for **Entity Models** (Concept & Usage).
-    - [ ] Write section for **ExtBean Interface** implementation.
-    - [ ] Write section for **Dynamic Field Extensions**.
-- [ ] Task: Document Technical Deep Dives
-    - [ ] Write section for **Custom Type Handlers**.
-    - [ ] Write section for **Database Integration** & **Performance Tuning**.
-    - [ ] Write section for **Interceptors/Plugins**.
-- [ ] Task: Conductor - User Manual Verification 'Advanced Features Documentation' (Protocol in workflow.md)
+## Phase 2: Advanced Features Documentation [checkpoint: f8e1c11]
+- [x] Task: Document Modeling & Extensibility
+    - [x] Write section for **Entity Models** (Concept & Usage).
+    - [x] Write section for **ExtBean Interface** implementation.
+    - [x] Write section for **Dynamic Field Extensions**.
+- [x] Task: Document Technical Deep Dives
+    - [x] Write section for **Custom Type Handlers**.
+    - [x] Write section for **Database Integration** & **Performance Tuning**.
+    - [x] Write section for **Interceptors/Plugins**.
+- [x] Task: Conductor - User Manual Verification 'Advanced Features Documentation' (Protocol in workflow.md)
 
 ## Phase 3: Finalization & Polish [checkpoint: TBD]
 - [ ] Task: Community & Contributing

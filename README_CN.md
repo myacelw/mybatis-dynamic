@@ -141,10 +141,291 @@ public class UserController {
 }
 ```
 
-## 文档
+## 核心概念
 
-有关详细信息，请参阅以下部分：
+### 实体建模
 
-- [实体建模与扩展](#实体建模与扩展)
-- [流畅查询 API](#流畅查询-api)
-- [高级功能](#高级功能)
+使用带有注解的标准 Java 类定义数据模型。
+
+#### 1. 注解参考
+
+- **`@Model`**: 将类标记为托管模型。
+  - `tableName`: 自定义表名（默认：类名驼峰转下划线）。
+  - `comment`: 数据库表注释。
+  - `logicDelete`: 启用逻辑删除。
+  - `disableTableCreateAndAlter`: 禁用此特定模型的自动 DDL。
+
+- **`@IdField`**: 标记主键字段。
+  - `keyGeneratorMode`: ID 生成策略。
+  - `order`: **复合主键必须**。指定键的顺序。
+  - `ddlColumnType`: 手动指定列类型名称（例如 "VARCHAR(64)" 或 "TEXT"）。**注意**：如果只指定类型名称（如 "VARCHAR"），请在 `ddlCharacterMaximumLength` 中指定长度。
+
+- **`@BasicField`**: 将字段映射到标准的数据库列。
+  - `columnName`: 自定义列名。
+  - `ddlNotNull`: 列不能为空。
+  - `ddlDefaultValue`: 默认值定义。
+  - `ddlCharacterMaximumLength`: 字符串列的最大长度。
+  - `ddlNumericPrecision` / `ddlNumericScale`: 数值类型的精度。
+  - `ddlIndex`: 创建索引。
+  - `ddlIndexType`: 索引类型 (`NORMAL`, `UNIQUE`)。
+  - `ddlComment`: 列注释。
+
+- **`@ToOne`**: 定义“多对一”或“一对一”关系。
+  - `targetModel`: 目标模型名称（如果字段类型是模型类，则可选）。
+  - `joinField`: 当前模型中的外键字段（默认：`{fieldName}Id`）。
+
+- **`@ToMany`**: 定义“一对多”或“多对多”关系。
+  - `targetModel`: 目标模型名称（如果 List 泛型类型是模型类，则可选）。
+  - `joinField`: 目标模型中的外键字段（默认：`{thisModelName}Id`）。
+
+- **`@IgnoreField`**: 将字段排除在数据库映射之外。
+
+#### 2. 关系与查询
+
+使用注解定义关系，并使用 `.joins()` 进行查询。
+
+**A. 一对一 / 多对一**
+
+*示例：一个用户属于一个部门。*
+
+```java
+@Data
+@Model
+public class User {
+    @IdField
+    private String id;
+    private String name;
+    
+    // 定义到 Department 的关系。
+    // 期望 User 表中存在 "departmentId" 列。
+    @ToOne 
+    private Department department;
+}
+```
+
+**查询:**
+```java
+// 获取用户及其部门
+List<User> users = userService.queryChain()
+        .joins(Join.of("department"))
+        .exec();
+```
+
+**B. 一对多**
+
+*示例：一个部门有多个用户。*
+
+```java
+@Data
+@Model
+public class Department {
+    @IdField
+    private String id;
+    private String name;
+    
+    // 定义到 Users 的关系。
+    // 期望 User 表中存在 "departmentId" 列。
+    @ToMany 
+    private List<User> users;
+}
+```
+
+**查询:**
+```java
+// 获取部门及其所有用户
+List<Department> depts = departmentService.queryChain()
+        .joins(Join.of("users"))
+        .exec();
+```
+
+**C. 多对多**
+
+通过具有复合主键的**中间实体**实现。
+
+*示例：学生和课程。*
+
+```java
+// 1. 学生
+@Model
+public class Student {
+    @IdField private String id;
+    
+    // 关联到中间表
+    @ToMany 
+    private List<StudentCourse> studentCourses;
+}
+
+// 2. 课程
+@Model
+public class Course {
+    @IdField private String id;
+}
+
+// 3. 学生选课 (中间实体)
+@Model
+public class StudentCourse {
+    @IdField(order = 0) private String studentId;
+    @IdField(order = 1) private String courseId;
+
+    @ToOne private Course course;
+}
+```
+
+**查询:**
+```java
+// 获取学生及其课程 (通过 StudentCourse 关联)
+List<Student> students = studentService.queryChain()
+        .joins(Join.of("studentCourses.course")) 
+        .exec();
+```
+
+#### 3. 复合主键
+
+使用 `@IdField` 注解多个字段并指定它们的 `order`。
+
+```java
+@Model
+public class UserRole {
+    @IdField(order = 0)
+    private String userId;
+
+    @IdField(order = 1)
+    private String roleId;
+}
+```
+
+#### 4. 继承 (单表)
+
+将继承层次结构映射到单张数据库表。
+
+```java
+@Model(tableName = "person")
+@SubTypes(subTypes = {@SubTypes.SubType(User.class), @SubTypes.SubType(Guest.class)}, subTypeFieldName = "type")
+public abstract class Person {
+    @IdField
+    private String id;
+    private String name;
+}
+
+@Data
+public class User extends Person {
+    private Integer age;
+}
+
+@Data
+public class Guest extends Person {
+    private String token;
+}
+```
+
+### 扩展性 (`ExtBean`)
+
+处理未在 Java 类中显式定义的动态字段。
+
+```java
+@Data
+@Model
+public class User implements ExtBean {
+    @IdField
+    private String id;
+    
+    @IgnoreField
+    private Map<String, Object> ext = new HashMap<>();
+
+    @Override
+    public Map<String, Object> getExt() {
+        return ext;
+    }
+}
+```
+
+**使用:**
+```java
+// 1. 运行时添加动态字段定义
+Model userModel = modelService.getModelForClass(User.class);
+userModel.getFields().add(Field.string("phone", 100));
+modelService.update(userModel);
+
+// 2. 使用它 (插入/更新/查询)
+User user = new User();
+user.getExt().put("phone", "123456");
+userService.insert(user);
+
+List<User> users = userService.queryChain()
+        .where(c -> c.eq("phone", "123456"))
+        .exec();
+```
+
+## 数据管理
+
+### 1. 基础 CRUD 操作
+
+```java
+// 插入
+userService.insert(user);
+
+// 更新 (默认只更新非空字段)
+userService.update(user);
+
+// 根据 ID 获取
+User found = userService.getById(user.getId());
+
+// 删除
+userService.delete(user.getId());
+```
+
+### 2. 使用 Map 的 DataManager
+
+`DataManager` 接口支持 `Map<String, Object>`，适用于没有实体类的场景。
+
+```java
+DataManager<Integer> dataManager = modelService.getDataManager("User");
+
+Map<String, Object> data = new HashMap<>();
+data.put("name", "Bob");
+Integer id = dataManager.insert(data);
+```
+
+### 3. 流畅查询 API
+
+构建具有自动逻辑优先级 (`AND` > `OR`) 的复杂查询。
+
+```java
+// WHERE (age > 18 AND status = 'Active') OR role = 'Admin'
+userService.queryChain()
+        .where(c -> c.bracket(b -> b.gt("age", 18).eq("status", "Active"))
+                     .or(b -> b.eq("role", "Admin")))
+        .exec();
+```
+
+### 4. 递归查询
+
+检索层次结构数据（例如部门树）。
+
+```java
+Map<String, Object> tree = departmentService.getRecursiveTreeById("dept-id");
+```
+
+## 高级功能
+
+### 1. 拦截器 (Interceptors)
+
+挂钩数据操作（`beforeInsert`, `afterUpdate` 等）。
+
+```java
+@Component
+public class MyInterceptor implements DataChangeInterceptor {
+    @Override
+    public void beforeInsert(DataManager<Object> dataManager, Object data) {
+        // ...
+    }
+}
+```
+
+### 2. 自动填充 (Auto-Fillers)
+
+自动填充字段（例如 `createTime`, `updateUser`）。实现 `Filler` 接口或继承 `AbstractCreatorFiller`。
+
+### 3. 多租户 (Multi-Tenancy)
+
+通过使用独立的 `ModelService` 实例（不同的表前缀）或通过 `Permission` 接口的行级权限来隔离数据。

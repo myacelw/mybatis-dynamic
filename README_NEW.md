@@ -141,10 +141,291 @@ public class UserController {
 }
 ```
 
-## Documentation
+## Core Concepts
 
-For more detailed information, please refer to the following sections:
+### Entity Modeling
 
-- [Entity Modeling & Extensibility](#entity-modeling--extensibility)
-- [Fluent Query API](#fluent-query-api)
-- [Advanced Features](#advanced-features)
+Define your data models using standard Java classes with annotations.
+
+#### 1. Annotations Reference
+
+- **`@Model`**: Marks a class as a managed model.
+  - `tableName`: Custom table name (default: derived from class name, e.g., `UserProfile` -> `user_profile`).
+  - `comment`: Database table comment.
+  - `logicDelete`: Enable logical deletion (requires a field like `Integer deleted`).
+  - `disableTableCreateAndAlter`: Disable auto-DDL for this specific model.
+
+- **`@IdField`**: Marks the primary key field.
+  - `keyGeneratorMode`: ID generation strategy (e.g., `UUID`, `AUTO`, `SNOWFLAKE`).
+  - `order`: **Required for Composite Primary Keys**. Specifies the key order (0, 1, ...).
+  - `ddlColumnType`: Manually specify column type (e.g., `VARCHAR`). Note: Specify length in `ddlCharacterMaximumLength`.
+
+- **`@BasicField`**: Maps a field to a standard database column.
+  - `columnName`: Custom column name.
+  - `ddlNotNull`: Column cannot be null (default: `false`).
+  - `ddlDefaultValue`: Default value definition (e.g., `0`, `'active'`).
+  - `ddlCharacterMaximumLength`: Max length for string columns.
+  - `ddlNumericPrecision` / `ddlNumericScale`: Precision for numeric types.
+  - `ddlIndex`: Create an index (default: `false`).
+  - `ddlIndexType`: Type of index (`NORMAL`, `UNIQUE`).
+  - `ddlComment`: Column comment.
+
+- **`@ToOne`**: Defines a "Many-to-One" or "One-to-One" relationship.
+  - `targetModel`: The name of the target model (optional if field type is a Model).
+  - `joinField`: The foreign key field in this model (default: `{fieldName}Id`).
+
+- **`@ToMany`**: Defines a "One-to-Many" or "Many-to-Many" relationship.
+  - `targetModel`: The name of the target model (optional if List generic type is a Model).
+  - `joinField`: The foreign key field in the target model (default: `{thisModelName}Id`).
+
+- **`@IgnoreField`**: Excludes the field from database mapping.
+
+#### 2. Simple Relationships
+
+**One-to-One / Many-to-One:**
+
+```java
+@Data
+@Model
+public class User {
+    @IdField
+    private String id;
+    
+    // Auto-generates "departmentId" column in User table
+    @ToOne 
+    private Department department;
+}
+```
+
+**One-to-Many:**
+
+```java
+@Data
+@Model
+public class Department {
+    @IdField
+    private String id;
+    
+    // Expects "departmentId" column in User table
+    @ToMany 
+    private List<User> users;
+}
+```
+
+#### 3. Composite Primary Keys
+
+Annotate multiple fields with `@IdField` and specify their `order`.
+
+```java
+@Model
+public class UserRole {
+    @IdField(order = 0)
+    private String userId;
+
+    @IdField(order = 1)
+    private String roleId;
+    
+    // ...
+}
+```
+
+#### 4. Many-to-Many Relationships
+
+Implement Many-to-Many using an intermediate entity with a composite primary key.
+
+**Entity A: Student**
+```java
+@Data
+@Model
+public class Student {
+    @IdField
+    private String id;
+    private String name;
+
+    @ToMany(targetModel = "StudentCourse")
+    private List<StudentCourse> studentCourses;
+}
+```
+
+**Entity B: Course**
+```java
+@Data
+@Model
+public class Course {
+    @IdField
+    private String id;
+    private String title;
+}
+```
+
+**Intermediate Entity: StudentCourse**
+```java
+@Data
+@Model
+public class StudentCourse {
+    @IdField(order = 0)
+    private String studentId;
+
+    @IdField(order = 1)
+    private String courseId;
+
+    @ToOne(targetModel = "Course")
+    private Course course;
+}
+```
+
+#### 5. Inheritance (Single Table)
+
+Map an inheritance hierarchy to a single database table.
+
+```java
+@Model(tableName = "person")
+@SubTypes(subTypes = {@SubTypes.SubType(User.class), @SubTypes.SubType(Guest.class)}, subTypeFieldName = "type")
+public abstract class Person {
+    @IdField
+    private String id;
+    private String name;
+}
+
+@Data
+public class User extends Person {
+    private Integer age;
+}
+
+@Data
+public class Guest extends Person {
+    private String token;
+}
+```
+
+### Extensibility (`ExtBean`)
+
+Handle dynamic fields that are not explicitly defined in the Java class.
+
+```java
+@Data
+@Model
+public class User implements ExtBean {
+    @IdField
+    private String id;
+    private String name;
+
+    @IgnoreField
+    private Map<String, Object> ext = new HashMap<>();
+
+    @Override
+    public Map<String, Object> getExt() {
+        return ext;
+    }
+}
+```
+
+## Data Management
+
+### 1. CRUD Operations
+
+The `BaseService` (and underlying `DataManager`) provides standard CRUD methods.
+
+```java
+// Insert
+User user = new User();
+user.setName("Alice");
+userService.insert(user);
+
+// Update (updates non-null fields by default)
+user.setName("Alice Updated");
+userService.update(user);
+
+// Get by ID
+User found = userService.getById(user.getId());
+
+// Delete
+userService.delete(user.getId());
+```
+
+### 2. DataManager with Maps
+
+The `DataManager` interface supports `Map<String, Object>` for scenarios without entity classes.
+
+```java
+// Get DataManager
+DataManager<Integer> dataManager = modelService.getDataManager("User");
+
+// Insert Map
+Map<String, Object> data = new HashMap<>();
+data.put("name", "Bob");
+Integer id = dataManager.insert(data);
+
+// Query returning Maps
+List<Map<String, Object>> results = dataManager.queryChain()
+        .where(c -> c.gt("age", 20))
+        .exec();
+```
+
+### 3. Fluent Query API
+
+Construct complex queries with automatic logical precedence (`AND` > `OR`).
+
+#### Simple Query
+```java
+List<User> users = userService.queryChain()
+        .where(c -> c.eq(User.Fields.name, "John"))
+        .asc(User.Fields.age)
+        .exec();
+```
+
+#### Complex Logic
+```java
+// WHERE (age > 18 AND status = 'Active') OR role = 'Admin'
+userService.queryChain()
+        .where(c -> c.bracket(b -> b.gt("age", 18).eq("status", "Active"))
+                     .or(b -> b.eq("role", "Admin")))
+        .exec();
+```
+
+#### Join Queries
+Fetch related entities using `.joins()`.
+
+```java
+// Fetch User and their Department
+List<User> users = userService.queryChain()
+        .joins(Join.of("department"))
+        .exec();
+
+// Fetch Student and their Courses (via StudentCourse)
+List<Student> students = studentService.queryChain()
+        .joins(Join.of("studentCourses.course")) 
+        .exec();
+```
+
+### 4. Recursive Queries
+
+Retrieve hierarchical data (e.g., Department Tree).
+
+```java
+Map<String, Object> tree = departmentService.getRecursiveTreeById("dept-id");
+```
+
+## Advanced Features
+
+### 1. Interceptors
+
+Hook into data operations (`beforeInsert`, `afterUpdate`, etc.).
+
+```java
+@Component
+public class MyInterceptor implements DataChangeInterceptor {
+    @Override
+    public void beforeInsert(DataManager<Object> dataManager, Object data) {
+        // ...
+    }
+}
+```
+
+### 2. Auto-Fillers
+
+Automatically populate fields (e.g., `createTime`, `updateUser`). Implement `Filler` or extend `AbstractCreatorFiller`.
+
+### 3. Multi-Tenancy
+
+Isolate data using separate `ModelService` instances (different table prefixes) or Row-Level Permissions via `Permission` interface.
