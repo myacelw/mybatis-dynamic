@@ -22,10 +22,10 @@ Implement the generic controller in the `spring` module.
     - [x] Implement `POST /` for creation.
     - [x] Implement `PUT /` for update.
     - [x] Implement `DELETE /{id}` for deletion.
-- [~] Task: Integrate `Permission` handling into the controller to ensure row/column security.
-    - [ ] Inject `CurrentUserHolder` (optional).
-    - [ ] Retrieve `Permission` using `currentUserHolder.getCurrentUserPermission(model)`.
-    - [ ] Use `modelService.createDataManager(model, permission, null)` instead of `getDataManager`.
+- [x] Task: Integrate `Permission` handling into the controller to ensure row/column security. [945c247]
+    - [x] Inject `CurrentUserHolder` (optional).
+    - [x] Retrieve `Permission` using `currentUserHolder.getCurrentUserPermission(model)`.
+    - [x] Use `modelService.createDataManager(model, permission, null)` instead of `getDataManager`.
 - [ ] Task: Add configuration properties to enable/disable the dynamic controller (e.g., `mybatis-dynamic.rest.enabled`).
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Dynamic Controller Implementation' (Protocol in workflow.md)
 
