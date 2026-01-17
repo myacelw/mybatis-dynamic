@@ -19,13 +19,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.List;
@@ -38,90 +37,33 @@ import java.util.Optional;
  * @author liuwei
  */
 @Configuration
-@ConfigurationProperties("mybatis-dynamic")
+@EnableConfigurationProperties(DynamicModelProperties.class)
 @Data
 public class DynamicModelAutoConfiguration {
 
-    /**
-     * 数据库方言
-     */
-    private String dialect;
+    private final DynamicModelProperties properties;
 
-    /**
-     * 表前缀
-     */
-    private String tablePrefix;
-
-    /**
-     * 索引前缀
-     */
-    private String indexPrefix;
-
-    /**
-     * 序列前缀
-     */
-    private String seqPrefix;
-
-    /**
-     * 最大返回行数
-     */
-    private Integer maxRowLimit;
-
-    /**
-     * SQL查询超时时间
-     */
-    private Integer timeoutSeconds;
-
-    /**
-     * 注释注解类型，例如填写为 io.swagger.v3.oas.annotations.media.Schema
-     */
-    private Class<? extends Annotation> commentAnnotationClass;
-
-    /**
-     * 注释注解字段名称，例如填写为 title
-     */
-    private String commentAnnotationFieldName;
-
-
-    private Boolean updateModel;
-
-    private Boolean disableAlterComment;
-
-    private List<String> initDataFiles;
-
-    private Ddl ddl = new Ddl();
-
-    @Data
-    public static class Ddl {
-        /**
-         * 是否开启干跑模式（不实际执行SQL）
-         */
-        private boolean dryRun = false;
-
-        /**
-         * DDL日志保存路径
-         */
-        private String logPath = "./ddl-logs";
+    public DynamicModelAutoConfiguration(DynamicModelProperties properties) {
+        this.properties = properties;
     }
-
 
     @Bean
     @ConditionalOnMissingBean(ModelService.class)
     public ModelService modelService(SqlSessionFactory sqlSessionFactory, Optional<CurrentUserHolder> currentUserHolder, List<ColumnTypeHandler> columnTypeHandlerList, List<Filler> fillers, List<DataChangeInterceptor> interceptors) {
         ModelService modelService = new ModelServiceBuilder(sqlSessionFactory)
-                .rowLimit(maxRowLimit)
-                .timeoutSeconds(timeoutSeconds)
-                .tablePrefix(tablePrefix)
-                .indexPrefix(indexPrefix)
-                .seqPrefix(seqPrefix)
+                .rowLimit(properties.getMaxRowLimit())
+                .timeoutSeconds(properties.getTimeoutSeconds())
+                .tablePrefix(properties.getTablePrefix())
+                .indexPrefix(properties.getIndexPrefix())
+                .seqPrefix(properties.getSeqPrefix())
                 .dialect(getDataBaseDialect())
                 .columnTypeHandlers(columnTypeHandlerList)
                 .permissionGetter(currentUserHolder.map(t -> (PermissionGetter) t::getCurrentUserPermission).orElse(null))
-                .commentAnnotationClass(commentAnnotationClass)
-                .commentAnnotationFieldName(commentAnnotationFieldName)
+                .commentAnnotationClass(properties.getCommentAnnotationClass())
+                .commentAnnotationFieldName(properties.getCommentAnnotationFieldName())
                 .fillers(fillers)
                 .interceptors(interceptors)
-                .disableAlterComment(disableAlterComment)
+                .disableAlterComment(properties.getDisableAlterComment())
                 .build();
         return modelService;
     }
@@ -135,6 +77,7 @@ public class DynamicModelAutoConfiguration {
 
     public DataBaseDialect getDataBaseDialect() {
         List<DataBaseDialect> dataBaseList = DataBaseDialect.getInstances();
+        String dialect = properties.getDialect();
         if (!StringUtils.hasText(dialect)) {
             return null;
         }
@@ -167,11 +110,11 @@ public class DynamicModelAutoConfiguration {
     @Bean
     public CommandLineRunner InitModelDataConfiguration(ModelService modelService, SqlSessionFactory sqlSessionFactory) {
         return args -> {
-            if (ObjectUtils.isEmpty(initDataFiles)) {
+            if (ObjectUtils.isEmpty(properties.getInitDataFiles())) {
                 return;
             }
             ModelDataLoader modelDataLoader = new ModelDataLoader(modelService);
-            modelDataLoader.initModelData(sqlSessionFactory, initDataFiles);
+            modelDataLoader.initModelData(sqlSessionFactory, properties.getInitDataFiles());
         };
     }
 
