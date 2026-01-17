@@ -8,7 +8,7 @@
     - [x] Ensure "Permission Management" remains under the "Expert Features" (Architect) section.
 - [x] Task: Conductor - User Manual Verification 'API Audit & Mapping' (Protocol in workflow.md)
 
-## Phase 2: Content Generation (English) [checkpoint: TBD]
+## Phase 2: Content Generation (English) [checkpoint: e667a8b]
 - [x] Task: Draft "Permission Management" Section
     - [x] Define Column and Row permissions.
     - [x] Provide `Permission` interface implementation example.
