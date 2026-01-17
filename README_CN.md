@@ -7,7 +7,9 @@
 
 **mybatis-dynamic** 是一个基于 MyBatis 构建的强大动态 ORM 框架。它允许开发者直接在 Java 代码中定义数据模型，自动管理数据库架构（表、列、索引），并提供丰富流畅的 API 用于 CRUD 操作和复杂查询。
 
-## 主要特性
+## 快速入门 (Getting Started)
+
+### 主要特性
 
 - **动态建模**: 将数据模型定义为 Java 类。框架会在启动或运行时自动生成和更新数据库架构 (DDL)。
 - **运行时模型修改**: 支持在运行时通过编程方式修改模型，适应动态变化的业务需求。
@@ -16,7 +18,7 @@
 - **高级映射**: 支持 `@ToOne`、`@ToMany` 和递归关系。
 - **可视化**: 内置工具用于可视化模型关系。
 
-## 架构
+### 架构
 
 项目采用模块化设计，分离关注点：
 
@@ -25,15 +27,15 @@
 - **`draw`**: 可视化模块。提供 Web UI 以查看实体关系。
 - **`sample`**: 一个完整的 Spring Boot 示例应用程序，演示了用法。
 
-## 快速开始
+### 安装与配置
 
-### 1. 环境要求
+#### 1. 环境要求
 
 - Java 8+
 - Maven 或 Gradle
 - 支持的数据库 (H2, MySQL, PostgreSQL, Oracle, OceanBase 等)
 
-### 2. 添加依赖
+#### 2. 添加依赖
 
 将 `mybatis-dynamic-spring` 依赖添加到您的项目中。
 
@@ -53,7 +55,7 @@
 </dependency>
 ```
 
-### 3. 配置
+#### 3. 配置
 
 在 `application.yml` 中配置数据库和 `mybatis-dynamic`：
 
@@ -72,7 +74,7 @@ mybatis-dynamic:
   table-prefix: t_
 ```
 
-### 4. 定义模型
+### 第一个模型
 
 创建一个带有 `@Model` 注解的简单实体类。
 
@@ -101,7 +103,7 @@ public class User {
 }
 ```
 
-### 5. 启用扫描
+### 启用扫描
 
 在您的 Spring Boot 应用类上添加 `@EnableModelScan`。
 
@@ -115,7 +117,7 @@ public class Application {
 }
 ```
 
-### 6. 使用 Service
+### 基础 CRUD 操作
 
 注入自动生成的 `BaseService` 或 `BaseDao` 来执行操作。
 
@@ -143,32 +145,30 @@ public class UserController {
 }
 ```
 
-## 核心概念
+## 进阶数据管理 (Advanced Data Management)
 
-### 实体建模
-
-使用带有注解的标准 Java 类定义数据模型。
+### 高级实体建模
 
 #### 1. 注解参考
 
 - **`@Model`**: 将类标记为托管模型。
-  - `tableName`: 自定义表名（默认：类名驼峰转下划线）。
+  - `tableName`: 自定义表名（默认：类名驼峰转下划线，例如 `UserProfile` -> `user_profile`）。
   - `comment`: 数据库表注释。
-  - `logicDelete`: 启用逻辑删除。
+  - `logicDelete`: 启用逻辑删除（需要一个 `Integer` 类型的删除标记字段）。
   - `disableTableCreateAndAlter`: 禁用此特定模型的自动 DDL。
 
 - **`@IdField`**: 标记主键字段。
-  - `keyGeneratorMode`: ID 生成策略。
-  - `order`: **复合主键必须**。指定键的顺序。
-  - `ddlColumnType`: 手动指定列类型名称（例如 "VARCHAR(64)" 或 "TEXT"）。**注意**：如果只指定类型名称（如 "VARCHAR"），请在 `ddlCharacterMaximumLength` 中指定长度。
+  - `keyGeneratorMode`: ID 生成策略（例如 `UUID`, `AUTO`, `SNOWFLAKE`）。
+  - `order`: **复合主键必须**。指定键的顺序（0, 1, ...）。
+  - `ddlColumnType`: 手动指定列类型名称（例如 `VARCHAR`）。注意：在 `ddlCharacterMaximumLength` 中指定长度。
 
 - **`@BasicField`**: 将字段映射到标准的数据库列。
   - `columnName`: 自定义列名。
-  - `ddlNotNull`: 列不能为空。
-  - `ddlDefaultValue`: 默认值定义。
+  - `ddlNotNull`: 列不能为空（默认：`false`）。
+  - `ddlDefaultValue`: 默认值定义（例如 `0`, `'active'`）。
   - `ddlCharacterMaximumLength`: 字符串列的最大长度。
   - `ddlNumericPrecision` / `ddlNumericScale`: 数值类型的精度。
-  - `ddlIndex`: 创建索引。
+  - `ddlIndex`: 创建索引（默认：`false`）。
   - `ddlIndexType`: 索引类型 (`NORMAL`, `UNIQUE`)。
   - `ddlComment`: 列注释。
 
@@ -320,7 +320,7 @@ public class Guest extends Person {
 }
 ```
 
-### 扩展性 (`ExtBean`)
+#### 5. 扩展性 (`ExtBean`)
 
 处理未在 Java 类中显式定义的动态字段。
 
@@ -330,7 +330,8 @@ public class Guest extends Person {
 public class User implements ExtBean {
     @IdField
     private String id;
-    
+    private String name;
+
     @IgnoreField
     private Map<String, Object> ext = new HashMap<>();
 
@@ -358,40 +359,19 @@ List<User> users = userService.queryChain()
         .exec();
 ```
 
-## 数据管理
-
-### 1. 基础 CRUD 操作
-
-```java
-// 插入
-userService.insert(user);
-
-// 更新 (默认只更新非空字段)
-userService.update(user);
-
-// 根据 ID 获取
-User found = userService.getById(user.getId());
-
-// 删除
-userService.delete(user.getId());
-```
-
-### 2. 使用 Map 的 DataManager
-
-`DataManager` 接口支持 `Map<String, Object>`，适用于没有实体类的场景。
-
-```java
-DataManager<Integer> dataManager = modelService.getDataManager("User");
-
-Map<String, Object> data = new HashMap<>();
-data.put("name", "Bob");
-Integer id = dataManager.insert(data);
-```
-
-### 3. 流畅查询 API
+### 流畅查询 API (Fluent Query API)
 
 构建具有自动逻辑优先级 (`AND` > `OR`) 的复杂查询。
 
+#### 简单查询
+```java
+List<User> users = userService.queryChain()
+        .where(c -> c.eq(User.Fields.name, "John"))
+        .asc(User.Fields.age)
+        .exec();
+```
+
+#### 复杂逻辑
 ```java
 // WHERE (age > 18 AND status = 'Active') OR role = 'Admin'
 userService.queryChain()
@@ -400,7 +380,41 @@ userService.queryChain()
         .exec();
 ```
 
-### 4. 递归查询
+#### 关联查询 (Joins)
+使用 `.joins()` 获取相关实体。
+
+```java
+// 获取用户及其部门
+List<User> users = userService.queryChain()
+        .joins(Join.of("department"))
+        .exec();
+
+// 获取学生及其课程 (通过 StudentCourse)
+List<Student> students = studentService.queryChain()
+        .joins(Join.of("studentCourses.course")) 
+        .exec();
+```
+
+### 使用 Map 的 DataManager
+
+`DataManager` 接口支持 `Map<String, Object>`，适用于没有实体类的场景。
+
+```java
+// 获取 DataManager
+DataManager<Integer> dataManager = modelService.getDataManager("User");
+
+// 插入 Map
+Map<String, Object> data = new HashMap<>();
+data.put("name", "Bob");
+Integer id = dataManager.insert(data);
+
+// 返回 Map 的查询
+List<Map<String, Object>> results = dataManager.queryChain()
+        .where(c -> c.gt("age", 20))
+        .exec();
+```
+
+### 递归查询
 
 检索层次结构数据（例如部门树）。
 
@@ -408,9 +422,9 @@ userService.queryChain()
 Map<String, Object> tree = departmentService.getRecursiveTreeById("dept-id");
 ```
 
-## 高级功能
+## 专家功能 (Expert Features)
 
-### 1. 拦截器 (Interceptors)
+### 拦截器 (Interceptors)
 
 挂钩数据操作（`beforeInsert`, `afterUpdate` 等）。
 
@@ -424,11 +438,11 @@ public class MyInterceptor implements DataChangeInterceptor {
 }
 ```
 
-### 2. 自动填充 (Auto-Fillers)
+### 自动填充 (Auto-Fillers)
 
 自动填充字段（例如 `createTime`, `updateUser`）。实现 `Filler` 接口或继承 `AbstractCreatorFiller`。
 
-### 3. 多租户 (Multi-Tenancy)
+### 多租户 (Multi-Tenancy)
 
 通过使用独立的 `ModelService` 实例（不同的表前缀）或通过 `Permission` 接口的行级权限来隔离数据。
 

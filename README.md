@@ -7,7 +7,9 @@
 
 **mybatis-dynamic** is a powerful dynamic ORM framework built on top of MyBatis. It allows developers to define data models directly in Java code, automatically managing the database schema (tables, columns, indexes) and providing a rich, fluent API for CRUD operations and complex queries.
 
-## Key Features
+## Getting Started
+
+### Key Features
 
 - **Dynamic Modeling**: Define data models as Java classes. The framework automatically generates and updates the database schema (DDL) at startup or runtime.
 - **Runtime Model Modification**: Models can be modified programmatically at runtime, enabling dynamic business requirements.
@@ -16,7 +18,7 @@
 - **Advanced Mapping**: Supports `@ToOne`, `@ToMany`, and recursive relationships.
 - **Visualisation**: Built-in tool to visualize model relationships.
 
-## Architecture
+### Architecture
 
 The project is modularized to separate concerns:
 
@@ -25,15 +27,15 @@ The project is modularized to separate concerns:
 - **`draw`**: Visualization module. Provides a web UI to view entity relationships.
 - **`sample`**: A complete Spring Boot sample application demonstrating usage.
 
-## Quick Start
+### Installation & Configuration
 
-### 1. Requirements
+#### 1. Requirements
 
 - Java 8+
 - Maven or Gradle
 - A supported database (H2, MySQL, PostgreSQL, Oracle, OceanBase, etc.)
 
-### 2. Add Dependency
+#### 2. Add Dependency
 
 Add the `mybatis-dynamic-spring` dependency to your project.
 
@@ -53,7 +55,7 @@ Add the `mybatis-dynamic-spring` dependency to your project.
 </dependency>
 ```
 
-### 3. Configuration
+#### 3. Configuration
 
 Configure your database and `mybatis-dynamic` in `application.yml`:
 
@@ -72,7 +74,7 @@ mybatis-dynamic:
   table-prefix: t_
 ```
 
-### 4. Define a Model
+### Your First Model
 
 Create a simple entity class annotated with `@Model`.
 
@@ -101,7 +103,7 @@ public class User {
 }
 ```
 
-### 5. Enable Scanning
+### Enable Scanning
 
 Add `@EnableModelScan` to your Spring Boot application class.
 
@@ -115,7 +117,7 @@ public class Application {
 }
 ```
 
-### 6. Use the Service
+### Basic CRUD Usage
 
 Inject the auto-generated `BaseService` or `BaseDao` to perform operations.
 
@@ -143,48 +145,48 @@ public class UserController {
 }
 ```
 
-## Core Concepts
+## Advanced Data Management
 
-### Entity Modeling
+### Advanced Entity Modeling
 
-Define your data models using standard Java classes with annotations.
-
-#### 1. Annotations Reference
+#### Annotations Reference
 
 - **`@Model`**: Marks a class as a managed model.
-  - `tableName`: Custom table name (default: derived from class name, e.g., `UserProfile` -> `user_profile`).
+  - `tableName`: Custom table name (default: derived from class name).
   - `comment`: Database table comment.
-  - `logicDelete`: Enable logical deletion (requires a field like `Integer deleted`).
-  - `disableTableCreateAndAlter`: Disable auto-DDL for this specific model.
+  - `logicDelete`: Enable logical deletion.
+  - `disableTableCreateAndAlter`: Disable auto-DDL.
 
 - **`@IdField`**: Marks the primary key field.
-  - `keyGeneratorMode`: ID generation strategy (e.g., `UUID`, `AUTO`, `SNOWFLAKE`).
-  - `order`: **Required for Composite Primary Keys**. Specifies the key order (0, 1, ...).
-  - `ddlColumnType`: Manually specify column type (e.g., `VARCHAR`). Note: Specify length in `ddlCharacterMaximumLength`.
+  - `keyGeneratorMode`: ID generation strategy.
+  - `order`: **Required for Composite Primary Keys**.
+  - `ddlColumnType`: Manually specify column type (e.g., "VARCHAR(64)").
 
 - **`@BasicField`**: Maps a field to a standard database column.
   - `columnName`: Custom column name.
-  - `ddlNotNull`: Column cannot be null (default: `false`).
-  - `ddlDefaultValue`: Default value definition (e.g., `0`, `'active'`).
+  - `ddlNotNull`: Column cannot be null.
+  - `ddlDefaultValue`: Default value definition.
   - `ddlCharacterMaximumLength`: Max length for string columns.
   - `ddlNumericPrecision` / `ddlNumericScale`: Precision for numeric types.
-  - `ddlIndex`: Create an index (default: `false`).
+  - `ddlIndex`: Create an index.
   - `ddlIndexType`: Type of index (`NORMAL`, `UNIQUE`).
   - `ddlComment`: Column comment.
 
 - **`@ToOne`**: Defines a "Many-to-One" or "One-to-One" relationship.
-  - `targetModel`: The name of the target model (optional if field type is a Model).
-  - `joinField`: The foreign key field in this model (default: `{fieldName}Id`).
+  - `targetModel`: Target model name (optional if field type is a Model).
+  - `joinField`: Foreign key field in *this* model (default: `{fieldName}Id`).
 
 - **`@ToMany`**: Defines a "One-to-Many" or "Many-to-Many" relationship.
-  - `targetModel`: The name of the target model (optional if List generic type is a Model).
-  - `joinField`: The foreign key field in the target model (default: `{thisModelName}Id`).
+  - `targetModel`: Target model name (optional if List generic type is a Model).
+  - `joinField`: Foreign key field in the *target* model (default: `{thisModelName}Id`).
 
 - **`@IgnoreField`**: Excludes the field from database mapping.
 
-#### 2. Simple Relationships
+#### Relationships & Querying
 
-**One-to-One / Many-to-One:**
+**A. One-to-One / Many-to-One**
+
+*Example: A User belongs to a Department.*
 
 ```java
 @Data
@@ -192,14 +194,26 @@ Define your data models using standard Java classes with annotations.
 public class User {
     @IdField
     private String id;
+    private String name;
     
-    // Auto-generates "departmentId" column in User table
+    // Defines relation to Department. 
+    // Expects "departmentId" column in User table.
     @ToOne 
     private Department department;
 }
 ```
 
-**One-to-Many:**
+**Querying:**
+```java
+// Fetch User and their Department
+List<User> users = userService.queryChain()
+        .joins(Join.of("department"))
+        .exec();
+```
+
+**B. One-to-Many**
+
+*Example: A Department has many Users.*
 
 ```java
 @Data
@@ -207,14 +221,65 @@ public class User {
 public class Department {
     @IdField
     private String id;
+    private String name;
     
-    // Expects "departmentId" column in User table
+    // Defines relation to Users.
+    // Expects "departmentId" column in User table.
     @ToMany 
     private List<User> users;
 }
 ```
 
-#### 3. Composite Primary Keys
+**Querying:**
+```java
+// Fetch Department and all its Users
+List<Department> depts = departmentService.queryChain()
+        .joins(Join.of("users"))
+        .exec();
+```
+
+**C. Many-to-Many**
+
+Implemented using an **Intermediate Entity** with a composite primary key.
+
+*Example: Students and Courses.*
+
+```java
+// 1. Student
+@Model
+public class Student {
+    @IdField private String id;
+    
+    // Relation to the intermediate table
+    @ToMany 
+    private List<StudentCourse> studentCourses;
+}
+
+// 2. Course
+@Model
+public class Course {
+    @IdField private String id;
+}
+
+// 3. StudentCourse (Intermediate)
+@Model
+public class StudentCourse {
+    @IdField(order = 0) private String studentId;
+    @IdField(order = 1) private String courseId;
+
+    @ToOne private Course course;
+}
+```
+
+**Querying:**
+```java
+// Fetch Student and their Courses (joining through StudentCourse)
+List<Student> students = studentService.queryChain()
+        .joins(Join.of("studentCourses.course")) 
+        .exec();
+```
+
+#### Composite Primary Keys
 
 Annotate multiple fields with `@IdField` and specify their `order`.
 
@@ -226,57 +291,10 @@ public class UserRole {
 
     @IdField(order = 1)
     private String roleId;
-    
-    // ...
 }
 ```
 
-#### 4. Many-to-Many Relationships
-
-Implement Many-to-Many using an intermediate entity with a composite primary key.
-
-**Entity A: Student**
-```java
-@Data
-@Model
-public class Student {
-    @IdField
-    private String id;
-    private String name;
-
-    @ToMany(targetModel = "StudentCourse")
-    private List<StudentCourse> studentCourses;
-}
-```
-
-**Entity B: Course**
-```java
-@Data
-@Model
-public class Course {
-    @IdField
-    private String id;
-    private String title;
-}
-```
-
-**Intermediate Entity: StudentCourse**
-```java
-@Data
-@Model
-public class StudentCourse {
-    @IdField(order = 0)
-    private String studentId;
-
-    @IdField(order = 1)
-    private String courseId;
-
-    @ToOne(targetModel = "Course")
-    private Course course;
-}
-```
-
-#### 5. Inheritance (Single Table)
+#### Inheritance (Single Table)
 
 Map an inheritance hierarchy to a single database table.
 
@@ -300,7 +318,7 @@ public class Guest extends Person {
 }
 ```
 
-### Extensibility (`ExtBean`)
+#### Extensibility (`ExtBean`)
 
 Handle dynamic fields that are not explicitly defined in the Java class.
 
@@ -322,30 +340,37 @@ public class User implements ExtBean {
 }
 ```
 
-## Data Management
-
-### 1. CRUD Operations
-
-The `BaseService` (and underlying `DataManager`) provides standard CRUD methods.
-
+**Usage:**
 ```java
-// Insert
+// 1. Add dynamic field definition at runtime
+Model userModel = modelService.getModelForClass(User.class);
+userModel.getFields().add(Field.string("phone", 100));
+modelService.update(userModel);
+
+// 2. Use it (Insert/Update/Query)
 User user = new User();
-user.setName("Alice");
+user.getExt().put("phone", "123456");
 userService.insert(user);
 
-// Update (updates non-null fields by default)
-user.setName("Alice Updated");
-userService.update(user);
-
-// Get by ID
-User found = userService.getById(user.getId());
-
-// Delete
-userService.delete(user.getId());
+List<User> users = userService.queryChain()
+        .where(c -> c.eq("phone", "123456"))
+        .exec();
 ```
 
-### 2. DataManager with Maps
+### Fluent Query API
+
+Construct complex queries with automatic logical precedence (`AND` > `OR`).
+
+```java
+// WHERE (age > 18 AND status = 'Active') OR role = 'Admin'
+userService.queryChain()
+        .where(c -> c.bracket(b -> b.gt("age", 18).eq("status", "Active"))
+                     .or(b -> b.eq("role", "Admin")))
+        .joins(Join.of("mainDepartment")) // Join related tables
+        .exec();
+```
+
+### DataManager with Maps
 
 The `DataManager` interface supports `Map<String, Object>` for scenarios without entity classes.
 
@@ -364,43 +389,7 @@ List<Map<String, Object>> results = dataManager.queryChain()
         .exec();
 ```
 
-### 3. Fluent Query API
-
-Construct complex queries with automatic logical precedence (`AND` > `OR`).
-
-#### Simple Query
-```java
-List<User> users = userService.queryChain()
-        .where(c -> c.eq(User.Fields.name, "John"))
-        .asc(User.Fields.age)
-        .exec();
-```
-
-#### Complex Logic
-```java
-// WHERE (age > 18 AND status = 'Active') OR role = 'Admin'
-userService.queryChain()
-        .where(c -> c.bracket(b -> b.gt("age", 18).eq("status", "Active"))
-                     .or(b -> b.eq("role", "Admin")))
-        .exec();
-```
-
-#### Join Queries
-Fetch related entities using `.joins()`.
-
-```java
-// Fetch User and their Department
-List<User> users = userService.queryChain()
-        .joins(Join.of("department"))
-        .exec();
-
-// Fetch Student and their Courses (via StudentCourse)
-List<Student> students = studentService.queryChain()
-        .joins(Join.of("studentCourses.course")) 
-        .exec();
-```
-
-### 4. Recursive Queries
+### Recursive Queries
 
 Retrieve hierarchical data (e.g., Department Tree).
 
@@ -408,9 +397,9 @@ Retrieve hierarchical data (e.g., Department Tree).
 Map<String, Object> tree = departmentService.getRecursiveTreeById("dept-id");
 ```
 
-## Advanced Features
+## Expert Features
 
-### 1. Interceptors
+### Interceptors
 
 Hook into data operations (`beforeInsert`, `afterUpdate`, etc.).
 
@@ -424,30 +413,19 @@ public class MyInterceptor implements DataChangeInterceptor {
 }
 ```
 
-### 2. Auto-Fillers
+### Auto-Fillers
 
 Automatically populate fields (e.g., `createTime`, `updateUser`). Implement `Filler` or extend `AbstractCreatorFiller`.
 
-### 3. Multi-Tenancy
-
-
+### Multi-Tenancy
 
 Isolate data using separate `ModelService` instances (different table prefixes) or Row-Level Permissions via `Permission` interface.
 
-
-
 ## Community
 
-
-
 - **Issues**: Please file an issue for bugs or feature requests.
-
 - **Discussions**: Join the discussions on GitHub.
 
-
-
 ## License
-
-
 
 This project is licensed under the [Apache License 2.0](LICENSE).
