@@ -6,16 +6,19 @@ import io.github.myacelw.mybatis.dynamic.core.service.filler.Filler;
 import io.github.myacelw.mybatis.dynamic.core.service.handler.ColumnTypeHandler;
 import io.github.myacelw.mybatis.dynamic.core.service.impl.ModelServiceImpl;
 import io.github.myacelw.mybatis.dynamic.spring.controller.AbstractController;
+import io.github.myacelw.mybatis.dynamic.spring.controller.DynamicModelController;
 import io.github.myacelw.mybatis.dynamic.spring.filler.CreatorFiller;
 import io.github.myacelw.mybatis.dynamic.spring.filler.ModifierFiller;
 import io.github.myacelw.mybatis.dynamic.spring.hook.CurrentUserHolder;
 import lombok.Data;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springdoc.core.customizers.GlobalOperationCustomizer;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -86,6 +89,21 @@ public class DynamicModelAutoConfiguration {
 
     private List<String> initDataFiles;
 
+    private Ddl ddl = new Ddl();
+
+    @Data
+    public static class Ddl {
+        /**
+         * 是否开启干跑模式（不实际执行SQL）
+         */
+        private boolean dryRun = false;
+
+        /**
+         * DDL日志保存路径
+         */
+        private String logPath = "./ddl-logs";
+    }
+
 
     @Bean
     @ConditionalOnMissingBean(ModelService.class)
@@ -106,6 +124,13 @@ public class DynamicModelAutoConfiguration {
                 .disableAlterComment(disableAlterComment)
                 .build();
         return modelService;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(DynamicModelController.class)
+    @ConditionalOnProperty(prefix = "mybatis-dynamic.rest", name = "enabled", havingValue = "true", matchIfMissing = true)
+    public DynamicModelController dynamicModelController(ModelService modelService, ObjectProvider<CurrentUserHolder> currentUserHolderProvider) {
+        return new DynamicModelController(modelService, currentUserHolderProvider.getIfAvailable());
     }
 
     public DataBaseDialect getDataBaseDialect() {

@@ -25,11 +25,12 @@ public class DynamicModelController {
 
     private final io.github.myacelw.mybatis.dynamic.core.service.ModelService modelService;
 
-    @Autowired(required = false)
-    private io.github.myacelw.mybatis.dynamic.spring.hook.CurrentUserHolder currentUserHolder;
+    private final io.github.myacelw.mybatis.dynamic.spring.hook.CurrentUserHolder currentUserHolder;
 
-    public DynamicModelController(io.github.myacelw.mybatis.dynamic.core.service.ModelService modelService) {
+    public DynamicModelController(io.github.myacelw.mybatis.dynamic.core.service.ModelService modelService,
+                                  @Autowired(required = false) io.github.myacelw.mybatis.dynamic.spring.hook.CurrentUserHolder currentUserHolder) {
         this.modelService = modelService;
+        this.currentUserHolder = currentUserHolder;
     }
 
     private DataManager<Object> getDataManager(String modelName) {
