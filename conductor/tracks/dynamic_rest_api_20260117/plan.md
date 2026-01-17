@@ -29,12 +29,12 @@ Implement the generic controller in the `spring` module.
 - [x] Task: Add configuration properties to enable/disable the dynamic controller (e.g., `mybatis-dynamic.rest.enabled`). [Impl in DynamicModelController]
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Dynamic Controller Implementation' (Protocol in workflow.md)
 
-## Phase 3: Integration and Sample Verification
+## Phase 3: Integration and Sample Verification [checkpoint: d67f456]
 Verify the functionality using the `sample` module.
 
-- [ ] Task: Enable the dynamic REST feature in the `sample` application.
-- [ ] Task: Write integration tests (using `MockMvc`) to verify end-to-end CRUD via the new REST endpoints.
-    - [ ] Test listing with filters and pagination.
-    - [ ] Test security (ensuring permissions are respected).
-- [ ] Task: Update documentation (README.md) to include the new REST API feature.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration and Sample Verification' (Protocol in workflow.md)
+- [x] Task: Enable the dynamic REST feature in the `sample` application. (Enabled by default)
+- [x] Task: Write integration tests (using `MockMvc`) to verify end-to-end CRUD via the new REST endpoints.
+    - [x] Test listing with filters and pagination.
+    - [x] Test security (ensuring permissions are respected).
+- [x] Task: Update documentation (README.md) to include the new REST API feature.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Integration and Sample Verification' (Protocol in workflow.md)
