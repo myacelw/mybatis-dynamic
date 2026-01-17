@@ -459,6 +459,70 @@ userService.batchUpdateByConditionChain()
         .exec();
 ```
 
+### Aggregation Queries
+
+Perform SQL aggregate functions (COUNT, SUM, AVG, MAX, MIN) with grouping.
+
+#### 1. Basic Usage
+
+Use `dataManager.aggQuery()` to start an aggregation query chain.
+
+```java
+// Count all users
+Map<String, Object> result = userService.getDataManager()
+    .aggQuery()
+    .count() // Default: COUNT(*), alias "count"
+    .exec()
+    .get(0);
+Long count = (Long) result.get("count");
+```
+
+#### 2. Aggregation Functions & Grouping
+
+You can specify the field, alias, and grouping.
+
+```java
+// Calculate average age and max age per department
+// SQL: SELECT department_id as deptId, AVG(age) as avgAge, MAX(age) as maxAge FROM user GROUP BY department_id
+List<Map<String, Object>> results = userService.getDataManager()
+    .aggQuery()
+    .groupBy("departmentId", "deptId")
+    .avg("age", "avgAge")
+    .max("age", "maxAge")
+    .exec();
+```
+
+#### 3. Filtering
+
+Use `.where()` to filter data *before* aggregation.
+
+```java
+// Count users older than 18
+List<Map<String, Object>> results = userService.getDataManager()
+    .aggQuery()
+    .count()
+    .where(c -> c.gt("age", 18))
+    .exec();
+```
+
+#### 4. Result Mapping
+
+Map results to a DTO class.
+
+```java
+@Data
+public class DeptStats {
+    private String deptId;
+    private Double avgAge;
+}
+
+List<DeptStats> stats = userService.getDataManager()
+    .aggQuery(DeptStats.class)
+    .groupBy("departmentId", "deptId")
+    .avg("age", "avgAge")
+    .exec();
+```
+
 ### Recursive Queries
 
 Retrieve hierarchical data (e.g., Department Tree).

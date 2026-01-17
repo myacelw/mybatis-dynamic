@@ -460,6 +460,70 @@ userService.batchUpdateByConditionChain()
         .exec();
 ```
 
+### 聚合查询 (Aggregation Queries)
+
+执行带有分组的 SQL 聚合函数 (COUNT, SUM, AVG, MAX, MIN)。
+
+#### 1. 基本用法
+
+使用 `dataManager.aggQuery()` 开启聚合查询链。
+
+```java
+// 统计所有用户
+Map<String, Object> result = userService.getDataManager()
+    .aggQuery()
+    .count() // 默认: COUNT(*), 别名 "count"
+    .exec()
+    .get(0);
+Long count = (Long) result.get("count");
+```
+
+#### 2. 聚合函数与分组
+
+指定字段、别名和分组。
+
+```java
+// 计算每个部门的平均年龄和最大年龄
+// SQL: SELECT department_id as deptId, AVG(age) as avgAge, MAX(age) as maxAge FROM user GROUP BY department_id
+List<Map<String, Object>> results = userService.getDataManager()
+    .aggQuery()
+    .groupBy("departmentId", "deptId")
+    .avg("age", "avgAge")
+    .max("age", "maxAge")
+    .exec();
+```
+
+#### 3. 过滤
+
+使用 `.where()` 在聚合*之前*过滤数据。
+
+```java
+// 统计大于 18 岁的用户
+List<Map<String, Object>> results = userService.getDataManager()
+    .aggQuery()
+    .count()
+    .where(c -> c.gt("age", 18))
+    .exec();
+```
+
+#### 4. 结果映射
+
+将结果映射到 DTO 类。
+
+```java
+@Data
+public class DeptStats {
+    private String deptId;
+    private Double avgAge;
+}
+
+List<DeptStats> stats = userService.getDataManager()
+    .aggQuery(DeptStats.class)
+    .groupBy("departmentId", "deptId")
+    .avg("age", "avgAge")
+    .exec();
+```
+
 ### 递归查询
 
 检索层次结构数据（例如部门树）。

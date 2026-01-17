@@ -11,10 +11,10 @@
 - [x] Task: Conductor - User Manual Verification 'API Audit & Content Drafting' (Protocol in workflow.md)
 
 ## Phase 2: Documentation Integration [checkpoint: TBD]
-- [ ] Task: Update `README.md`
-    - [ ] Insert the new "Aggregation Queries" section under "Data Management".
-- [ ] Task: Update `README_CN.md`
-    - [ ] Insert the new "聚合查询" section under "数据管理".
-- [ ] Task: Final Review & Verify Snippets
-    - [ ] Verify that all code snippets are correct by checking against `AggQueryExecutionTest.java` or similar tests.
-- [ ] Task: Conductor - User Manual Verification 'Documentation Integration' (Protocol in workflow.md)
+- [x] Task: Update `README.md`
+    - [x] Insert the new "Aggregation Queries" section under "Data Management".
+- [x] Task: Update `README_CN.md`
+    - [x] Insert the new "聚合查询" section under "数据管理".
+- [x] Task: Final Review & Verify Snippets
+    - [x] Verify that all code snippets are correct by checking against `AggQueryExecutionTest.java` or similar tests.
+- [x] Task: Conductor - User Manual Verification 'Documentation Integration' (Protocol in workflow.md)
