@@ -479,6 +479,36 @@ public class MyInterceptor implements DataChangeInterceptor {
 
 通过使用独立的 `ModelService` 实例（不同的表前缀）或通过 `Permission` 接口的行级权限来隔离数据。
 
+### 自定义类型处理器 (Custom Type Handlers)
+
+**1. 运行时数据映射 (MyBatis TypeHandler)**
+
+使用标准的 MyBatis `TypeHandler` 在运行时转换 Java 和数据库之间的数据。
+
+```java
+@BasicField(typeHandler = MyJsonTypeHandler.class)
+private MyObject data;
+```
+
+**2. DDL 类型映射 (ColumnTypeHandler)**
+
+控制 Java 类型如何在自动 DDL 期间映射到数据库列定义（例如 `VARCHAR(255)`）。
+
+```java
+@Component
+public class MyCustomTypeHandler implements ColumnTypeHandler {
+    @Override
+    public boolean doSetColumnType(Column column, Class<?> javaType, DataBaseDialect dialect, Field field) {
+        if (javaType == MyCustomType.class) {
+            column.setDataType("VARCHAR");
+            column.setCharacterMaximumLength(500);
+            return true; // 已处理
+        }
+        return false;
+    }
+}
+```
+
 ## 社区
 
 - **Issues**: 提交 Bug 或功能建议。

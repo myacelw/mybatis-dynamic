@@ -28,9 +28,9 @@
 - [x] Task: Conductor - User Manual Verification 'Power User Documentation (DataManager & Batch)' (Protocol in workflow.md)
 
 ## Phase 4: Architect Documentation & Final Polish [checkpoint: TBD]
-- [ ] Task: Refine Expert Features
-    - [ ] Ensure Interceptors, Fillers, and Multi-tenancy are correctly categorized under "Architect".
-- [ ] Task: Final Review & Consistency Check
-    - [ ] Verify bilingual consistency between English and Chinese versions.
-    - [ ] Verify all code snippets against the `sample` project or core tests.
-- [ ] Task: Conductor - User Manual Verification 'Architect Documentation & Final Polish' (Protocol in workflow.md)
+- [x] Task: Refine Expert Features
+    - [x] Ensure Interceptors, Fillers, and Multi-tenancy are correctly categorized under "Architect".
+- [x] Task: Final Review & Consistency Check
+    - [x] Verify bilingual consistency between English and Chinese versions.
+    - [x] Verify all code snippets against the `sample` project or core tests.
+- [x] Task: Conductor - User Manual Verification 'Architect Documentation & Final Polish' (Protocol in workflow.md)

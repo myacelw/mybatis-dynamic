@@ -478,6 +478,36 @@ Automatically populate fields (e.g., `createTime`, `updateUser`). Implement `Fil
 
 Isolate data using separate `ModelService` instances (different table prefixes) or Row-Level Permissions via `Permission` interface.
 
+### Custom Type Handlers
+
+**1. Runtime Data Mapping (MyBatis TypeHandler)**
+
+Use standard MyBatis `TypeHandler` to convert data between Java and Database at runtime.
+
+```java
+@BasicField(typeHandler = MyJsonTypeHandler.class)
+private MyObject data;
+```
+
+**2. DDL Type Mapping (ColumnTypeHandler)**
+
+Control how a Java type maps to a Database Column Definition (e.g., `VARCHAR(255)`) during auto-DDL.
+
+```java
+@Component
+public class MyCustomTypeHandler implements ColumnTypeHandler {
+    @Override
+    public boolean doSetColumnType(Column column, Class<?> javaType, DataBaseDialect dialect, Field field) {
+        if (javaType == MyCustomType.class) {
+            column.setDataType("VARCHAR");
+            column.setCharacterMaximumLength(500);
+            return true; // Handled
+        }
+        return false;
+    }
+}
+```
+
 ## Community
 
 - **Issues**: Please file an issue for bugs or feature requests.
