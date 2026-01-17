@@ -15,13 +15,13 @@ Focus on ensuring `ModelService` or a helper can easily translate URL parameters
 ## Phase 2: Dynamic Controller Implementation
 Implement the generic controller in the `spring` module.
 
-- [~] Task: Implement `DynamicModelController` in `io.github.myacelw.mybatis.dynamic.spring.controller`.
-    - [ ] Add `@RestController` and `@RequestMapping("/api/dynamic/{modelName}")`.
-    - [ ] Implement `GET /` for list/search with pagination and sorting.
-    - [ ] Implement `GET /{id}` for retrieval by ID.
-    - [ ] Implement `POST /` for creation.
-    - [ ] Implement `PUT /` for update.
-    - [ ] Implement `DELETE /{id}` for deletion.
+- [x] Task: Implement `DynamicModelController` in `io.github.myacelw.mybatis.dynamic.spring.controller`. [cb1695c]
+    - [x] Add `@RestController` and `@RequestMapping("/api/dynamic/{modelName}")`.
+    - [x] Implement `GET /` for list/search with pagination and sorting.
+    - [x] Implement `GET /{id}` for retrieval by ID.
+    - [x] Implement `POST /` for creation.
+    - [x] Implement `PUT /` for update.
+    - [x] Implement `DELETE /{id}` for deletion.
 - [ ] Task: Integrate `Permission` handling into the controller to ensure row/column security.
 - [ ] Task: Add configuration properties to enable/disable the dynamic controller (e.g., `mybatis-dynamic.rest.enabled`).
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Dynamic Controller Implementation' (Protocol in workflow.md)
