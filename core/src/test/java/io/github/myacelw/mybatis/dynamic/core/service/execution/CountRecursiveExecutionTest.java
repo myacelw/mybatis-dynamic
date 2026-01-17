@@ -18,7 +18,7 @@ class CountRecursiveExecutionTest extends BaseExecutionTest {
         command.setInitNodeCondition(SimpleCondition.eq("id", "d1"));
         command.setRecursiveDown(true);
 
-        Long count = execution.exec(command, dataManager);
+        Integer count = execution.exec(command, dataManager);
 
         assertEquals(4, count);
     }

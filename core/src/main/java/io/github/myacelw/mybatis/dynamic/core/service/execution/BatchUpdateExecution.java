@@ -42,7 +42,7 @@ public class BatchUpdateExecution<ID> extends AbstractExecution<ID, Void, BatchU
 
         List<Object> sqlContextList = new ArrayList<>();
         for (Object data : dataList) {
-            List<FieldValue> changedList = getChangedFieldValues(modelContext, data, command.isOnlyUpdateNonNull(), false);
+            List<FieldValue> changedList = getChangedFieldValues(modelContext, data, command.isUpdateOnlyNonNull(), false);
             UpdateExecution.fill(dataManager, data, changedList);
 
             if (changedList.isEmpty()) {

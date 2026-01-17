@@ -21,7 +21,7 @@ public class CountExecution<ID> extends AbstractExecution<ID, Integer, CountComm
 
     @Override
     public Integer exec(CountCommand command, DataManager<ID> dataManager) {
-        List<Integer> list = dataManager.aggQueryChain(Integer.class)
+        List<Integer> list = dataManager.aggQuery(Integer.class)
                 .aggSelectItem(AggSelectItem.COUNT)
                 .where(command.getCondition())
                 .joins(command.getJoins()).exec();

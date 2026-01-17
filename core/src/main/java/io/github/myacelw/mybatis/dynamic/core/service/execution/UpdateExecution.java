@@ -196,7 +196,7 @@ public class UpdateExecution<ID> extends AbstractExecution<ID, Void, UpdateComma
                     && !modelContext.getModel().isPrimaryKeyField(field.getName())
                     && (field instanceof GroupField || field instanceof BasicField)
                     && DataUtil.containsKey(newData, field.getName())) {
-                addChangedFieldValue(field, newData, oldData, command.isOnlyUpdateNonNull(), changedData);
+                addChangedFieldValue(field, newData, oldData, command.isUpdateOnlyNonNull(), changedData);
             }
         }
         return changedData;
@@ -209,9 +209,9 @@ public class UpdateExecution<ID> extends AbstractExecution<ID, Void, UpdateComma
                 .collect(Collectors.toList());
     }
 
-    private static void addChangedFieldValue(Field field, Object newData, Object oldData, boolean onlyUpdateNonNull, List<FieldValue> changedData) {
+    private static void addChangedFieldValue(Field field, Object newData, Object oldData, boolean updateOnlyNonNull, List<FieldValue> changedData) {
         Object newValue = DataUtil.getProperty(newData, field.getName());
-        if (onlyUpdateNonNull && newValue == null) {
+        if (updateOnlyNonNull && newValue == null) {
             return;
         }
 
@@ -228,23 +228,23 @@ public class UpdateExecution<ID> extends AbstractExecution<ID, Void, UpdateComma
             for (BasicField subField : groupField.getFields()) {
                 Object subNewValue = newValue == null ? null : DataUtil.getProperty(newValue, subField.getName());
                 Object subOldValue = oldValue == null ? null : DataUtil.getProperty(oldValue, subField.getName());
-                if (!(onlyUpdateNonNull && subNewValue == null) && !Objects.equals(subNewValue, subOldValue)) {
+                if (!(updateOnlyNonNull && subNewValue == null) && !Objects.equals(subNewValue, subOldValue)) {
                     changedData.add(new FieldValue(subField, subNewValue));
                 }
             }
         }
     }
 
-    public static List<FieldValue> getChangedFieldValues(ModelContext modelContext, Object newData, boolean onlyUpdateNonNull, boolean ignorePrimaryKey) {
-        return getChangedFieldValues(modelContext, newData, modelContext.getPermissionFields(), onlyUpdateNonNull, ignorePrimaryKey);
+    public static List<FieldValue> getChangedFieldValues(ModelContext modelContext, Object newData, boolean updateOnlyNonNull, boolean ignorePrimaryKey) {
+        return getChangedFieldValues(modelContext, newData, modelContext.getPermissionFields(), updateOnlyNonNull, ignorePrimaryKey);
     }
 
     private static List<FieldValue> getChangedFieldValues(ModelContext modelContext, Object newData, UpdateCommand<?> command) {
         Collection<Field> fields = getUpdateFields(modelContext, command);
-        return getChangedFieldValues(modelContext, newData, fields, command.isOnlyUpdateNonNull(), true);
+        return getChangedFieldValues(modelContext, newData, fields, command.isUpdateOnlyNonNull(), true);
     }
 
-    private static List<FieldValue> getChangedFieldValues(ModelContext modelContext, Object newData, Collection<Field> fields, boolean onlyUpdateNonNull, boolean ignorePrimaryKey) {
+    private static List<FieldValue> getChangedFieldValues(ModelContext modelContext, Object newData, Collection<Field> fields, boolean updateOnlyNonNull, boolean ignorePrimaryKey) {
         //变更的数据
         List<FieldValue> changedData = new ArrayList<>();
 
@@ -253,16 +253,16 @@ public class UpdateExecution<ID> extends AbstractExecution<ID, Void, UpdateComma
                     && (!ignorePrimaryKey || !modelContext.getModel().isPrimaryKeyField(field.getName()))
                     && (field instanceof GroupField || field instanceof BasicField)
                     && DataUtil.containsKey(newData, field.getName())) {
-                addChangedFieldValue(field, newData, onlyUpdateNonNull, changedData);
+                addChangedFieldValue(field, newData, updateOnlyNonNull, changedData);
             }
         }
         return changedData;
     }
 
-    private static void addChangedFieldValue(Field field, Object newData, boolean onlyUpdateNonNull, List<FieldValue> changedData) {
+    private static void addChangedFieldValue(Field field, Object newData, boolean updateOnlyNonNull, List<FieldValue> changedData) {
         Object newValue = DataUtil.getProperty(newData, field.getName());
 
-        if (onlyUpdateNonNull && newValue == null) {
+        if (updateOnlyNonNull && newValue == null) {
             return;
         }
         if (field instanceof BasicField) {
@@ -271,7 +271,7 @@ public class UpdateExecution<ID> extends AbstractExecution<ID, Void, UpdateComma
             GroupField groupField = (GroupField) field;
             for (BasicField subField : groupField.getFields()) {
                 Object subNewValue = newValue == null ? null : DataUtil.getProperty(newValue, subField.getName());
-                if (!(onlyUpdateNonNull && subNewValue == null)) {
+                if (!(updateOnlyNonNull && subNewValue == null)) {
                     changedData.add(new FieldValue(subField, subNewValue));
                 }
             }

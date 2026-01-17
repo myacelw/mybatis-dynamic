@@ -127,7 +127,7 @@ public interface BaseTreeDao<ID, T> extends BaseDao<ID, T> {
      * @param initNodeCondition 递归查询主表初始条目的查询条件
      * @param recursiveDown 向下递归还是向上递归
      */
-    default long countRecursive(Consumer<ConditionBuilder> initNodeCondition, boolean recursiveDown) {
+    default int countRecursive(Consumer<ConditionBuilder> initNodeCondition, boolean recursiveDown) {
         return getDataManager().countRecursive(initNodeCondition, recursiveDown);
     }
 
@@ -137,7 +137,7 @@ public interface BaseTreeDao<ID, T> extends BaseDao<ID, T> {
      * @param condition 递归查询后结果的查询条件，可使用关联表字段条件
      * @param recursiveDown 向下递归还是向上递归
      */
-    default long countRecursive(Consumer<ConditionBuilder> initNodeCondition, Consumer<ConditionBuilder> condition, boolean recursiveDown) {
+    default int countRecursive(Consumer<ConditionBuilder> initNodeCondition, Consumer<ConditionBuilder> condition, boolean recursiveDown) {
         return getDataManager().countRecursive(initNodeCondition, condition, recursiveDown);
     }
 

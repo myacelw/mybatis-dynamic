@@ -48,13 +48,13 @@ public class UpdateChain<ID> extends AbstractChain<ID, Void, UpdateCommand<ID>, 
     /**
      * 是否只更新非空值，为true时null字段值被跳过不更新
      */
-    public UpdateChain<ID> onlyUpdateNonNull(boolean onlyUpdateNonNull) {
-        command.setOnlyUpdateNonNull(onlyUpdateNonNull);
+    public UpdateChain<ID> updateOnlyNonNull(boolean updateOnlyNonNull) {
+        command.setUpdateOnlyNonNull(updateOnlyNonNull);
         return this;
     }
 
-    public UpdateChain<ID> onlyUpdateNonNull() {
-        command.setOnlyUpdateNonNull(true);
+    public UpdateChain<ID> updateOnlyNonNull() {
+        command.setUpdateOnlyNonNull(true);
         return this;
     }
 

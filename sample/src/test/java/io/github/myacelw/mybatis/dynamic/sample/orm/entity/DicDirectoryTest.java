@@ -17,7 +17,7 @@ class DicDirectoryTest {
         System.out.println(model);
 
         Field idField = model.findField("id");
-        assertEquals(Long.class, idField.getJavaClass());
+        assertEquals(Integer.class, idField.getJavaClass());
 
         Field parentField = model.findField("parent");
         assertEquals(DicDirectory.class, parentField.getJavaClass());

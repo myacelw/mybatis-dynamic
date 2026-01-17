@@ -57,3 +57,7 @@ The application will be available at `http://localhost:8080`.
 *   **Dependency Management**: The project uses Maven for dependency management. The parent `pom.xml` file defines the versions of the main dependencies.
 *   **Modularity**: The project is well-modularized, with clear separation of concerns between the `core`, `spring`, `draw`, and `sample` modules.
 *   **Service Loading**: The `core` module uses the `java.util.ServiceLoader` mechanism to discover and load implementations of its main interfaces, such as `Execution`. This makes the framework extensible.
+
+# Custom Instructions
+- Always use Context7 MCP when I need library/API documentation, code generation, setup or configuration steps without me having to explicitly ask.
+- 当涉及 Java 架构设计模式或 MyBatis 生态库的 API 查询时，优先通过 Context7 获取最新的官方文档信息。

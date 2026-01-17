@@ -40,7 +40,7 @@ public class UpdateByConditionExecution<ID> extends AbstractExecution<ID, Intege
             return 0;
         }
 
-        List<FieldValue> fieldValues = UpdateExecution.getChangedFieldValues(modelContext, data, command.isOnlyUpdateNonNull(), true);
+        List<FieldValue> fieldValues = UpdateExecution.getChangedFieldValues(modelContext, data, command.isUpdateOnlyNonNull(), true);
 
         if (fieldValues.isEmpty()) {
             log.debug("更新数据为空，跳过执行更新操作，model:{}", model.getName());

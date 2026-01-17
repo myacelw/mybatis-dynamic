@@ -47,8 +47,13 @@ public class UpdateByConditionChain<ID> extends AbstractChain<ID, Integer, Updat
     /**
      * 是否只更新非空字段，为true时null字段值被跳过不更新
      */
-    public UpdateByConditionChain<ID> onlyUpdateNonNull(boolean onlyUpdateNonNull) {
-        command.setOnlyUpdateNonNull(onlyUpdateNonNull);
+    public UpdateByConditionChain<ID> updateOnlyNonNull(boolean updateOnlyNonNull) {
+        command.setUpdateOnlyNonNull(updateOnlyNonNull);
+        return self();
+    }
+
+    public UpdateByConditionChain<ID> updateOnlyNonNull() {
+        command.setUpdateOnlyNonNull(true);
         return self();
     }
 

@@ -18,7 +18,7 @@ import static io.github.myacelw.mybatis.dynamic.core.service.execution.QueryRecu
  *
  * @author liuwei
  */
-public class CountRecursiveExecution<ID> extends AbstractExecution<ID, Long, CountRecursiveCommand> {
+public class CountRecursiveExecution<ID> extends AbstractExecution<ID, Integer, CountRecursiveCommand> {
 
     @Override
     public Class<? extends Command> getCommandClass() {
@@ -26,7 +26,7 @@ public class CountRecursiveExecution<ID> extends AbstractExecution<ID, Long, Cou
     }
 
     @Override
-    public Long exec(CountRecursiveCommand command, DataManager<ID> dataManager) {
+    public Integer exec(CountRecursiveCommand command, DataManager<ID> dataManager) {
         QueryCommand<Map<String, Object>> queryCommand = QueryCommand.build();
         queryCommand.setCondition(command.getCondition());
         queryCommand.setJoins(command.getJoins());
@@ -44,11 +44,11 @@ public class CountRecursiveExecution<ID> extends AbstractExecution<ID, Long, Cou
 
         Object result = list.get(0).get(AggSelectItem.COUNT.getPropertyName());
         if (result instanceof Long) {
-            return (Long) result;
+            return ((Long) result).intValue();
         } else if (result instanceof Integer) {
-            return ((Integer) result).longValue();
+            return (Integer) result;
         } else {
-            throw new RuntimeException("查询结果不是Long类型");
+            throw new RuntimeException("查询结果不是Long或Integer类型");
         }
     }
 }

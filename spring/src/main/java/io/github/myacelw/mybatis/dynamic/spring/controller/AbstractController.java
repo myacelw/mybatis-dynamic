@@ -38,9 +38,9 @@ public abstract class AbstractController<ID, T> {
         service.update(data);
     }
 
-    @PostMapping("/onlyUpdateNonNull")
-    public void onlyUpdateNonNull(@RequestBody T data) {
-        service.onlyUpdateNonNull(data);
+    @PostMapping("/updateOnlyNonNull")
+    public void updateOnlyNonNull(@RequestBody T data) {
+        service.updateOnlyNonNull(data);
     }
 
     @DeleteMapping("/{id}")
@@ -73,7 +73,7 @@ public abstract class AbstractController<ID, T> {
     }
 
     @PostMapping("/count")
-    public long count(@RequestBody(required = false) Condition condition) {
+    public int count(@RequestBody(required = false) Condition condition) {
         return service.count(condition);
     }
 

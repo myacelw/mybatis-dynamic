@@ -45,10 +45,10 @@ public class BatchUpdateByConditionChain<ID> extends AbstractChain<ID, Void, Bat
      *
      * @param condition         条件
      * @param data              更新数据
-     * @param onlyUpdateNonNull 是否只更新非空字段
+     * @param updateOnlyNonNull 是否只更新非空字段
      */
-    public BatchUpdateByConditionChain<ID> add(@NonNull Condition condition, @NonNull Object data, boolean onlyUpdateNonNull) {
-        command.getUpdates().add(new BatchUpdateByConditionCommand.UpdatePair(condition, data, onlyUpdateNonNull, null));
+    public BatchUpdateByConditionChain<ID> add(@NonNull Condition condition, @NonNull Object data, boolean updateOnlyNonNull) {
+        command.getUpdates().add(new BatchUpdateByConditionCommand.UpdatePair(condition, data, updateOnlyNonNull, null));
         return self();
     }
 
@@ -57,12 +57,12 @@ public class BatchUpdateByConditionChain<ID> extends AbstractChain<ID, Void, Bat
      *
      * @param conditionBuilder  条件构建器
      * @param data              更新数据
-     * @param onlyUpdateNonNull 是否只更新非空字段
+     * @param updateOnlyNonNull 是否只更新非空字段
      */
-    public BatchUpdateByConditionChain<ID> add(@NonNull Consumer<ConditionBuilder> conditionBuilder, @NonNull Object data, boolean onlyUpdateNonNull) {
+    public BatchUpdateByConditionChain<ID> add(@NonNull Consumer<ConditionBuilder> conditionBuilder, @NonNull Object data, boolean updateOnlyNonNull) {
         ConditionBuilder builder = Condition.builder();
         conditionBuilder.accept(builder);
-        return add(builder.build(), data, onlyUpdateNonNull);
+        return add(builder.build(), data, updateOnlyNonNull);
     }
 
     /**

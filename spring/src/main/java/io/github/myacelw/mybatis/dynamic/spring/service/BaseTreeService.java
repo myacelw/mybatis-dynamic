@@ -2,11 +2,13 @@ package io.github.myacelw.mybatis.dynamic.spring.service;
 
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.OrderItem;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.ConditionBuilder;
 import io.github.myacelw.mybatis.dynamic.core.service.chain.QueryRecursiveListChain;
 import io.github.myacelw.mybatis.dynamic.core.service.chain.QueryRecursiveTreeChain;
 import lombok.NonNull;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * 树形实体的基本Service接口
@@ -28,21 +30,21 @@ public interface BaseTreeService<ID, T> extends BaseService<ID, T> {
     /**
      * 移动数据到最前面
      *
-     * @return 新的orderString
+     * @return 新sorderString
      */
     String moveToFirst(ID id);
 
     /**
      * 移动数据到最后面
      *
-     * @return 新的orderString
+     * @return 新sorderString
      */
     String moveToLast(ID id);
 
     /**
      * 移动数据到目标节点之间
      *
-     * @return 新的orderString
+     * @return 新sorderString
      */
     String move(ID id, String previous, String next);
 
@@ -58,7 +60,9 @@ public interface BaseTreeService<ID, T> extends BaseService<ID, T> {
     /**
      * 向下递归查询，返回树形结构
      */
-    QueryRecursiveTreeChain<ID, T> queryRecursiveTree();
+    default QueryRecursiveTreeChain<ID, T> queryRecursiveTree() {
+        return new QueryRecursiveTreeChain<>(getDataManager(), getEntityClass());
+    }
 
     List<T> queryRecursiveTree(Condition initNodeCondition);
 
@@ -71,5 +75,14 @@ public interface BaseTreeService<ID, T> extends BaseService<ID, T> {
      */
     T getRecursiveTreeById(@NonNull ID id);
 
-}
+    /**
+     * 树形递归查询统计数据
+     */
+    int countRecursive(Consumer<ConditionBuilder> initNodeCondition, boolean recursiveDown);
 
+    /**
+     * 树形递归查询统计数据
+     */
+    int countRecursive(Consumer<ConditionBuilder> initNodeCondition, Consumer<ConditionBuilder> condition, boolean recursiveDown);
+
+}

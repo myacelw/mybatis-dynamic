@@ -139,7 +139,7 @@ public class DicServiceImpl extends BaseServiceImpl<Integer, Dic> {
     public void delete(@PathVariable @NonNull Integer id) {
         dao.delete(id);
         // 按照字典ID条件删除字典项
-        dicItemDao.deleteByCondition(Condition.builder().eq(DicItem::getDicId, id).build());
+        dicItemDao.delete(b -> b.eq(DicItem.Fields.dicId, id));
     }
 }
 
@@ -599,12 +599,12 @@ public class DicDirectoryServiceImpl extends BaseServiceImpl<DicDirectory> {
 
     @Override
     public void delete(@PathVariable @NonNull String id) {
-        long n = dao.count(b->b.eq(BaseTreeEntity.Fields.parent, id));
+        int n = dao.count(b -> b.eq(BaseTreeEntity.Fields.parent, id));
         if (n > 0) {
             throw new DataException("4009751", "包含下级目录，不能删除");
         }
 
-        long n2 = dicDao.count(b->b.eq(Dic.Fields.dicDirectory, id));
+        int n2 = dicDao.count(b -> b.eq(Dic.Fields.dicDirectory, id));
         if (n2 > 0) {
             throw new DataException("4009752", "包含数据字典，不能删除");
         }

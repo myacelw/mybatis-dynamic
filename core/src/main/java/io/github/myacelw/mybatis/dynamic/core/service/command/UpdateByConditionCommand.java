@@ -30,7 +30,7 @@ public class UpdateByConditionCommand implements Command {
     /**
      * 是否只更新非空字段，为true时null字段值被跳过不更新
      */
-    boolean onlyUpdateNonNull;
+    boolean updateOnlyNonNull;
 
 
     /**

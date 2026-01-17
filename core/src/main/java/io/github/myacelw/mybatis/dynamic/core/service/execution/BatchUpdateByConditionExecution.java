@@ -36,7 +36,7 @@ public class BatchUpdateByConditionExecution<ID> extends AbstractExecution<ID, V
 
         List<MybatisHelper.BatchItem> batchItems = new ArrayList<>();
         for (BatchUpdateByConditionCommand.UpdatePair pair : updates) {
-            List<FieldValue> fieldValues = UpdateExecution.getChangedFieldValues(modelContext, pair.getData(), pair.isOnlyUpdateNonNull(), true);
+            List<FieldValue> fieldValues = UpdateExecution.getChangedFieldValues(modelContext, pair.getData(), pair.isUpdateOnlyNonNull(), true);
             UpdateExecution.fill(dataManager, pair.getData(), fieldValues);
 
             if (fieldValues.isEmpty() && (pair.getCustomSetList() == null || pair.getCustomSetList().isEmpty())) {

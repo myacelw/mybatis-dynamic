@@ -21,7 +21,7 @@ public class BatchUpdateCommand implements Command {
     /**
      * 是否只更新非空字段，为true时null字段值被跳过不更新
      */
-    boolean onlyUpdateNonNull;
+    boolean updateOnlyNonNull;
 
     /**
      * 自定义更新字段，用于更新非标准字段或需要特殊处理的字段
