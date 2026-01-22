@@ -58,6 +58,7 @@ public class TableManagerImpl implements TableManager {
         DDLPlan plan = new DDLPlan();
         Table currentTable = queryTable(table);
         String effectiveTableNameForColumns = table.getTableName();
+        String effectiveSchemaNameForColumns = table.getSchema();
 
         if (currentTable == null && !ObjectUtil.isEmpty(table.getOldTableNames())) {
             for (String oldTableName : table.getOldTableNames()) {
@@ -73,7 +74,7 @@ public class TableManagerImpl implements TableManager {
 
         plan.addAll(generateTableCommentSql(table, currentTable));
 
-        List<Column> columns = getCurrentTableColumns(effectiveTableNameForColumns, table.getSchema());
+        List<Column> columns = getCurrentTableColumns(new Table(effectiveTableNameForColumns, effectiveSchemaNameForColumns), table.getPrimaryKeyColumns());
         if (columns == null || columns.isEmpty()) {
             plan.addAll(generateCreateTableAndIndexSql(table));
         } else {
@@ -132,7 +133,14 @@ public class TableManagerImpl implements TableManager {
     }
 
     public List<Column> getCurrentTableColumns(String tableName, String schemaName) {
-        Table table = new Table(tableName, schemaName);
+        return getCurrentTableColumns(new Table(tableName, schemaName), null);
+    }
+
+    public List<Column> getCurrentTableColumns(Table table) {
+        return getCurrentTableColumns(table, table.getPrimaryKeyColumns());
+    }
+
+    private List<Column> getCurrentTableColumns(Table table, List<String> primaryKeyColumns) {
         List<Column> columns = metaDataHelper.getColumns(table.getTableName(), table.getSchema());
         if (columns == null || columns.isEmpty()) {
             return columns;
@@ -146,35 +154,10 @@ public class TableManagerImpl implements TableManager {
         for (Column c : columns) {
             c.setColumnName(metaDataHelper.getWrappedIdentifierInMeta(c.getColumnName()));
             dialect.normalizeColumn(c);
-            Index index = indexMap.get(c.getColumnName());
-            if (index != null) {
-                // 过滤掉主键索引
-                // 注意：这里由于是根据表名查询的，table对象并没有pk信息，需要从columns中识别或者跳过
-                // 之前的代码是通过传入的table.getPrimaryKeyColumns()过滤的。
-                // 我们在生成计划时，getCurrentTableColumns 被调用，但此时我们只有表名。
-                // 幸好 DataBaseMetaDataHelperImpl 获取的 columns 包含 pk 信息（虽然 Column 类没存，但 MetaDataHelper 可能知道）。
-                // 实际上 TableManagerImpl 原本的代码是：
-                // if (table.getPrimaryKeyColumns() == null || table.getPrimaryKeyColumns().stream().noneMatch(t -> t.equalsIgnoreCase(c.getColumnName())))
-                // 我们可以在调用处补全这个逻辑。
-            }
-        }
-        return columns;
-    }
-
-    public List<Column> getCurrentTableColumns(Table table) {
-        List<Column> columns = getCurrentTableColumns(table.getTableName(), table.getSchema());
-        if (columns == null) return null;
-
-        for (Column c : columns) {
-            // 补全索引信息，排除主键
-            List<Index> indexList = metaDataHelper.getIndexList(table.getTableName(), table.getSchema());
-            Map<String, Index> indexMap = new HashMap<>();
-            indexList.stream().filter(t -> t.getColumnNames().size() == 1)
-                    .forEach(t -> indexMap.put(t.getColumnNames().get(0), t));
-            
             Index index = indexMap.get(metaDataHelper.unwrapIdentifier(c.getColumnName()));
             if (index != null) {
-                if (table.getPrimaryKeyColumns() == null || table.getPrimaryKeyColumns().stream().noneMatch(t -> t.equalsIgnoreCase(c.getColumnName()))) {
+                // 过滤掉主键索引
+                if (primaryKeyColumns == null || primaryKeyColumns.stream().noneMatch(t -> t.equalsIgnoreCase(c.getColumnName()))) {
                     c.setIndex(true);
                     c.setIndexName(metaDataHelper.getWrappedIdentifierInMeta(index.getIndexName()));
                     c.setIndexType(index.getIndexType());

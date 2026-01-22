@@ -1,5 +1,7 @@
 package io.github.myacelw.mybatis.dynamic.core;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import io.github.myacelw.mybatis.dynamic.core.database.dialect.*;
 
 import io.github.myacelw.mybatis.dynamic.core.database.impl.DataBaseMetaDataHelperImpl;
@@ -12,7 +14,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 
 import javax.sql.DataSource;
 
@@ -62,12 +63,12 @@ public class TableServiceBuildUtil {
     }
 
     private static DataSource dataSourceForOceanBase() {
-        DataSourceProperties properties = new DataSourceProperties();
-        properties.setUrl("jdbc:oceanbase://127.0.0.1:2881/teest?enableQueryTimeouts=false&characterEncoding=utf8&useSSL=false&allowMultiQueries=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true");
-        properties.setDriverClassName("com.oceanbase.jdbc.Driver");
-        properties.setUsername("root@test");
-        properties.setPassword("123456");
-        return properties.initializeDataSourceBuilder().build();
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:oceanbase://127.0.0.1:2881/teest?enableQueryTimeouts=false&characterEncoding=utf8&useSSL=false&allowMultiQueries=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true");
+        config.setDriverClassName("com.oceanbase.jdbc.Driver");
+        config.setUsername("root@test");
+        config.setPassword("123456");
+        return new HikariDataSource(config);
     }
 
     @SneakyThrows
@@ -81,26 +82,26 @@ public class TableServiceBuildUtil {
     }
 
     private static DataSource dataSourceForH2(String h2Name) {
-        DataSourceProperties properties = new DataSourceProperties();
-        properties.setUrl("jdbc:h2:mem:" + h2Name + ";MODE=MySQL");
-        properties.setUsername("sa");
-        return properties.initializeDataSourceBuilder().build();
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:h2:mem:" + h2Name + ";MODE=MySQL");
+        config.setUsername("sa");
+        return new HikariDataSource(config);
     }
 
     private static DataSource dataSourceForMysql() {
-        DataSourceProperties properties = new DataSourceProperties();
-        properties.setUrl("jdbc:mysql://127.0.0.1:3306/test");
-        properties.setUsername("test");
-        properties.setPassword("test");
-        return properties.initializeDataSourceBuilder().build();
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/test");
+        config.setUsername("test");
+        config.setPassword("test");
+        return new HikariDataSource(config);
     }
 
     private static DataSource dataSourceForPostgresql() {
-        DataSourceProperties properties = new DataSourceProperties();
-        properties.setUrl("jdbc:postgresql://127.0.0.1:5432/test");
-        properties.setUsername("test");
-        properties.setPassword("test");
-        return properties.initializeDataSourceBuilder().build();
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:postgresql://127.0.0.1:5432/test");
+        config.setUsername("test");
+        config.setPassword("test");
+        return new HikariDataSource(config);
     }
 
 }

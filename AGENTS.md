@@ -57,6 +57,12 @@ The application will be available at `http://localhost:8080`.
 *   **Dependency Management**: The project uses Maven for dependency management. The parent `pom.xml` file defines the versions of the main dependencies.
 *   **Modularity**: The project is well-modularized, with clear separation of concerns between the `core`, `spring`, `draw`, and `sample` modules.
 *   **Service Loading**: The `core` module uses the `java.util.ServiceLoader` mechanism to discover and load implementations of its main interfaces, such as `Execution`. This makes the framework extensible.
+*   **Compatibility Requirements**:
+    *   **Java Syntax**: The build must use Java 8 syntax (source/target 1.8).
+    *   **JDK Compatibility**: The project must run on JDK 8 and all later LTS versions (11, 17, 21, etc.).
+    *   **Spring Boot**: The code must be compatible with Spring Boot 2.6, 2.7, and 3.x.
+        *   *Note*: `DataSourceProperties` location/package changes between versions must be handled (e.g., via reflection or creating abstraction layers).
+        *   *Note*: Handle `javax.*` vs `jakarta.*` namespace changes for Servlet APIs if supporting both 2.x and 3.x in the same source branch.
 
 # Custom Instructions
 - Always use Context7 MCP when I need library/API documentation, code generation, setup or configuration steps without me having to explicitly ask.
