@@ -72,12 +72,11 @@ public class TableManagerImpl implements TableManager {
             }
         }
 
-        plan.addAll(generateTableCommentSql(table, currentTable));
-
         List<Column> columns = getCurrentTableColumns(new Table(effectiveTableNameForColumns, effectiveSchemaNameForColumns), table.getPrimaryKeyColumns());
         if (columns == null || columns.isEmpty()) {
             plan.addAll(generateCreateTableAndIndexSql(table));
         } else {
+            plan.addAll(generateTableCommentSql(table, currentTable));
             plan.addAll(generateUpgradeTableSql(table, columns));
         }
         return plan;
