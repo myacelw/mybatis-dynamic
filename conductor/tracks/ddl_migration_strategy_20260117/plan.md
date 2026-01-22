@@ -29,7 +29,7 @@ Implement the file-based logging mechanism for generated SQL.
 Verify the end-to-end flow in a Spring environment.
 
 - [x] Task: Update `DynamicModelAutoConfiguration` to pass the new DDL settings to the core engine. [7d3b746]
-- [~] Task: Create an integration test in the `sample` or `spring` module.
-    - [ ] Verify that a startup with a new model generates a log file in the configured path.
-    - [ ] Verify that `dry-run: true` results in no schema changes in the H2 database.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration & Sample Verification' (Protocol in workflow.md)
+- [x] Task: Create an integration test in the `sample` or `spring` module. [8df68cc]
+    - [x] Verify that a startup with a new model generates a log file in the configured path.
+    - [x] Verify that `dry-run: true` results in no schema changes in the H2 database.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Sample Verification' (Protocol in workflow.md) [8df68cc]
