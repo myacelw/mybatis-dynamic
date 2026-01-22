@@ -16,6 +16,7 @@ import io.github.myacelw.mybatis.dynamic.core.metadata.table.Table;
 import io.github.myacelw.mybatis.dynamic.core.metadata.vo.DDLPlan;
 import io.github.myacelw.mybatis.dynamic.core.service.*;
 import io.github.myacelw.mybatis.dynamic.core.service.filler.Filler;
+import io.github.myacelw.mybatis.dynamic.core.util.DDLFileLogger;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -74,6 +75,10 @@ public class ModelServiceImpl implements ModelService {
     @Setter
     private boolean dryRun = false;
 
+    @Getter
+    @Setter
+    private String logPath;
+
     protected final Map<String, DataManager<Object>> dataManagerMap = new ConcurrentHashMap<>();
 
     protected final Map<Class<?>, String> modelNameMap = new ConcurrentHashMap<>();
@@ -97,12 +102,20 @@ public class ModelServiceImpl implements ModelService {
         model.init(modelToTableConverter);
         Table table = modelToTableConverter.convertToTable(model, fieldWhiteList);
         DDLPlan plan = tableManager.getUpdatePlan(table);
-        if (dryRun) {
-            log.info("DRY RUN MODE: DDL SQL generated but not executed for model '{}'", model.getName());
-            plan.getSqlList().forEach(sql -> log.info("DRY RUN SQL: {}", sql.getSql()));
-        } else {
-            tableManager.executePlan(plan);
+
+        if (plan != null && !plan.isEmpty()) {
+            if (logPath != null && !logPath.isEmpty()) {
+                new DDLFileLogger(logPath).log(plan);
+            }
+
+            if (dryRun) {
+                log.info("DRY RUN MODE: DDL SQL generated but not executed for model '{}'", model.getName());
+                plan.getSqlList().forEach(sql -> log.info("DRY RUN SQL: {}", sql.getSql()));
+            } else {
+                tableManager.executePlan(plan);
+            }
         }
+
         EventListener.onEvent(eventListeners, new UpdateModelEvent(model, table));
     }
 

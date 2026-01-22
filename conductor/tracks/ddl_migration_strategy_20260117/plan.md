@@ -17,7 +17,7 @@ Update the configuration and modify the core DDL generation logic to support int
 ## Phase 2: DDL Logging Implementation
 Implement the file-based logging mechanism for generated SQL.
 
-- [ ] Task: Create a `DDLFileLogger` utility.
+- [~] Task: Create a `DDLFileLogger` utility.
     - [ ] Implement timestamped filename generation (`ddl_yyyyMMdd_HHmmss.sql`).
     - [ ] Implement logic to ensure the directory exists and the file is created **only** if DDL is non-empty.
 - [ ] Task: Integrate `DDLFileLogger` into the `ModelService` startup sequence.

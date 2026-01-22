@@ -151,4 +151,8 @@ public interface ModelService extends DataManagerGetter {
 
     void setDryRun(boolean dryRun);
 
+    String getLogPath();
+
+    void setLogPath(String logPath);
+
 }

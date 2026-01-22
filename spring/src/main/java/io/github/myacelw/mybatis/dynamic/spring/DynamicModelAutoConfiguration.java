@@ -64,6 +64,8 @@ public class DynamicModelAutoConfiguration {
                 .fillers(fillers)
                 .interceptors(interceptors)
                 .disableAlterComment(properties.getDisableAlterComment())
+                .dryRun(properties.getDdl().isDryRun())
+                .logPath(properties.getDdl().getLogPath())
                 .build();
         return modelService;
     }

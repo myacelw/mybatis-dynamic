@@ -60,6 +60,8 @@ public class ModelServiceBuilder {
 
     boolean dryRun = false;
 
+    String logPath;
+
     public static ModelServiceBuilder builder(SqlSessionFactory sqlSessionFactory) {
         return new ModelServiceBuilder(sqlSessionFactory);
     }
@@ -110,6 +112,11 @@ public class ModelServiceBuilder {
 
     public ModelServiceBuilder dryRun(boolean dryRun) {
         this.dryRun = dryRun;
+        return this;
+    }
+
+    public ModelServiceBuilder logPath(String logPath) {
+        this.logPath = logPath;
         return this;
     }
 
@@ -186,19 +193,21 @@ public class ModelServiceBuilder {
                 mergedFiller, class2ModelTransfer
         );
 
-                modelService.setInterceptors(interceptors);
+        modelService.setInterceptors(interceptors);
 
-                modelService.setPermissionGetter(permissionGetter);
+        modelService.setPermissionGetter(permissionGetter);
 
-                modelService.setEventListeners(eventListeners);
+        modelService.setEventListeners(eventListeners);
 
-                modelService.setDisableAlterComment(disableAlterComment);
+        modelService.setDisableAlterComment(disableAlterComment);
 
-                modelService.setDryRun(dryRun);
+        modelService.setDryRun(dryRun);
 
-                return modelService;
+        modelService.setLogPath(logPath);
 
-            }
+        return modelService;
+
+    }
 
         }
 
