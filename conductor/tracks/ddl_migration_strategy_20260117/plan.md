@@ -17,13 +17,13 @@ Update the configuration and modify the core DDL generation logic to support int
 ## Phase 2: DDL Logging Implementation
 Implement the file-based logging mechanism for generated SQL.
 
-- [~] Task: Create a `DDLFileLogger` utility.
-    - [ ] Implement timestamped filename generation (`ddl_yyyyMMdd_HHmmss.sql`).
-    - [ ] Implement logic to ensure the directory exists and the file is created **only** if DDL is non-empty.
-- [ ] Task: Integrate `DDLFileLogger` into the `ModelService` startup sequence.
-- [ ] Task: Implement console output (STDOUT) for generated DDL when in `dry-run` mode.
-- [ ] Task: Write unit tests for `DDLFileLogger` to verify file creation and content accuracy.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Logging Implementation' (Protocol in workflow.md)
+- [x] Task: Create a `DDLFileLogger` utility. [7d3b746]
+    - [x] Implement timestamped filename generation (`ddl_yyyyMMdd_HHmmss.sql`).
+    - [x] Implement logic to ensure the directory exists and the file is created **only** if DDL is non-empty.
+- [x] Task: Integrate `DDLFileLogger` into the `ModelService` startup sequence. [7d3b746]
+- [x] Task: Implement console output (STDOUT) for generated DDL when in `dry-run` mode. [7d3b746]
+- [x] Task: Write unit tests for `DDLFileLogger` to verify file creation and content accuracy. [7d3b746]
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Logging Implementation' (Protocol in workflow.md) [d57bc0f]
 
 ## Phase 3: Integration & Sample Verification
 Verify the end-to-end flow in a Spring environment.

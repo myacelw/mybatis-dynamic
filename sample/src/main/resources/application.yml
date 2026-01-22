@@ -17,6 +17,7 @@ spring:
     mapper:
       ACCEPT_CASE_INSENSITIVE_ENUMS: true
 
+
 mybatis-dynamic:
   table-prefix: d_
   index-prefix: idx_
@@ -31,6 +32,11 @@ mybatis-dynamic:
   disable-alter-comment: false
   # 初始化数据文件路径列表，支持通配符，例如 classpath:data-v1.json,classpath:data-v2.json
   #init-data-files: classpath:data.json
+  ddl:
+    # 是否开启dry-run模式，默认为false
+    dry-run: false
+    # 日志文件路径，默认为空
+    log-path: ./ddl-logs
 
 # 服务基础配置
 server:
