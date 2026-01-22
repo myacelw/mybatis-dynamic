@@ -402,18 +402,14 @@ public class QueryNode {
         String fieldName = linkField.getName();
         Class<?> javaClass = linkField.getJavaClass();
 
-        if (plain) {
-            return getSelectColumns(true, propertyPrefix + fieldName + ".", useFieldJavaType, null);
+        List<SelectColumn> subs = getSelectColumns(plain, "", useFieldJavaType, null);
+        if (subs.isEmpty()) {
+            return Collections.emptyList();
+        }
+        if (linkField instanceof ToOneField || plain) {
+            return Collections.singletonList(SelectColumn.association(null, propertyPrefix + fieldName, subs, javaClass));
         } else {
-            List<SelectColumn> subs = getSelectColumns(false, "", useFieldJavaType, null);
-            if (subs.isEmpty()) {
-                return Collections.emptyList();
-            }
-            if (linkField instanceof ToOneField) {
-                return Collections.singletonList(SelectColumn.association(null, propertyPrefix + fieldName, subs, javaClass));
-            } else {
-                return Collections.singletonList(SelectColumn.collection(null, propertyPrefix + fieldName, subs, javaClass));
-            }
+            return Collections.singletonList(SelectColumn.collection(null, propertyPrefix + fieldName, subs, javaClass));
         }
     }
 
