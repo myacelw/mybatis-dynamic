@@ -2,7 +2,7 @@
 
 This plan outlines the steps to introduce a "Dry Run" mode and DDL logging to improve the safety of database schema migrations.
 
-## Phase 1: Configuration & Core DDL Interception
+## Phase 1: Configuration & Core DDL Interception [checkpoint: 6c8052c]
 Update the configuration and modify the core DDL generation logic to support interception.
 
 - [x] Task: Define new configuration properties in `DynamicModelProperties`. [44f1cb0]
