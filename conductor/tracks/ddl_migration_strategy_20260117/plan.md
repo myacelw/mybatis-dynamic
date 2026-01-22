@@ -14,7 +14,7 @@ Update the configuration and modify the core DDL generation logic to support int
 - [x] Task: Write unit tests to verify that DDL is generated but not executed when `dry-run` is active. [8257355]
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Configuration & Core Interception' (Protocol in workflow.md) [ab54473]
 
-## Phase 2: DDL Logging Implementation
+## Phase 2: DDL Logging Implementation [checkpoint: 7ffa1bf]
 Implement the file-based logging mechanism for generated SQL.
 
 - [x] Task: Create a `DDLFileLogger` utility. [7d3b746]
