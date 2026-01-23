@@ -25,7 +25,7 @@ Implement the file-based logging mechanism for generated SQL.
 - [x] Task: Write unit tests for `DDLFileLogger` to verify file creation and content accuracy. [7d3b746]
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Logging Implementation' (Protocol in workflow.md) [d57bc0f]
 
-## Phase 3: Integration & Sample Verification
+## Phase 3: Integration & Sample Verification [checkpoint: 14e2ab5]
 Verify the end-to-end flow in a Spring environment.
 
 - [x] Task: Update `DynamicModelAutoConfiguration` to pass the new DDL settings to the core engine. [7d3b746]
