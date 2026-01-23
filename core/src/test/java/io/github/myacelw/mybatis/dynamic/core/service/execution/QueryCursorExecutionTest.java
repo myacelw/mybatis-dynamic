@@ -7,6 +7,7 @@ import org.apache.ibatis.cursor.Cursor;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ class QueryCursorExecutionTest extends BaseExecutionTest {
 
         try (Cursor<Map<String, Object>> cursor = execution.exec(command, dataManager)) {
             assertNotNull(cursor);
-            assertFalse(cursor.isOpen()); // MyBatis Cursor is not "open" in the JDBC sense until iteration starts, or it might depend on implementation. Actually isOpen() usually returns true if it can be iterated.
+            assertFalse(cursor.isOpen()); 
             
             List<Map<String, Object>> results = new ArrayList<>();
             for (Map<String, Object> row : cursor) {
@@ -34,7 +35,7 @@ class QueryCursorExecutionTest extends BaseExecutionTest {
             }
 
             assertFalse(results.isEmpty());
-            assertTrue(results.size() >= 2); // Based on data.json having u1, u2 etc.
+            assertTrue(results.size() >= 2); 
         }
     }
 
@@ -56,6 +57,39 @@ class QueryCursorExecutionTest extends BaseExecutionTest {
 
             assertEquals(1, results.size());
             assertEquals("张三", results.get(0).get("name"));
+        }
+    }
+
+    @Test
+    void exec_QueryCursor_OneToMany_ShouldReturnAggregatedRow() throws Exception {
+        DataManager<String> dataManager = getDataManager("User");
+        QueryCursorExecution<String, Map<String, Object>> execution = new QueryCursorExecution<>();
+
+        QueryCursorCommand<Map<String, Object>> command = new QueryCursorCommand<>();
+        // Select user name and userAddressList.address.city. u1 has 2 addresses.
+        command.setSelectFields(Arrays.asList("name", "userAddressList.address.city"));
+        command.setCondition(SimpleCondition.eq("id", "u1"));
+
+        try (Cursor<Map<String, Object>> cursor = execution.exec(command, dataManager)) {
+            assertNotNull(cursor);
+
+            List<Map<String, Object>> results = new ArrayList<>();
+            for (Map<String, Object> row : cursor) {
+                results.add(row);
+            }
+
+            // Should return 1 row (aggregated), because MyBatis aggregates 1:N into a collection
+            assertEquals(1, results.size());
+            assertEquals("张三", results.get(0).get("name"));
+            
+            // Check that the single row contains a collection of addresses
+            Object userAddressList = results.get(0).get("userAddressList");
+            assertTrue(userAddressList instanceof List);
+            List<?> addresses = (List<?>) userAddressList;
+            assertEquals(2, addresses.size());
+            
+            // Verify content of the collection
+            assertTrue(addresses.get(0) instanceof Map);
         }
     }
 }
