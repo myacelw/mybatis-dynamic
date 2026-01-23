@@ -22,6 +22,7 @@ The primary users for `mybatis-dynamic` are **Java developers using Spring Boot 
 *   **Runtime Model Modification**: Adapt your data models at runtime to meet changing requirements.
 *   **Rich Querying API**: A powerful, fluent API for building complex query conditions with natural syntax, automatic logical precedence handling (AND > OR), and nested grouping support.
 *   **Spring Boot Integration**: Effortless integration with Spring Boot, including auto-configuration for DAOs and services.
+*   **DDL Migration Safety**: Supports a "Dry Run" mode and SQL file logging to preview and audit database schema changes before execution.
 *   **Zero-Code REST API**: Generic Controller that automatically provides RESTful endpoints for all registered models without writing controller code.
 *   **Model Relationship Visualization**: A web-based tool to visualize and explore model relationships.
 *   **Extensible and Modular:** The project is well-modularized, with a core engine that can be used independently of Spring.
