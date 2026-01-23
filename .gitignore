@@ -4,7 +4,6 @@ target/
 !**/src/test/**/target/
 pom.xml.versionsBackup
 .flattened-pom.xml
-test.mv.db
 
 ### IntelliJ IDEA ###
 .idea/
@@ -44,6 +43,7 @@ build/
 *.log
 *.mv.db
 *.trace.db
+ddl-logs/
 
 # Package Files #
 *.jar
