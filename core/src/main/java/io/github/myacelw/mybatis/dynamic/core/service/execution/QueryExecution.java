@@ -37,7 +37,7 @@ public class QueryExecution<ID, T> extends AbstractExecution<ID, List<T>, QueryC
 
     @Override
     public List<T> exec(QueryCommand<T> command, DataManager<ID> dataManager) {
-        return doQuery(command, dataManager.getModelContext(), root -> root.getSelectColumns(command.isPlain(), command.getClazz() != null, command.getCustomSelectFields()));
+        return doQuery(command, dataManager.getModelContext(), root -> root.getSelectColumns(false, command.getClazz() != null, command.getCustomSelectFields()));
     }
 
     public static <T> List<T> doQuery(QueryCommand<T> command, ModelContext modelContext, Function<QueryNode, List<SelectColumn>> getSelectColumns) {
@@ -70,7 +70,20 @@ public class QueryExecution<ID, T> extends AbstractExecution<ID, List<T>, QueryC
 
         Class<T> entityClass = (command.getClazz() == null ? (Class<T>) Map.class : command.getClazz());
 
-        String sql = getQuerySql(context, columns, tableAndAs, joinSql, whereSql, orderBySql, command.getPage(), sqlPrefix);
+        Page page = command.getPage();
+        Integer rows = null;
+        Integer offset = null;
+        if (page != null && page.getSize() > 0) {
+            rows = page.getSize();
+            offset = page.getSize() * (page.getCurrent() - 1);
+            if (offset <= 0) {
+                offset = null;
+            }
+            context.put("_rows", rows);
+            context.put("_offset", offset);
+        }
+
+        String sql = getQuerySql(context, columns, tableAndAs, joinSql, whereSql, orderBySql, rows, offset, sqlPrefix);
 
         log.debug("QUERY SQL: {}, context: {}", sql, context);
 
@@ -142,7 +155,7 @@ public class QueryExecution<ID, T> extends AbstractExecution<ID, List<T>, QueryC
     }
 
 
-    public static String getQuerySql(Map<String, Object> context, List<SelectColumn> columns, String tableAndAs, String joinSql, String whereSql, String orderBySql, Page page, String sqlPrefix) {
+    public static String getQuerySql(Map<String, Object> context, List<SelectColumn> columns, String tableAndAs, String joinSql, String whereSql, String orderBySql, Integer rows, Integer offset, String sqlPrefix) {
         String groupBySql = getGroupBySql(null, columns);
 
         //如果有join部分 select 列增加表名前缀
@@ -158,17 +171,14 @@ public class QueryExecution<ID, T> extends AbstractExecution<ID, List<T>, QueryC
         if (StringUtil.hasText(orderBySql)) {
             sql = sql + " ORDER BY " + orderBySql;
         }
-
-        if (page != null && page.getSize() > 0) {
-            int rows = page.getSize();
-            int offset = page.getSize() * (page.getCurrent() - 1);
-            if (offset > 0) {
+        if (rows != null) {
+            context.put("_rows", rows);
+            if (offset != null) {
+                context.put("_offset", offset);
                 sql = sql + " LIMIT #{_offset}, #{_rows}";
             } else {
                 sql = sql + " LIMIT #{_rows}";
             }
-            context.put("_rows", rows);
-            context.put("_offset", offset);
         }
         return sql;
     }

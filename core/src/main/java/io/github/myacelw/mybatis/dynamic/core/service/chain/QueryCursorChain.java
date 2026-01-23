@@ -1,6 +1,5 @@
 package io.github.myacelw.mybatis.dynamic.core.service.chain;
 
-import io.github.myacelw.mybatis.dynamic.core.metadata.query.Page;
 import io.github.myacelw.mybatis.dynamic.core.service.DataManager;
 import io.github.myacelw.mybatis.dynamic.core.service.command.QueryCursorCommand;
 import org.apache.ibatis.cursor.Cursor;
@@ -21,20 +20,18 @@ public class QueryCursorChain<ID, T> extends AbstractSelectQueryChain<ID, T, Cur
     }
 
     /**
-     * 设置分页
+     * 设置最大返回行数
      */
-    public QueryCursorChain<ID, T> page(Page page) {
-        command.setPage(page);
+    public QueryCursorChain<ID, T> limit(Integer limit) {
+        command.setLimit(limit);
         return this;
     }
 
-    public QueryCursorChain<ID, T> page(int current, int size) {
-        command.setPage(new Page(current, size));
-        return this;
-    }
-
-    public QueryCursorChain<ID, T> limit(int size) {
-        command.setPage(new Page(1, size));
+    /**
+     * 设置偏移量
+     */
+    public QueryCursorChain<ID, T> offset(Integer offset) {
+        command.setOffset(offset);
         return this;
     }
 

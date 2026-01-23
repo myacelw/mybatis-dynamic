@@ -1,6 +1,5 @@
 package io.github.myacelw.mybatis.dynamic.core.service.command;
 
-import io.github.myacelw.mybatis.dynamic.core.metadata.query.Page;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.session.ResultHandler;
@@ -17,9 +16,14 @@ import java.util.Map;
 public class QueryCallBackCommand<T> extends AbstractSelectQueryCommand<T> {
 
     /**
-     * 分页，这里的行数是join子表、关系表后的整体行数
+     * 最大返回行数
      */
-    Page page;
+    private Integer limit;
+
+    /**
+     * 偏移量
+     */
+    private Integer offset;
 
     /**
      * 结果回调接口

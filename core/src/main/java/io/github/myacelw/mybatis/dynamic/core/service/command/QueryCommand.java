@@ -21,11 +21,6 @@ public class QueryCommand<T> extends AbstractSelectQueryCommand<T> {
     Page page;
 
 
-    /**
-     * 是否查询结果采用扁平结构。
-     */
-    boolean plain;
-
     public static QueryCommand<Map<String, Object>> build() {
         return new QueryCommand<>();
     }

@@ -39,12 +39,4 @@ public class QueryChain<ID, T> extends AbstractSelectQueryChain<ID, T, List<T>, 
         return this;
     }
 
-    /**
-     * 采用扁平结构
-     */
-    public QueryChain<ID, T> plain() {
-        command.setPlain(true);
-        return this;
-    }
-
 }

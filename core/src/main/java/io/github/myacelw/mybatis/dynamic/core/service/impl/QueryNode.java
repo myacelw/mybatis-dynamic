@@ -391,7 +391,6 @@ public class QueryNode {
             GroupField groupField = (GroupField) field;
             subFields.forEach(subField -> {
                 String column = getSelectColumn(subField);
-                Class<?> typeHandlerClass = subField.getTypeHandlerClass();
                 result.add(SelectColumn.column(column, propertyPrefix + groupField.getName() + "." + subField.getName(), subField.getJavaClass(), subField.getJavaParameterClass(), subField.getTypeHandlerClass(), subField.getJdbcType()));
             });
         }

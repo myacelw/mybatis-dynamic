@@ -21,20 +21,18 @@ public class QueryCallBackChain<ID, T> extends AbstractSelectQueryChain<ID, T, I
     }
 
     /**
-     * 设置分页
+     * 设置最大返回行数
      */
-    public QueryCallBackChain<ID, T> page(Page page) {
-        command.setPage(page);
+    public QueryCallBackChain<ID, T> limit(int limit) {
+        command.setLimit(limit);
         return this;
     }
 
-    public QueryCallBackChain<ID, T> page(int current, int size) {
-        command.setPage(new Page(current, size));
-        return this;
-    }
-
-    public QueryCallBackChain<ID, T> limit(int size) {
-        command.setPage(new Page(1, size));
+    /**
+     * 设置偏移量
+     */
+    public QueryCallBackChain<ID, T> offset(int offset) {
+        command.setOffset(offset);
         return this;
     }
 

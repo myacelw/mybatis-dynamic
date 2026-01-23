@@ -47,7 +47,7 @@ public class QueryCursorExecution<ID, T> extends AbstractExecution<ID, Cursor<T>
         String tableAndAs = modelContext.getModel().getSchemaAndTableName() + " AS " + root.getTableAsName();
         String orderBySql = QueryExecution.getOrderBySql(command.getOrderItems(), root, context, modelContext.getDialect());
 
-        String sql = QueryExecution.getQuerySql(context, columns, tableAndAs, joinSql, whereSql, orderBySql, command.getPage(), null);
+        String sql = QueryExecution.getQuerySql(context, columns, tableAndAs, joinSql, whereSql, orderBySql, command.getLimit(), command.getOffset(), null);
 
         context.put("__sql", sql);
 

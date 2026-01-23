@@ -1,6 +1,7 @@
 package io.github.myacelw.mybatis.dynamic.core.database.impl;
 
 import io.github.myacelw.mybatis.dynamic.core.annotation.SubTypes;
+import io.github.myacelw.mybatis.dynamic.core.database.ExtendedCursor;
 import io.github.myacelw.mybatis.dynamic.core.database.MybatisHelper;
 import io.github.myacelw.mybatis.dynamic.core.ext.ExtBean;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.KeyGeneratorMode;
@@ -11,6 +12,7 @@ import io.github.myacelw.mybatis.dynamic.core.util.ObjectUtil;
 import io.github.myacelw.mybatis.dynamic.core.util.StringUtil;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.experimental.Delegate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.apache.ibatis.cursor.Cursor;
@@ -115,40 +117,33 @@ public class MybatisHelperImpl implements MybatisHelper {
                 return session.selectCursor(msId, context);
             }
         };
+
         if (sqlSession != null) {
             return function.apply(sqlSession);
         }
 
-        return new Cursor<T>() {
-            final SqlSession newSqlSession = sqlSessionFactory.openSession(true);
-            final Cursor<T> result = function.apply(newSqlSession);
+        sqlSession = sqlSessionFactory.openSession(true);
+        return new ExtendedCursorImpl<>(sqlSession, function.apply(sqlSession));
+    }
 
-            @Override
-            public void close() throws IOException {
-                result.close();
-                newSqlSession.close();
-            }
+    private static class ExtendedCursorImpl<T> implements ExtendedCursor<T> {
 
-            @Override
-            public boolean isOpen() {
-                return result.isOpen();
-            }
+        @Getter
+        final SqlSession sqlSession;
 
-            @Override
-            public boolean isConsumed() {
-                return result.isConsumed();
-            }
+        @Delegate
+        final Cursor<T> result;
 
-            @Override
-            public int getCurrentIndex() {
-                return result.getCurrentIndex();
-            }
+        ExtendedCursorImpl(SqlSession sqlSession, Cursor<T> result) {
+            this.sqlSession = sqlSession;
+            this.result = result;
+        }
 
-            @Override
-            public Iterator<T> iterator() {
-                return result.iterator();
-            }
-        };
+        @Override
+        public void close() throws IOException {
+            result.close();
+            sqlSession.close();
+        }
     }
 
     @Override

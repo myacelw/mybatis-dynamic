@@ -1,7 +1,7 @@
 package io.github.myacelw.mybatis.dynamic.core.service.execution;
 
-import io.github.myacelw.mybatis.dynamic.core.metadata.table.SelectColumn;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.CustomSelectField;
+import io.github.myacelw.mybatis.dynamic.core.metadata.table.SelectColumn;
 import io.github.myacelw.mybatis.dynamic.core.service.DataManager;
 import io.github.myacelw.mybatis.dynamic.core.service.command.Command;
 import io.github.myacelw.mybatis.dynamic.core.service.command.QueryCallBackCommand;
@@ -46,11 +46,11 @@ public class QueryCallBackExecution<ID, T> extends AbstractExecution<ID, Integer
         String joinSql = root.getJoinSql(context);
         String whereSql = root.getWhereSql(context, "c", command.getCondition(), true, command.isIgnoreLogicDelete());
 
-        List<SelectColumn> columns = root.getSelectColumns(true, command.getClazz() != null, command.getCustomSelectFields());
+        List<SelectColumn> columns = root.getSelectColumns(false, command.getClazz() != null, command.getCustomSelectFields());
         String tableAndAs = modelContext.getModel().getSchemaAndTableName() + " AS " + root.getTableAsName();
         String orderBySql = QueryExecution.getOrderBySql(command.getOrderItems(), root, context, modelContext.getDialect());
 
-        String sql = QueryExecution.getQuerySql(context, columns, tableAndAs, joinSql, whereSql, orderBySql, command.getPage(), null);
+        String sql = QueryExecution.getQuerySql(context, columns, tableAndAs, joinSql, whereSql, orderBySql, command.getLimit(), command.getOffset(), null);
 
         context.put("__sql", sql);
 
