@@ -10,5 +10,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Introduce DDL logging and a 'Dry Run' mode to improve database schema migration safety.**
+- [x] **Track: Introduce DDL logging and a 'Dry Run' mode to improve database schema migration safety.**
 *Link: [./tracks/ddl_migration_strategy_20260117/](./tracks/ddl_migration_strategy_20260117/)*
