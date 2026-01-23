@@ -35,7 +35,6 @@ public abstract class AbstractField implements Field {
     @Override
     public void check() {
         Assert.hasText(name, "字段名称不能为空");
-        Assert.isTrue(name.length() <= 50, "字段名称最大长度应小于50个字符");
         Assert.isTrue(!name.matches(".*[.{&`'\"\\n].*"), "字段名称含有点、引号或换行等非法字符");
     }
 

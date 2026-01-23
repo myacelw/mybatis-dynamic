@@ -73,8 +73,6 @@ public class AggSelectItem {
         Assert.hasText(field, "字段名不能为空");
         if (StringUtil.hasText(propertyName)) {
             Assert.hasText(propertyName, "属性名不能为空");
-            Assert.isTrue(propertyName.length() <= 50, "属性名最大长度应小于50个字符");
-
             Assert.isTrue(!propertyName.matches(".*[`'\"\\n].*"), "属性名称含有引号或换行等非法字符");
         }
     }

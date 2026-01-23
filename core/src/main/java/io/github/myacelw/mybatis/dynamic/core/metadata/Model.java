@@ -139,7 +139,6 @@ public class Model implements ExtProperties, Cloneable, Serializable {
      */
     private void check() {
         Assert.hasText(name, "模型名称不能为空");
-        Assert.isTrue(name.length() <= 50, "模型'" + name + "'名最大长度应小于50个字符");
 
         Assert.isTrue(!name.matches(".*[.{&`'\"\\n].*"), "模型'" + name + "'名含有点、引号或换行等非法字符");
 
