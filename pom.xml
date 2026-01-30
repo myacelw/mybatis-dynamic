@@ -172,6 +172,9 @@
                     <autoPublish>true</autoPublish>
                     <skipPublishing>false</skipPublishing>
                     <waitUntil>published</waitUntil>
+                    <excludeArtifacts>
+                        <excludeArtifact>mybatis-dynamic-sample</excludeArtifact>
+                    </excludeArtifacts>
                 </configuration>
             </plugin>
             <plugin>
