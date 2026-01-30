@@ -36,7 +36,7 @@ public class DeleteByConditionExecution<ID> extends AbstractExecution<ID, Intege
     @Override
     public Integer exec(DeleteByConditionCommand command, DataManager<ID> dataManager) {
         if (ObjectUtil.isEmpty(command.getCondition())) {
-            throw new ConditionParameterException("按条件删除数据，查询条件不能为空");
+            throw new ConditionParameterException("Delete data by condition: query condition cannot be empty");
         }
 
         boolean physicalDelete = !dataManager.getModelContext().isLogicDelete();

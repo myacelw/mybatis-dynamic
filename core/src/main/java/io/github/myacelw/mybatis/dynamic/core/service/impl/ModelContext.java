@@ -138,7 +138,7 @@ public class ModelContext {
         }
         Field field = fieldMap.get(fieldName);
         if (unfoundThrowException) {
-            Assert.notNull(field, "模型'" + getModel().getName() + "'的字段'" + fieldName + "'不存在");
+            Assert.notNull(field, "Field [" + fieldName + "] does not exist in model [" + getModel().getName() + "]");
         }
         return field;
     }
@@ -160,7 +160,7 @@ public class ModelContext {
     public Field getPermissionedField(String fieldName, boolean unfoundThrowException) {
         Field field = fieldRights.get(fieldName);
         if (unfoundThrowException) {
-            Assert.notNull(field, "模型'" + getModel().getName() + "'的字段'" + fieldName + "'不存在或没有权限");
+            Assert.notNull(field, "Field [" + fieldName + "] does not exist or access denied in model [" + getModel().getName() + "]");
         }
         return field;
     }

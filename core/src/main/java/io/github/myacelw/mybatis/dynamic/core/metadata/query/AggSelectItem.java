@@ -70,10 +70,10 @@ public class AggSelectItem {
      * 检查合法性
      */
     public void check() {
-        Assert.hasText(field, "字段名不能为空");
+        Assert.hasText(field, "Field name cannot be empty");
         if (StringUtil.hasText(propertyName)) {
-            Assert.hasText(propertyName, "属性名不能为空");
-            Assert.isTrue(!propertyName.matches(".*[`'\"\\n].*"), "属性名称含有引号或换行等非法字符");
+            Assert.hasText(propertyName, "Property name cannot be empty");
+            Assert.isTrue(!propertyName.matches(".*[`'\"\\n].*"), "Property name contains illegal characters (quotes or newlines)");
         }
     }
 

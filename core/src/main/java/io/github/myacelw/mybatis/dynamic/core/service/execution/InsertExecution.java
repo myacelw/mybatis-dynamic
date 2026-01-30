@@ -45,7 +45,7 @@ public class InsertExecution<ID> extends AbstractExecution<ID, Object, InsertCom
         BasicField generateValueField = model.getFirstPrimaryKeyFieldObj();
 
         if (data == null) {
-            throw new DataException("插入模型[" + model.getName() + "]数据不能为空");
+            throw new DataException("Insert data for model [" + model.getName() + "] cannot be null");
         }
         //log.debug("insert data, table: {}, data: {}", model.getSchemaAndTableName(), data);
 

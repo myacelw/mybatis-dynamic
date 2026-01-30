@@ -40,7 +40,7 @@ public class BatchUpdateByConditionExecution<ID> extends AbstractExecution<ID, V
             UpdateExecution.fill(dataManager, pair.getData(), fieldValues);
 
             if (fieldValues.isEmpty() && (pair.getCustomSetList() == null || pair.getCustomSetList().isEmpty())) {
-                log.debug("更新数据为空，跳过执行更新操作，model:{}", modelContext.getModel().getName());
+                log.debug("Update data is empty, skipping update operation for model: {}", modelContext.getModel().getName());
                 continue;
             }
 

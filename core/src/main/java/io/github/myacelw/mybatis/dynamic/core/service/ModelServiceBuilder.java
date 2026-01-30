@@ -159,12 +159,12 @@ public class ModelServiceBuilder {
             for (DataBaseDialect instance : DataBaseDialect.getInstances()) {
                 if (instance.getName().equalsIgnoreCase(dbProductName)) {
                     this.dialect = instance;
-                    log.info("自动识别数据库类型:{}", instance.getName());
+                    log.info("Automatically identified database type: {}", instance.getName());
                     break;
                 }
             }
             if (this.dialect == null) {
-                throw new IllegalArgumentException("未找到支持的数据库类型:" + dbProductName + "，请直接指定数据库方言");
+                throw new IllegalArgumentException("No supported database type found for: " + dbProductName + ", please specify database dialect directly");
             }
         }
 

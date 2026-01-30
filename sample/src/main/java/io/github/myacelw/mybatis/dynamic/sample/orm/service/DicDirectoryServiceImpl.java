@@ -30,12 +30,12 @@ public class DicDirectoryServiceImpl extends BaseTreeServiceImpl<Integer, DicDir
     public boolean delete(@PathVariable @NonNull Integer id) {
         long n = dao.count(Condition.builder().eq(DicDirectory::getParent, id).build());
         if (n > 0) {
-            throw new DataException("删除模型[DicDirectory]数据操作ID[" + id + "]包含下级目录，不能删除");
+            throw new DataException("Cannot delete DicDirectory with ID [" + id + "] as it contains sub-directories");
         }
 
         long n2 = dicDao.count(Condition.builder().eq(Dic::getDicDirectory, id).build());
         if (n2 > 0) {
-            throw new DataException("删除模型[DicDirectory]数据操作ID[" + id + "]包含数据字典，不能删除");
+            throw new DataException("Cannot delete DicDirectory with ID [" + id + "] as it contains data dictionaries");
         }
         return super.delete(id);
     }

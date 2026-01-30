@@ -48,7 +48,7 @@ public class CountRecursiveExecution<ID> extends AbstractExecution<ID, Integer, 
         } else if (result instanceof Integer) {
             return (Integer) result;
         } else {
-            throw new RuntimeException("查询结果不是Long或Integer类型");
+            throw new RuntimeException("Query result is not of type Long or Integer");
         }
     }
 }

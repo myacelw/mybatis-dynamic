@@ -40,10 +40,10 @@ public class ToManyField extends AbstractField implements RefModel, Serializable
     @Override
     public void check() {
         super.check();
-        Assert.notNull(targetModel, "关联模型的字段不能为空");
-        Assert.notEmpty(joinTargetFields, "关联模型的字段不能为空");
-        Assert.hasText(joinTargetFields[0], "关联模型的字段不能为空");
-        Assert.hasText(targetModel, "关联模型字段名不能为空");
+        Assert.notNull(targetModel, "Target model name cannot be null");
+        Assert.notEmpty(joinTargetFields, "Join target fields cannot be empty");
+        Assert.hasText(joinTargetFields[0], "Join target fields cannot be empty");
+        Assert.hasText(targetModel, "Target model name cannot be empty");
     }
 
     public void setJoinTargetField(String joinTargetField) {

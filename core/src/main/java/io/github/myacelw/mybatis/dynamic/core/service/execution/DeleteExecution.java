@@ -85,7 +85,7 @@ public class DeleteExecution<ID> extends AbstractExecution<ID, Integer, DeleteCo
     public static int deleteByCondition(ModelContext modelContext, @NonNull Condition condition) {
         String whereSql = condition.sql("c", t -> convertColumnForAllField(modelContext, t), modelContext.getDialect());
         if (!StringUtil.hasText(whereSql)) {
-            throw new ConditionParameterException("按条件删除数据，Where语句不能为空");
+            throw new ConditionParameterException("Delete data by condition: Where clause cannot be empty");
         }
         Map<String, Object> root = new HashMap<>();
         root.put("c", condition);
@@ -119,7 +119,7 @@ public class DeleteExecution<ID> extends AbstractExecution<ID, Integer, DeleteCo
         Model model = dataManager.getModel();
 
         if (!modelContext.isLogicDelete()) {
-            throw new UnsupportedCommandException("模型[" + model.getName() + "]没有'" + Model.FIELD_DELETE_FLAG + "'字段，不支持逻辑删除操作");
+            throw new UnsupportedCommandException("Model [" + model.getName() + "] does not have '" + Model.FIELD_DELETE_FLAG + "' field, logic delete is not supported");
         }
         Condition idCondition = IdUtil.getIdCondition(model, id);
         Condition condition = modelContext.getAdditionalCondition() == null ? idCondition : GroupCondition.and(modelContext.getAdditionalCondition(), idCondition);
@@ -139,7 +139,7 @@ public class DeleteExecution<ID> extends AbstractExecution<ID, Integer, DeleteCo
         Model model = modelContext.getModel();
 
         if (!modelContext.isLogicDelete()) {
-            throw new UnsupportedCommandException("模型[" + model.getName() + "]没有'" + Model.FIELD_DELETE_FLAG + "'字段，不支持逻辑删除操作");
+            throw new UnsupportedCommandException("Model [" + model.getName() + "] does not have '" + Model.FIELD_DELETE_FLAG + "' field, logic delete is not supported");
         }
         Condition idCondition = IdUtil.getIdsCondition(model, ids);
         Condition condition = modelContext.getAdditionalCondition() == null ? idCondition : GroupCondition.and(modelContext.getAdditionalCondition(), idCondition);

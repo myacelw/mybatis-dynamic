@@ -45,7 +45,7 @@ public class DefaultSequence implements Sequence {
         String ipAddress = getIpAddress();
 
         if (ipAddress == null) {
-            log.warn("获取 IP 地址失败");
+            log.warn("Failed to get IP address");
             return 0;
         }
 

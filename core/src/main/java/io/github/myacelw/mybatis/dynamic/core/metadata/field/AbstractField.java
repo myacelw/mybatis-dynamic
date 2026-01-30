@@ -34,8 +34,8 @@ public abstract class AbstractField implements Field {
      */
     @Override
     public void check() {
-        Assert.hasText(name, "字段名称不能为空");
-        Assert.isTrue(!name.matches(".*[.{&`'\"\\n].*"), "字段名称含有点、引号或换行等非法字符");
+        Assert.hasText(name, "Field name cannot be empty");
+        Assert.isTrue(!name.matches(".*[.{&`'\"\\n].*"), "Field name contains illegal characters (dots, quotes, or newlines)");
     }
 
     @Override

@@ -96,7 +96,7 @@ public class ModelServiceImpl implements ModelService {
     public void update(@NonNull Model model, List<String> fieldWhiteList) {
         if (model.getTableDefine().getDisableTableCreateAndAlter() == Boolean.TRUE) {
             log.error("model '{}' disable updated", model.getName());
-            throw new ModelException("模型[" + model.getName() + "]禁用了更新操作");
+            throw new ModelException("Model [" + model.getName() + "] has updates disabled");
         }
 
         model.init(modelToTableConverter);
@@ -126,7 +126,7 @@ public class ModelServiceImpl implements ModelService {
     public void delete(@NonNull Model model) {
         if (model.getTableDefine().getDisableTableCreateAndAlter() == Boolean.TRUE) {
             log.error("model '{}' disable deleted", model.getName());
-            throw new ModelException("模型[" + model.getName() + "]禁用了删除操作");
+            throw new ModelException("Model [" + model.getName() + "] has deletions disabled");
         }
 
         model = model.clone();

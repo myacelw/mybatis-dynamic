@@ -33,7 +33,7 @@ public class InsertOrUpdateExecution<ID> extends AbstractExecution<ID, ID, Inser
         Model model = dataManager.getModel();
         String[] primaryKeyFields = model.getPrimaryKeyFields();
         if (ObjectUtil.isEmpty(primaryKeyFields)) {
-            throw new ModelException("模型[" + model.getName() + "]没有配置主键字段");
+            throw new ModelException("Model [" + model.getName() + "] has no primary key field configured");
         }
 
         ID id = (ID) IdUtil.getId(model, data);

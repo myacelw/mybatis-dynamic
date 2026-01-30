@@ -32,18 +32,18 @@ public class UpdateByConditionExecution<ID> extends AbstractExecution<ID, Intege
         Model model = modelContext.getModel();
 
         if (ObjectUtil.isEmpty(command.getCondition())) {
-            log.debug("更新数据为空，跳过执行更新操作，model:{}", model.getName());
+            log.debug("Update data is empty, skipping update operation for model: {}", model.getName());
         }
         Object data = command.getData();
         if (data instanceof Map && ((Map<?, ?>) data).isEmpty()) {
-            log.info("更新数据为空，跳过执行更新操作");
+            log.info("Update data is empty, skipping update operation");
             return 0;
         }
 
         List<FieldValue> fieldValues = UpdateExecution.getChangedFieldValues(modelContext, data, command.isUpdateOnlyNonNull(), true);
 
         if (fieldValues.isEmpty()) {
-            log.debug("更新数据为空，跳过执行更新操作，model:{}", model.getName());
+            log.debug("Update data is empty, skipping update operation for model: {}", model.getName());
         }
 
         modelContext.getInterceptor().beforeUpdateByCondition((DataManager) dataManager, command.getCondition(), data, fieldValues);

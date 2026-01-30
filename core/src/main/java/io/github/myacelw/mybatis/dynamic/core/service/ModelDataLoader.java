@@ -191,13 +191,13 @@ public class ModelDataLoader {
             return;
         }
         String modelName = (String) data.get("model");
-        Assert.notNull(modelName, "初始化数据配置错误，'model' 未设置: " + ellipsisJson(data));
+        Assert.notNull(modelName, "Init data configuration error, 'model' not set: " + ellipsisJson(data));
 
         Object rowOrList = data.get("data");
-        Assert.notNull(rowOrList, "模型数据 'data' 未配置: " + ellipsisJson(data));
+        Assert.notNull(rowOrList, "Model data 'data' not configured: " + ellipsisJson(data));
 
         DataManager<Object> dataManager = this.modelService.getDataManager(modelName, sqlSession);
-        Assert.notNull(dataManager, "没有找到模型名'" + modelName + "'对应的模型，" + ellipsisJson(data));
+        Assert.notNull(dataManager, "Model [" + modelName + "] not found, " + ellipsisJson(data));
 
         String method = (String) data.get("method");
 
@@ -235,7 +235,7 @@ public class ModelDataLoader {
         } else if ("insert".equals(method) || "insertOrUpdate".equals(method)) {
             insertOrUpdateRowData(method, rowData, updateFields, manager, initDataMap);
         } else {
-            throw new ModelDataLoaderException("初始化数据配置错误，'method' 无效: " + ellipsisJson(rowData));
+            throw new ModelDataLoaderException("Init data configuration error, 'method' invalid: " + ellipsisJson(rowData));
         }
     }
 
@@ -256,13 +256,13 @@ public class ModelDataLoader {
             try {
                 manager.insertDisableGenerateId(rowData);
             } catch (Exception e) {
-                throw new ModelDataLoaderException("写入模型'" + manager.getModel().getName() + "'初始化数据错误, " + e.getMessage() + ", 新增数据: " + ellipsisJson(rowData), e);
+                throw new ModelDataLoaderException("Error writing init data for model [" + manager.getModel().getName() + "], " + e.getMessage() + ", insert data: " + ellipsisJson(rowData), e);
             }
         } else if ("insertOrUpdate".equals(method) || "update".equals(method)) {
             try {
                 manager.updateChain().id(id).data(rowData).updateFields(updateFields).exec();
             } catch (Exception e) {
-                throw new ModelDataLoaderException("写入模型'" + manager.getModel().getName() + "'初始化数据错误, " + e.getMessage() + ", 更新数据: " + ellipsisJson(rowData), e);
+                throw new ModelDataLoaderException("Error writing init data for model [" + manager.getModel().getName() + "], " + e.getMessage() + ", update data: " + ellipsisJson(rowData), e);
             }
         }
 
@@ -302,7 +302,7 @@ public class ModelDataLoader {
             id = Arrays.stream(primaryKeyFieldNames).map(rowData::get).collect(Collectors.toList());
         }
         if (ObjectUtil.isEmpty(id)) {
-            throw new ModelDataLoaderException("初始化数据配置错误，'id' 未设置: " + ellipsisJson(rowData));
+            throw new ModelDataLoaderException("Init data configuration error, 'id' not set: " + ellipsisJson(rowData));
         }
         return id;
     }

@@ -50,7 +50,7 @@ public class KeyPartition extends AbstractFieldPartition implements Cloneable {
         KeyPartition clone = this.clone();
         if(StringUtil.hasText(field)) {
             BasicField f = (BasicField) model.findField(field);
-            Assert.notNull(f, "分区字段不存在：" + field);
+            Assert.notNull(f, "Partition field does not exist: " + field);
             clone.setField(f.getColumnName());
         }
         if (this.getSubPartition() != null) {

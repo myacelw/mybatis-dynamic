@@ -24,26 +24,26 @@ import java.util.List;
 @ToString(callSuper = true)
 @FieldNameConstants
 @Data
-@Model(logicDelete = true, comment = "数据字典")
+@Model(logicDelete = true, comment = "Data Dictionary")
 public class Dic extends BaseEntity<Integer> {
 
     /**
      * 字典名
      */
-    @BasicField(ddlComment = "字典名", ddlCharacterMaximumLength = 20, ddlNotNull = true, ddlIndex = true, ddlIndexType = IndexType.UNIQUE)
-    String name;
+    @BasicField(ddlComment = "Dictionary Name", ddlCharacterMaximumLength = 20, ddlNotNull = true, ddlIndex = true, ddlIndexType = IndexType.UNIQUE)
+    private String name;
 
     /**
      * 状态
      */
-    @BasicField(ddlComment = "状态", ddlNotNull = true)
-    Status status;
+    @BasicField(ddlComment = "Status", ddlNotNull = true)
+    private Status status;
 
     /**
      * 所属字典目录ID
      */
-    @BasicField(ddlComment = "所属字典目录ID", ddlNotNull = true, ddlIndex = true)
-    Integer dicDirectoryId;
+    @BasicField(ddlComment = "Belongs to Directory ID", ddlNotNull = true, ddlIndex = true)
+    private Integer dicDirectoryId;
 
     /**
      * 所属字典目录

@@ -40,9 +40,9 @@ public class ToOneField extends AbstractField implements RefModel, Serializable 
     @Override
     public void check() {
         super.check();
-        Assert.hasText(targetModel, "关联模型的名称不能为空");
-        Assert.notEmpty(joinLocalFields, "模型的关联字段不能为空");
-        Assert.hasText(joinLocalFields[0], "模型的关联字段不能为空");
+        Assert.hasText(targetModel, "Target model name cannot be empty");
+        Assert.notEmpty(joinLocalFields, "Join local fields cannot be empty");
+        Assert.hasText(joinLocalFields[0], "Join local fields cannot be empty");
     }
 
     public void setJoinLocalField(String joinLocalField) {

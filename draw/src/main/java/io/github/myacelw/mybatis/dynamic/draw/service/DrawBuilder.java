@@ -148,7 +148,7 @@ public class DrawBuilder {
             Map<PropertyName, String> properties = new LinkedHashMap<>();
             properties.put(PropertyName.name, groupField.getName() + "." + field.getName());
             properties.put(PropertyName.fieldType, field.getClass().getSimpleName());
-            properties.put(PropertyName.require, field.getColumnDefinition().getNotNull() == Boolean.TRUE ? "是" : "否");
+            properties.put(PropertyName.notNull, field.getColumnDefinition().getNotNull() == Boolean.TRUE ? "Yes" : "No");
 
             String comment2 = field.getColumnDefinition().getComment() == null ? field.getName() : field.getColumnDefinition().getComment();
             properties.put(PropertyName.comment, comment2);
@@ -179,7 +179,7 @@ public class DrawBuilder {
 
         port.setTitle(
                 properties.entrySet().stream().map(entry -> entry.getKey().getDisplayName() + ": " + entry.getValue()).collect(Collectors.joining("\n"))
-                        + "\n" + "关联模型: " + field.getTargetModel()
+                        + "\n" + "Associated Model: " + field.getTargetModel()
         );
 
         properties.put(PropertyName.columnName, "[" + field.getTargetModel() + "]");
@@ -194,8 +194,8 @@ public class DrawBuilder {
             edge.setSourcePortId(port.getId());
             edge.setTargetNodeId(field.getTargetModel());
             edge.setCenterText("*");
-            edge.setTitle("目标表: " + field.getTargetModel()
-                    + "\n" + "外键: " + String.join(", ", field.getJoinTargetFields()));
+            edge.setTitle("Target Table: " + field.getTargetModel()
+                    + "\n" + "Foreign Key: " + String.join(", ", field.getJoinTargetFields()));
             edges.add(edge);
         }
         return port;
@@ -215,8 +215,8 @@ public class DrawBuilder {
 
         port.setTitle(
                 properties.entrySet().stream().map(entry -> entry.getKey().getDisplayName() + ": " + entry.getValue()).collect(Collectors.joining("\n"))
-                        + "\n" + "关联模型: " + field.getTargetModel() +
-                        "\n" + "关联字段: " + String.join(", ", field.getJoinLocalFields())
+                        + "\n" + "Associated Model: " + field.getTargetModel() +
+                        "\n" + "Associated Field: " + String.join(", ", field.getJoinLocalFields())
         );
 
         properties.put(PropertyName.columnName, "[" + field.getTargetModel() + "]");
@@ -243,7 +243,7 @@ public class DrawBuilder {
         Map<PropertyName, String> properties = new LinkedHashMap<>();
         properties.put(PropertyName.name, field.getName());
         properties.put(PropertyName.fieldType, field.getClass().getSimpleName());
-        properties.put(PropertyName.require, field.getColumnDefinition().getNotNull() == Boolean.TRUE ? "是" : "否");
+        properties.put(PropertyName.notNull, field.getColumnDefinition().getNotNull() == Boolean.TRUE ? "Yes" : "No");
         properties.put(PropertyName.comment, field.getColumnDefinition().getComment() == null ? field.getName() : field.getColumnDefinition().getComment());
 
         properties.put(PropertyName.javaClass, field.getJavaClass() == null ? "" : field.getJavaClass().getSimpleName());

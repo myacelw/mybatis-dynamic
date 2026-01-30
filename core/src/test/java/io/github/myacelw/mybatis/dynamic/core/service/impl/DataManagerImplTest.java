@@ -69,7 +69,7 @@ class DataManagerImplTest {
             dataManager.execCommand(unregisteredCommand);
         });
         
-        assertTrue(exception.getMessage().contains("没有找到命令类型"));
+        assertTrue(exception.getMessage().contains("No execution found for command type"));
     }
 
     @Test

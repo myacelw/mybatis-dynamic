@@ -68,7 +68,7 @@ public class Class2ModelTransferImpl implements Class2ModelTransfer {
                 //得到 commentAnnotationFieldName 取值
                 String methodName = commentAnnotationFieldName == null ? "value" : commentAnnotationFieldName;
                 Method method = commentAnnotationClass.getMethod(methodName);
-                Assert.notNull(method, "@" + commentAnnotationClass + " 没有找到方法 " + methodName);
+                Assert.notNull(method, "@" + commentAnnotationClass + " method not found: " + methodName);
                 Object value = method.invoke(annotation);
                 if (value != null && !Objects.equals("", value)) {
                     commentConsumer.accept(value.toString());
@@ -553,7 +553,7 @@ public class Class2ModelTransferImpl implements Class2ModelTransfer {
         } else if (parameterizedClass != null) {
             field.setTargetModel(getModelName(parameterizedClass));
         } else {
-            throw new IllegalArgumentException("模型'" + modelDefaultName + "'的ToMany字段'" + name + "'的targetModel属性不能为空");
+            throw new IllegalArgumentException("Model '" + modelDefaultName + "' ToMany field '" + name + "' targetModel attribute cannot be null");
         }
         field.setJavaClass(parameterizedClass == null ? Map.class : parameterizedClass);
 
@@ -568,8 +568,8 @@ public class Class2ModelTransferImpl implements Class2ModelTransfer {
             String relFieldName = StringUtil.lowerFirst(model.getName());
             field.setJoinTargetFields(Arrays.stream(model.getPrimaryKeyFields()).map(t -> relFieldName + StringUtil.upperFirst(t)).toArray(String[]::new));
         }
-        Assert.isTrue(!ObjectUtil.isEmpty(field.getTargetModel()), "模型'" + model.getName() + "'的ToMany字段'" + field.getName() + "'的targetModel属性不能为空");
-        Assert.isTrue(!ObjectUtil.isEmpty(field.getJoinTargetFields()), "模型'" + model.getName() + "'的ToMany字段'" + field.getName() + "'的joinTargetFields属性不能为空");
+        Assert.isTrue(!ObjectUtil.isEmpty(field.getTargetModel()), "Model '" + model.getName() + "' ToMany field '" + field.getName() + "' targetModel attribute cannot be null");
+        Assert.isTrue(!ObjectUtil.isEmpty(field.getJoinTargetFields()), "Model '" + model.getName() + "' ToMany field '" + field.getName() + "' joinTargetFields attribute cannot be null");
     }
 
     /**

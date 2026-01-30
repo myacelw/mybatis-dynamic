@@ -276,7 +276,7 @@ public class ModelToTableConverterImpl implements ModelToTableConverter {
         }
 
         if (column.getDataType() == null) {
-            throw new ModelException("模型[" + model.getName() + "]的字段[" + field.getName() + "]的类型[" + field.getJavaClass() + "]不能转换为数据库类型");
+            throw new ModelException("Model [" + model.getName() + "] field [" + field.getName() + "] type [" + field.getJavaClass() + "] cannot be converted to database type");
         }
 
         Class typeHandler = field.getTypeHandlerClass();

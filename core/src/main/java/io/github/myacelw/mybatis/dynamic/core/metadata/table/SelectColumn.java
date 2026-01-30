@@ -198,7 +198,7 @@ public class SelectColumn implements Cloneable, Comparable<SelectColumn> {
             } else if (constructor0 != null) {
                 return (TypeHandler<?>) constructor0.newInstance();
             }
-            throw new IllegalArgumentException("TypeHandler[" + typeHandlerClass + "]没有找到合适的构造函数");
+            throw new IllegalArgumentException("No suitable constructor found for TypeHandler [" + typeHandlerClass + "]");
         }
     }
 

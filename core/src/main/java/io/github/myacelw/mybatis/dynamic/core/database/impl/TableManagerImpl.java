@@ -186,7 +186,7 @@ public class TableManagerImpl implements TableManager {
                 if (!StringUtil.hasText(e.getMessage()) && e.getCause() != null) {
                     message = e.getCause().getMessage();
                 }
-                log.info("可忽略的sql执行错误: {},  message:{}", sql, message);
+                log.info("Ignorable SQL execution error: {},  message:{}", sql, message);
             }
         } else {
             doRunSql(sql);
@@ -340,7 +340,7 @@ public class TableManagerImpl implements TableManager {
                 result.add(dialect.getDropIndexSql(table, oldColumn.getIndexName()));
                 getCreateIndexSql(table, newColumn).ifPresent(result::add);
             } else {
-                log.warn("不支持索引变更: {} -> {}", oldColumn, newColumn);
+                log.warn("Index change not supported: {} -> {}", oldColumn, newColumn);
                 // TODO 暂不支持
             }
         }

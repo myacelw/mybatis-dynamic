@@ -27,10 +27,10 @@ public class IdUtil {
      * @return 主键条件
      */
     public static Condition getIdCondition(Model model, Object id) {
-        Assert.notNull(model, "模型不能为空");
+        Assert.notNull(model, "Model cannot be null");
         String[] primaryKeyFields = model.getPrimaryKeyFields();
         if (ObjectUtil.isEmpty(primaryKeyFields)) {
-            throw new ModelException("模型[" + model.getName() + "]没有配置主键字段");
+            throw new ModelException("Model [" + model.getName() + "] has no primary key fields configured");
         }
 
         if (primaryKeyFields.length == 1) {
@@ -46,7 +46,7 @@ public class IdUtil {
         Condition condition;
         Object[] pk = getMultiId(id);
         if (pk.length != primaryKeyFields.length) {
-            throw new IllegalArgumentException("模型" + model.getName() + "主键字段数为" + primaryKeyFields.length + ",但是查询参数中传入为" + pk.length);
+            throw new IllegalArgumentException("Model [" + model.getName() + "] has " + primaryKeyFields.length + " primary key fields, but " + pk.length + " parameters were provided");
         }
         SimpleCondition[] conditions = new SimpleCondition[primaryKeyFields.length];
         for (int i = 0; i < primaryKeyFields.length; i++) {
@@ -69,7 +69,7 @@ public class IdUtil {
         } else if (id.getClass().isArray()) {
             pk = (Object[]) id;
         } else {
-            throw new IllegalArgumentException("模型为符合主键，但是ID参数不是列表类型");
+            throw new IllegalArgumentException("Model has composite primary keys, but the ID parameter is not a list or array");
         }
         return pk;
     }
@@ -84,7 +84,7 @@ public class IdUtil {
     public static Condition getIdsCondition(Model model, Collection<?> idList) {
         String[] primaryKeyFields = model.getPrimaryKeyFields();
         if (ObjectUtil.isEmpty(primaryKeyFields)) {
-            throw new ModelException("模型[" + model.getName() + "]没有配置主键字段");
+            throw new ModelException("Model [" + model.getName() + "] has no primary key fields configured");
         }
         return getIdsCondition(primaryKeyFields, idList);
     }
@@ -97,8 +97,8 @@ public class IdUtil {
      * @return 主键条件
      */
     public static Condition getIdsCondition(String[] fields, Collection<?> fieldValueList) {
-        Assert.notEmpty(fields, "字段不能为空");
-        Assert.notEmpty(fieldValueList, "字段值不能为空");
+        Assert.notEmpty(fields, "Fields cannot be empty");
+        Assert.notEmpty(fieldValueList, "Field values cannot be empty");
 
         int fieldSize = fields.length;
         if (fieldSize == 1) {
@@ -160,19 +160,19 @@ public class IdUtil {
      * @return id值
      */
     public static Object getId(Model model, Object data, boolean throwExceptionIfNull) {
-        Assert.notNull(model, "模型不能为空");
-        Assert.notNull(data, "数据不能为空");
+        Assert.notNull(model, "Model cannot be null");
+        Assert.notNull(data, "Data cannot be null");
         String[] primaryKeyFields = model.getPrimaryKeyFields();
         if (ObjectUtil.isEmpty(primaryKeyFields)) {
             if (throwExceptionIfNull) {
-                throw new ModelException("模型[" + model.getName() + "]没有配置主键字段");
+                throw new ModelException("Model [" + model.getName() + "] has no primary key fields configured");
             }
             return null;
         }
         if (primaryKeyFields.length == 1) {
             Object id = DataUtil.getProperty(data, primaryKeyFields[0]);
             if (throwExceptionIfNull && ObjectUtil.isEmpty(id)) {
-                throw new DataRequiredCheckException("主键值不能为空");
+                throw new DataRequiredCheckException("Primary key value cannot be null");
             }
             return id;
         } else {
@@ -180,7 +180,7 @@ public class IdUtil {
             for (int i = 0; i < primaryKeyFields.length; i++) {
                 multiId[i] = DataUtil.getProperty(data, primaryKeyFields[i]);
                 if (throwExceptionIfNull && ObjectUtil.isEmpty(multiId[i])) {
-                    throw new DataRequiredCheckException("主键值不能为空");
+                    throw new DataRequiredCheckException("Primary key value cannot be null");
                 }
             }
             return multiId;

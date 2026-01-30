@@ -50,11 +50,11 @@ public class UpdateExecution<ID> extends AbstractExecution<ID, Void, UpdateComma
         Object id = command.getId() != null ? command.getId() : IdUtil.getId(model, data, true);
 
         if (ObjectUtil.isEmpty(id)) {
-            throw new DataException("更新模型[" + model.getName() + "]数据操作ID不能为空");
+            throw new DataException("ID for update operation on model [" + model.getName() + "] cannot be null");
         }
 
         if (data instanceof Map && ((Map<?, ?>) data).isEmpty()) {
-            log.info("更新数据为空，跳过执行更新操作，id:{}", id);
+            log.info("Update data is empty, skipping update operation for ID: {}", id);
             return null;
         }
 
@@ -62,7 +62,7 @@ public class UpdateExecution<ID> extends AbstractExecution<ID, Void, UpdateComma
         if (!command.isForce()) {
             Map<String, Object> oldData = dataManager.getByIdChain().id((ID) id).exec();
             if (oldData == null) {
-                throw new DataException("更新模型[" + model.getName() + "]数据操作ID[" + id + "]对应数据不存在");
+                throw new DataException("Data not found for update operation on model [" + model.getName() + "] with ID [" + id + "]");
             }
             changedList = getChangedFieldValues(modelContext, data, oldData, command);
         } else {
@@ -72,7 +72,7 @@ public class UpdateExecution<ID> extends AbstractExecution<ID, Void, UpdateComma
         fill(dataManager, data, changedList);
 
         if (changedList.isEmpty() && (command.getCustomSetList() == null || command.getCustomSetList().isEmpty())) {
-            log.debug("更新数据为空，跳过执行更新操作，model:{}, id:{}", model.getName(), id);
+            log.debug("Update data is empty, skipping update operation for model: {}, ID: {}", model.getName(), id);
             return null;
         }
         Condition additionalCondition = command.isIgnoreLogicDelete() ? modelContext.getAdditionalIgnoreDeleteCondition() : modelContext.getAdditionalCondition();
@@ -83,7 +83,7 @@ public class UpdateExecution<ID> extends AbstractExecution<ID, Void, UpdateComma
         modelContext.getInterceptor().beforeUpdate((DataManager) dataManager, id, data, changedList);
         int n = update(modelContext, changedList, command.getCustomSetList(), condition);
         if (n == 0) {
-            throw new DataNotFoundException("更新模型[" + model.getName() + "]数据操作ID[" + id + "]对应数据不存在");
+            throw new DataNotFoundException("Data not found for update operation on model [" + model.getName() + "] with ID [" + id + "]");
         }
 
         modelContext.getInterceptor().afterUpdate((DataManager) dataManager, id, data, changedList);
@@ -102,7 +102,7 @@ public class UpdateExecution<ID> extends AbstractExecution<ID, Void, UpdateComma
         int i = 0;
         for (UpdateCommand.CustomSet customSet : customSetList) {
             Field field = modelContext.getPermissionedField(customSet.getUpdateField(), true);
-            Assert.isTrue(field instanceof BasicField, "更新字段" + customSet.getUpdateField() + "不是基本字段，无法更新");
+            Assert.isTrue(field instanceof BasicField, "Update field [" + customSet.getUpdateField() + "] is not a basic field and cannot be updated");
 
             String setColumn = ((BasicField) field).getColumnName();
 
@@ -113,7 +113,7 @@ public class UpdateExecution<ID> extends AbstractExecution<ID, Void, UpdateComma
                 String firstColumnName = null;
                 for (String f : customSet.getFields()) {
                     Field field2 = modelContext.getPermissionedField(f, true);
-                    Assert.isTrue(field2 instanceof BasicField, "字段" + customSet.getUpdateField() + "不是基本字段，无法作为参数");
+                    Assert.isTrue(field2 instanceof BasicField, "Field [" + customSet.getUpdateField() + "] is not a basic field and cannot be used as a parameter");
 
                     String columnName = ((BasicField) field2).getColumnName();
                     sql = sql.replace("$COL[" + j + "]", columnName);
@@ -146,7 +146,7 @@ public class UpdateExecution<ID> extends AbstractExecution<ID, Void, UpdateComma
     public static Map<String, Object> getSqlContext(ModelContext modelContext, List<FieldValue> fieldValues, List<UpdateCommand.CustomSet> customSetList, Condition condition) {
         String whereSql = condition.sql("c", t -> convertColumnForAllField(modelContext, t), modelContext.getDialect());
         if (!StringUtil.hasText(whereSql)) {
-            throw new ConditionParameterException("更新模型[" + modelContext.getModel().getName() + "]数据操作查询条件不能为空");
+            throw new ConditionParameterException("Query condition for update operation on model [" + modelContext.getModel().getName() + "] cannot be null");
         }
 
         int i = 0;

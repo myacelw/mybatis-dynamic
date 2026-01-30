@@ -23,10 +23,10 @@ public abstract class AbstractExecution<ID, R, C extends Command> implements Exe
     protected static String convertColumnForAllField(ModelContext context, String fieldName) {
         Field field = context.getFieldMap().get(fieldName);
         if (field == null) {
-            throw new FieldParameterException("模型[" + context.getModel().getName() + "]的字段[" + fieldName + "]不存在");
+            throw new FieldParameterException("Field [" + fieldName + "] not found in model [" + context.getModel().getName() + "]");
         }
         if (!(field instanceof BasicField)) {
-            throw new FieldParameterException("模型[" + context.getModel().getName() + "]的字段[" + fieldName + "]不是基本类型，不能转换为条件");
+            throw new FieldParameterException("Field [" + fieldName + "] in model [" + context.getModel().getName() + "] is not a basic type and cannot be used as a condition");
         }
         return ((BasicField) field).getColumnName();
     }
@@ -49,7 +49,7 @@ public abstract class AbstractExecution<ID, R, C extends Command> implements Exe
         }
         Filler filler = fillers.get(f.getFillerName());
         if (filler == null) {
-            throw new FieldParameterException("模型[" + context.getModel().getName() + "]的字段[" + f.getName() + "]的填充器[" + f.getFillerName() + "]不存在");
+            throw new FieldParameterException("Filler [" + f.getFillerName() + "] for field [" + f.getName() + "] in model [" + context.getModel().getName() + "] not found");
         }
         return filler;
     }

@@ -138,11 +138,11 @@ public class Model implements ExtProperties, Cloneable, Serializable {
      * 检查合法性
      */
     private void check() {
-        Assert.hasText(name, "模型名称不能为空");
+        Assert.hasText(name, "Model name cannot be empty");
 
-        Assert.isTrue(!name.matches(".*[.{&`'\"\\n].*"), "模型'" + name + "'名含有点、引号或换行等非法字符");
+        Assert.isTrue(!name.matches(".*[.{&`'\"\\n].*"), "Model name '" + name + "' contains illegal characters (dots, quotes, or newlines)");
 
-        Assert.notEmpty(fields, "模型[" + name + "]字段不能为空");
+        Assert.notEmpty(fields, "Model [" + name + "] fields cannot be empty");
 
         Set<String> set = new HashSet<>();
         for (Field field : fields) {
@@ -150,7 +150,7 @@ public class Model implements ExtProperties, Cloneable, Serializable {
 
             String key = StringUtil.toUnderlineCase(field.getName());
             if (set.contains(key)) {
-                throw new ModelException("模型[" + name + "]字段名[" + field.getName() + "]重复");
+                throw new ModelException("Duplicate field name [" + field.getName() + "] in model [" + name + "]");
             }
             set.add(key);
         }
@@ -158,10 +158,10 @@ public class Model implements ExtProperties, Cloneable, Serializable {
         if (this.primaryKeyFields != null) {
             for (String primaryKeyField : this.primaryKeyFields) {
                 if (findBasicField(primaryKeyField) == null) {
-                    throw new ModelException("模型[" + name + "]主键字段[" + primaryKeyField + "]不存在");
+                    throw new ModelException("Primary key field [" + primaryKeyField + "] does not exist in model [" + name + "]");
                 }
                 if (set2.contains(primaryKeyField)) {
-                    throw new ModelException("模型[" + name + "]主键字段[" + primaryKeyField + "]重复");
+                    throw new ModelException("Duplicate primary key field [" + primaryKeyField + "] in model [" + name + "]");
                 }
                 set2.add(primaryKeyField);
             }
@@ -199,7 +199,7 @@ public class Model implements ExtProperties, Cloneable, Serializable {
             }
             return result;
         }
-        throw new RecursiveFieldException("模型[" + name + "]没有定义自关联字段。");
+        throw new RecursiveFieldException("Model [" + name + "] has no self-association field defined");
     }
 
     @JsonIgnore
@@ -263,14 +263,14 @@ public class Model implements ExtProperties, Cloneable, Serializable {
             if (unFoundedReturnNull) {
                 return null;
             }
-            throw new ModelException("模型[" + name + "]子关联字段[" + name + "]不存在");
+            throw new ModelException("Self-association field [" + name + "] does not exist in model [" + name + "]");
         } else if (list.size() == 1) {
             return list.get(0);
         } else {
             if (unFoundedReturnNull) {
                 return null;
             }
-            throw new ModelException("模型[" + name + "]子关联字段[" + name + "]不唯一");
+            throw new ModelException("Self-association field [" + name + "] is not unique in model [" + name + "]");
         }
     }
 
@@ -287,14 +287,14 @@ public class Model implements ExtProperties, Cloneable, Serializable {
             if (unFoundedReturnNull) {
                 return null;
             }
-            throw new RecursiveFieldException("模型[" + name + "]自关联一对多字段[" + name + "]不存在");
+            throw new RecursiveFieldException("Self-association one-to-many field [" + name + "] does not exist in model [" + name + "]");
         } else if (list.size() == 1) {
             return list.get(0);
         } else {
             if (unFoundedReturnNull) {
                 return null;
             }
-            throw new RecursiveFieldException("模型[" + name + "]自关联一对多字段[" + name + "]不唯一");
+            throw new RecursiveFieldException("Self-association one-to-many field [" + name + "] is not unique in model [" + name + "]");
         }
     }
 
@@ -345,7 +345,7 @@ public class Model implements ExtProperties, Cloneable, Serializable {
         } else if (Long.class.equals(idType)) {
             addLongIdFieldIfNotExist();
         } else {
-            throw new ModelException("模型[" + name + "]配置错误，不支持的主键类型[" + idType + "]");
+            throw new ModelException("Configuration error for model [" + name + "]: unsupported primary key type [" + idType + "]");
         }
         return addLogicDeleteFieldIfNotExist().addAuditFieldsIfNotExist();
     }
@@ -383,16 +383,16 @@ public class Model implements ExtProperties, Cloneable, Serializable {
 
     public Model addAuditFieldsIfNotExist() {
         if (findField(Model.FIELD_CREATOR) == null) {
-            fields.add(Field.stringBuilder(FIELD_CREATOR).characterMaximumLength(64).fillerName(AbstractCreatorFiller.NAME).ddlComment("创建人").build());
+            fields.add(Field.stringBuilder(FIELD_CREATOR).characterMaximumLength(64).fillerName(AbstractCreatorFiller.NAME).ddlComment("creator").build());
         }
         if (findField(Model.FIELD_MODIFIER) == null) {
-            fields.add(Field.stringBuilder(FIELD_MODIFIER).characterMaximumLength(64).fillerName(AbstractModifierFiller.NAME).ddlComment("修改人").build());
+            fields.add(Field.stringBuilder(FIELD_MODIFIER).characterMaximumLength(64).fillerName(AbstractModifierFiller.NAME).ddlComment("modifier").build());
         }
         if (findField(Model.FIELD_CREATE_TIME) == null) {
-            fields.add(Field.dateTimeBuilder(FIELD_CREATE_TIME).fillerName(CreateTimeFiller.NAME).ddlComment("创建时间").build());
+            fields.add(Field.dateTimeBuilder(FIELD_CREATE_TIME).fillerName(CreateTimeFiller.NAME).ddlComment("create time").build());
         }
         if (findField(Model.FIELD_UPDATE_TIME) == null) {
-            fields.add(Field.dateTimeBuilder(FIELD_UPDATE_TIME).fillerName(UpdateTimeFiller.NAME).ddlComment("修改时间").build());
+            fields.add(Field.dateTimeBuilder(FIELD_UPDATE_TIME).fillerName(UpdateTimeFiller.NAME).ddlComment("update time").build());
         }
         return this;
     }
@@ -424,19 +424,19 @@ public class Model implements ExtProperties, Cloneable, Serializable {
     }
 
     public static BasicField createStringIdField() {
-        return Field.stringBuilder(FIELD_ID).characterMaximumLength(32).ddlComment("主键").build();
+        return Field.stringBuilder(FIELD_ID).characterMaximumLength(32).ddlComment("primary key").build();
     }
 
     public static BasicField createIntegerIdField() {
-        return Field.integerBuilder(FIELD_ID).ddlComment("主键").build();
+        return Field.integerBuilder(FIELD_ID).ddlComment("primary key").build();
     }
 
     public static BasicField createLongIdField() {
-        return Field.longBuilder(FIELD_ID).ddlComment("主键").build();
+        return Field.longBuilder(FIELD_ID).ddlComment("primary key").build();
     }
 
     public static BasicField createLogicDeleteField() {
-        return Field.booleanBuilder(FIELD_DELETE_FLAG).select(false).ddlDefaultValue("0").ddlComment("逻辑删除").build();
+        return Field.booleanBuilder(FIELD_DELETE_FLAG).select(false).ddlDefaultValue("0").ddlComment("logic delete").build();
     }
 
     public Field findField(String name) {

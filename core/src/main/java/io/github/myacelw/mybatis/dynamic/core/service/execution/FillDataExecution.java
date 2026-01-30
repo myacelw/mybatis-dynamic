@@ -45,7 +45,7 @@ public class FillDataExecution<ID> extends AbstractExecution<ID, Void, FillDataC
                 } else if (field instanceof ToManyField) {
                     fillOneToManyData(dataManager, command, (ToManyField) field, fill);
                 } else {
-                    throw new FieldParameterException("模型[" + modelContext.getModel().getName() + "]的字段[" + fill.getFieldName() + "]不是关联类型或者关联模型类型");
+                    throw new FieldParameterException("Field [" + fill.getFieldName() + "] in model [" + modelContext.getModel().getName() + "] is not an association type");
                 }
             }
         }
@@ -58,11 +58,11 @@ public class FillDataExecution<ID> extends AbstractExecution<ID, Void, FillDataC
         DataManager<Object> targetDataManager = modelContext.getDataManagerGetter().getDataManager(field.getTargetModel(), dataManager.getModelContext().getSqlSession());
 
         if (targetDataManager == null) {
-            throw new FieldParameterException("模型[" + modelContext.getModel().getName() + "]的填充字段模型[" + field.getTargetModel() + "]没有找到");
+            throw new FieldParameterException("Associated model [" + field.getTargetModel() + "] for fill field in model [" + modelContext.getModel().getName() + "] not found");
         }
 
         String[] joinTargetFields = field.getJoinTargetFields();
-        Assert.isTrue(joinTargetFields.length == dataManager.getModel().getPrimaryKeyFields().length, "关联模型字段数量必须与当前模型主键数量一致, 模型：" + dataManager.getModel().getName() + ",字段：" + field.getName());
+        Assert.isTrue(joinTargetFields.length == dataManager.getModel().getPrimaryKeyFields().length, "Associated field count must match primary key count. Model: " + dataManager.getModel().getName() + ", Field: " + field.getName());
 
         List<Object> ids = getIdList(command.getData(), dataManager.getModel().getPrimaryKeyFields());
         if (ObjectUtil.isEmpty(ids)) {
@@ -89,11 +89,11 @@ public class FillDataExecution<ID> extends AbstractExecution<ID, Void, FillDataC
         DataManager<?> targetDataManager = modelContext.getDataManagerGetter().getDataManager(field.getTargetModel(), dataManager.getModelContext().getSqlSession());
 
         if (targetDataManager == null) {
-            throw new FieldParameterException("模型[" + modelContext.getModel().getName() + "]的填充字段模型[" + field.getTargetModel() + "]没有找到");
+            throw new FieldParameterException("Associated model [" + field.getTargetModel() + "] for fill field in model [" + modelContext.getModel().getName() + "] not found");
         }
         String[] joinLocalFields = field.getJoinLocalFields();
 
-        Assert.isTrue(joinLocalFields.length == targetDataManager.getModel().getPrimaryKeyFields().length, "关联模型字段数量必须与目标模型主键数量一致, 模型：" + dataManager.getModel().getName() + ",字段：" + field.getName());
+        Assert.isTrue(joinLocalFields.length == targetDataManager.getModel().getPrimaryKeyFields().length, "Associated field count must match target model primary key count. Model [ " + dataManager.getModel().getName() + "], Field [" + field.getName() +"]");
 
         Map<Object, List<Object>> fkIdToDataMap = new HashMap<>();
 

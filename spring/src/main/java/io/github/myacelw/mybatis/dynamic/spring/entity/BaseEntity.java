@@ -9,6 +9,7 @@ import io.github.myacelw.mybatis.dynamic.spring.filler.ModifierFiller;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -18,33 +19,33 @@ import java.time.LocalDateTime;
  */
 @Data
 @FieldNameConstants
-public abstract class BaseEntity<ID> {
+public abstract class BaseEntity<ID> implements Serializable {
 
-    @IdField(ddlCharacterMaximumLength = 32, ddlComment = "主键ID")
-    ID id;
+    @IdField(ddlCharacterMaximumLength = 32, ddlComment = "Primary Key ID")
+    private ID id;
 
     /**
      * 创建人
      */
-    @BasicField(ddlCharacterMaximumLength = 32, ddlComment = "创建人", fillerName = CreatorFiller.NAME)
-    String creator;
+    @BasicField(ddlCharacterMaximumLength = 32, ddlComment = "Creator", fillerName = CreatorFiller.NAME)
+    private String creator;
 
     /**
      * 创建时间
      */
-    @BasicField(ddlComment = "创建时间", fillerName = CreateTimeFiller.NAME)
-    LocalDateTime createTime;
+    @BasicField(ddlComment = "Create Time", fillerName = CreateTimeFiller.NAME)
+    private LocalDateTime createTime;
 
     /**
      * 修改人
      */
-    @BasicField(ddlComment = "修改人", ddlCharacterMaximumLength = 32, fillerName = ModifierFiller.NAME)
-    String modifier;
+    @BasicField(ddlComment = "Modifier", ddlCharacterMaximumLength = 32, fillerName = ModifierFiller.NAME)
+    private String modifier;
 
     /**
      * 修改时间
      */
-    @BasicField(ddlComment = "修改时间", fillerName = UpdateTimeFiller.NAME)
-    LocalDateTime updateTime;
+    @BasicField(ddlComment = "Update Time", fillerName = UpdateTimeFiller.NAME)
+    private LocalDateTime updateTime;
 
 }

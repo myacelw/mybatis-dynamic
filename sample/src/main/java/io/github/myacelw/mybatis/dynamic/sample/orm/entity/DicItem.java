@@ -21,29 +21,29 @@ import lombok.experimental.FieldNameConstants;
 @ToString(callSuper = true)
 @FieldNameConstants
 @Data
-@Model(logicDelete = true, comment = "字典项目")
+@Model(logicDelete = true, comment = "Dictionary Item")
 public class DicItem extends BaseEntity<Integer> {
 
-    @BasicField(ddlComment = "所属字典ID", ddlNotNull = true)
-    Integer dicId;
+    @BasicField(ddlComment = "Belongs to Dictionary ID", ddlNotNull = true)
+    private Integer dicId;
 
     /**
      * 字典项键
      */
-    @BasicField(ddlComment = "字典项键", ddlCharacterMaximumLength = 20, ddlNotNull = true)
-    String key;
+    @BasicField(ddlComment = "Item Key", ddlCharacterMaximumLength = 20, ddlNotNull = true)
+    private String key;
 
     /**
      * 字典项值
      */
-    @BasicField(ddlComment = "字典项值", ddlCharacterMaximumLength = 20, ddlNotNull = true)
-    String value;
+    @BasicField(ddlComment = "Item Value", ddlCharacterMaximumLength = 20, ddlNotNull = true)
+    private String value;
 
     /**
      * 字典项备注
      */
-    @BasicField(ddlComment = "字典项备注", ddlCharacterMaximumLength = 200)
-    String description;
+    @BasicField(ddlComment = "Item Comment", ddlCharacterMaximumLength = 200)
+    private String comment;
 
     /**
      * 所属字典

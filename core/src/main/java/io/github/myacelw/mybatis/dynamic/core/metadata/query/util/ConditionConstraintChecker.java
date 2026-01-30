@@ -82,38 +82,38 @@ public class ConditionConstraintChecker {
                 c.getConditions().forEach(this::check);
                 return;
             }
-            throw new ConditionPermissionException("没有逻辑操作符'" + c.getLogic() + "'查询条件权限");
+            throw new ConditionPermissionException("No permission for logic operator '" + c.getLogic() + "'");
         } else if (condition instanceof NotCondition) {
             NotCondition c = (NotCondition) condition;
             if (ObjectUtil.isEmpty(c.getCondition()) || logicOperations == null || logicOperations.contains(LogicOperation.not)) {
                 check(c.getCondition());
                 return;
             }
-            throw new ConditionPermissionException("没有逻辑操作符'not'查询条件权限");
+            throw new ConditionPermissionException("No permission for logic operator 'not'");
         } else if (condition instanceof ExistsCondition) {
             ExistsCondition c = (ExistsCondition) condition;
             if (fieldConstraints == null || fieldConstraints.stream().filter(t -> Objects.equals(t.getFieldPath(), c.getField())).anyMatch(t -> ObjectUtil.isEmpty(t.getOperationList()) || t.getOperationList().contains(ConditionOperation.exists))) {
                 return;
             }
-            throw new ConditionPermissionException("没有字段'" + c.getField() + "'的Exists查询条件权限");
+            throw new ConditionPermissionException("No permission for Exists query on field '" + c.getField() + "'");
         } else if (condition instanceof SimpleCondition) {
             SimpleCondition c = (SimpleCondition) condition;
             if (fieldConstraints == null || fieldConstraints.stream().filter(t -> Objects.equals(t.getFieldPath(), c.getField())).anyMatch(t -> ObjectUtil.isEmpty(t.getOperationList()) || t.getOperationList().stream().anyMatch(k -> k.name().equals(c.getOperation().name())))) {
                 return;
             }
-            throw new ConditionPermissionException("没有字段'" + c.getField() + "'的'" + c.getOperation() + "'查询条件权限");
+            throw new ConditionPermissionException("No permission for '" + c.getOperation() + "' query on field '" + c.getField() + "'");
         } else if (condition instanceof CustomCondition) {
             CustomCondition c = (CustomCondition) condition;
             if (!customConditionSupport) {
-                throw new ConditionPermissionException("没有自定义查询条件权限");
+                throw new ConditionPermissionException("No permission for custom query conditions");
             }
 
             if (fieldConstraints == null || fieldConstraints.stream().filter(t -> Objects.equals(t.getFieldPath(), c.getField())).anyMatch(t -> ObjectUtil.isEmpty(t.getOperationList()))) {
                 return;
             }
-            throw new ConditionPermissionException("没有字段'" + c.getField() + "'的查询条件权限");
+            throw new ConditionPermissionException("No permission for query on field '" + c.getField() + "'");
         }
-        throw new ConditionPermissionException("没有查询条件权限");
+        throw new ConditionPermissionException("No permission for query conditions");
     }
 
 

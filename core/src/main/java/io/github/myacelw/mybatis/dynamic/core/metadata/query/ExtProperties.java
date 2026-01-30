@@ -51,7 +51,7 @@ public interface ExtProperties {
             if (clazz.isAssignableFrom(custom.getClass())) {
                 return (T) custom;
             } else {
-                throw new IllegalArgumentException("扩展属性 '" + key + "' 设置值 '" + custom + "' 存在类型错误，不是" + clazz);
+                throw new IllegalArgumentException("Type error for extension property [" + key + "] with value [" + custom + "], expected " + clazz);
             }
         }
         return null;
@@ -66,7 +66,7 @@ public interface ExtProperties {
                 }
                 return func.apply(custom.toString());
             } catch (Exception e) {
-                throw new IllegalArgumentException("扩展属性 '" + key + "' 设置值 '" + custom + "' 存在类型错误，不能转换为 " + clazz.getSimpleName());
+                throw new IllegalArgumentException("Type error for extension property [" + key + "] with value '" + custom + "', cannot convert to " + clazz.getSimpleName());
             }
         }
         return null;
@@ -109,7 +109,7 @@ public interface ExtProperties {
         if (v instanceof String) {
             return Enum.valueOf(enumClass, (String) v);
         }
-        throw new IllegalArgumentException("扩展属性 '" + key + "' 设置值 '" + v + "' 存在类型错误，不能转换为 " + enumClass.getSimpleName());
+        throw new IllegalArgumentException("Type error for extension property [" + key + "] with value [" + v + "], cannot convert to " + enumClass.getSimpleName());
     }
 
 }

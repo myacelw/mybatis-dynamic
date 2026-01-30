@@ -30,10 +30,10 @@ public class QueryByIdExecution<ID, T> extends AbstractExecution<ID, T, QueryByI
 
     @Override
     public T exec(QueryByIdCommand<ID, T> command, DataManager<ID> dataManager) {
-        Assert.notNull(command.getId(), "ID不能为空");
+        Assert.notNull(command.getId(), "ID cannot be null");
         if (command.getJoins() != null) {
             if (command.getJoins().stream().anyMatch(t -> t.getType() == Join.JoinType.RIGHT || t.getType() == Join.JoinType.FULL)) {
-                throw new JoinException("模型[" + dataManager.getModel().getName() + "]按ID查询数据只返回一条记录，因此不支持右关联和全关联");
+                throw new JoinException("Model [" + dataManager.getModel().getName() + "] query by ID returns only one record, thus RIGHT or FULL JOIN is not supported");
             }
         }
 
@@ -52,13 +52,13 @@ public class QueryByIdExecution<ID, T> extends AbstractExecution<ID, T, QueryByI
     private T getOne(List<T> list, boolean nullThrowException) {
         if (list.isEmpty()) {
             if (nullThrowException) {
-                throw new DataNotFoundException("没有查找到对应ID的数据");
+                throw new DataNotFoundException("Data with specified ID not found");
             }
             return null;
         }
 
         if (list.size() > 1) {
-            throw new NonUniqueDataException("数据异常，要求只返回一条记录，但查询出多条记录");
+            throw new NonUniqueDataException("Data error: expected single record but multiple records were found");
         }
 
         return list.get(0);

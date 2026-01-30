@@ -48,7 +48,7 @@ public class QueryCallBackExecution<ID, T> extends AbstractExecution<ID, Integer
 
     @Override
     public Integer exec(QueryCallBackCommand<T> command, DataManager<ID> dataManager) {
-        Assert.notNull(command.getHandler(), "参数handler不能为空");
+        Assert.notNull(command.getHandler(), "Parameter 'handler' cannot be null");
         ModelContext modelContext = dataManager.getModelContext();
 
         Map<String, Object> context = new HashMap<>();

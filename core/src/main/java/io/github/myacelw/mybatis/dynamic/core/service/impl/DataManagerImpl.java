@@ -32,7 +32,7 @@ public class DataManagerImpl<ID> implements DataManager<ID> {
     public <R> R execCommand(@NonNull Command command) {
         Execution execution = Execution.getExecutions().get(command.getClass());
         if (execution == null) {
-            throw new RuntimeException("没有找到命令类型" + command.getClass().getSimpleName() + "对应的命令执行器");
+            throw new RuntimeException("No execution found for command type " + command.getClass().getSimpleName());
         }
         return (R) execution.exec(command, this);
     }

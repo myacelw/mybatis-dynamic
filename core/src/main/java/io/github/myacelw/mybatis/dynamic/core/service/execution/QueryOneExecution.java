@@ -39,7 +39,7 @@ public class QueryOneExecution<ID, T> extends AbstractExecution<ID, T, QueryOneC
     public static <T> T getOne(List<T> list, boolean nullThrowException, boolean onlyFirst) {
         if (list.isEmpty()) {
             if (nullThrowException) {
-                throw new DataNotFoundException("没有找到数据");
+                throw new DataNotFoundException("Data not found");
             }
             return null;
         }
@@ -48,7 +48,7 @@ public class QueryOneExecution<ID, T> extends AbstractExecution<ID, T, QueryOneC
             if (onlyFirst) {
                 return list.get(0);
             } else {
-                throw new NonUniqueDataException("数据不唯一异常，查询出多条记录");
+                throw new NonUniqueDataException("Non-unique data: multiple records found");
             }
         }
 

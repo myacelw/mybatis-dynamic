@@ -17,13 +17,13 @@ import lombok.experimental.FieldNameConstants;
 @ToString(callSuper = true)
 @FieldNameConstants
 @Data
-@Model(logicDelete = true, comment = "字典目录")
+@Model(logicDelete = true, comment = "Dictionary Directory")
 public class DicDirectory extends BaseTreeEntity<Integer, DicDirectory> {
 
     /**
      * 目录名
      */
-    @BasicField(ddlComment = "目录名", ddlNotNull = true)
-    String name;
+    @BasicField(ddlComment = "Directory Name", ddlNotNull = true)
+    private String name;
 
 }

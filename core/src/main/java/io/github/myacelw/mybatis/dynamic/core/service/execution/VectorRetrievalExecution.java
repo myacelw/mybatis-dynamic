@@ -77,7 +77,7 @@ public class VectorRetrievalExecution<ID, T> extends AbstractExecution<ID, List<
         } else if (dataBaseDialect instanceof PostgresqlDataBaseDialect)
             return "$COL <-> #{EXPR,typeHandler=" + VectorTypeHandler.class.getName() + "}";
         else {
-            throw new UnsupportedOperationException("不支持的数据库类型：" + dataBaseDialect.getName());
+            throw new UnsupportedOperationException("Unsupported database type: " + dataBaseDialect.getName());
         }
     }
 

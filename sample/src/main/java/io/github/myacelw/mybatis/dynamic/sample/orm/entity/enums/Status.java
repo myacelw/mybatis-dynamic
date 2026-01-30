@@ -9,10 +9,12 @@ import lombok.Getter;
  */
 @Getter
 public enum Status {
-    Valid("有效"),
-    Invalid("无效"),
+
+    Valid("Valid"),
+    Invalid("Invalid"),
 
     ;
+
 
     final String displayName;
 

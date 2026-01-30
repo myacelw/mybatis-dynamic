@@ -39,12 +39,12 @@ public class DrawController {
     @GetMapping("/data/displayModes.json")
     public List<DisplayMode> getDisplayModes() {
         List<DisplayMode> displayModes = new ArrayList<>();
-        displayModes.add(new DisplayMode("类图(名称-类型)", PropertyName.name.name(), PropertyName.comment.name(), PropertyName.name.name(), PropertyName.javaClass.name()));
-        displayModes.add(new DisplayMode("类图(名称-描述)", PropertyName.name_comment.name(), null, PropertyName.name.name(), PropertyName.comment.name()));
-        displayModes.add(new DisplayMode("类图(描述-名称)", PropertyName.comment.name(), PropertyName.name.name(), PropertyName.comment.name(), PropertyName.name.name()));
-        displayModes.add(new DisplayMode("类图(描述-类型)", PropertyName.comment.name(), PropertyName.name.name(), PropertyName.comment.name(), PropertyName.fieldType.name()));
-        displayModes.add(new DisplayMode("数据库表(列名-类型)", PropertyName.tableName.name(), PropertyName.comment.name(), PropertyName.columnName.name(), PropertyName.columnType.name()));
-        displayModes.add(new DisplayMode("数据库表(列名-描述)", PropertyName.tableName.name(), PropertyName.comment.name(), PropertyName.columnName.name(), PropertyName.comment.name()));
+        displayModes.add(new DisplayMode("Class Diagram (Name-Type)", PropertyName.name.name(), PropertyName.comment.name(), PropertyName.name.name(), PropertyName.javaClass.name()));
+        displayModes.add(new DisplayMode("Class Diagram (Name-Comment)", PropertyName.name_comment.name(), null, PropertyName.name.name(), PropertyName.comment.name()));
+        displayModes.add(new DisplayMode("Class Diagram (Comment-Name)", PropertyName.comment.name(), PropertyName.name.name(), PropertyName.comment.name(), PropertyName.name.name()));
+        displayModes.add(new DisplayMode("Class Diagram (Comment-Type)", PropertyName.comment.name(), PropertyName.name.name(), PropertyName.comment.name(), PropertyName.fieldType.name()));
+        displayModes.add(new DisplayMode("DB Table (Column-Type)", PropertyName.tableName.name(), PropertyName.comment.name(), PropertyName.columnName.name(), PropertyName.columnType.name()));
+        displayModes.add(new DisplayMode("DB Table (Column-Comment)", PropertyName.tableName.name(), PropertyName.comment.name(), PropertyName.columnName.name(), PropertyName.comment.name()));
         return displayModes;
     }
 
@@ -56,7 +56,7 @@ public class DrawController {
         List<Model> models = modelService.getAllRegisteredModels().stream()
                 .peek(t -> {
                     if (!StringUtils.hasText(t.getExtPropertyValueForString(Model.EXT_PROPERTY_MODULE_GROUP))) {
-                        t.putExtProperty(Model.EXT_PROPERTY_MODULE_GROUP, "其他");
+                        t.putExtProperty(Model.EXT_PROPERTY_MODULE_GROUP, "Others");
                     }
                 })
                 .filter(t -> moduleGroup == null || "ALL".equals(moduleGroup) || Objects.equals(t.getExtPropertyValueForString(Model.EXT_PROPERTY_MODULE_GROUP), moduleGroup))
@@ -75,7 +75,7 @@ public class DrawController {
         return modelService.getAllRegisteredModels().stream()
                 .peek(t -> {
                     if (!StringUtils.hasText(t.getExtPropertyValueForString(Model.EXT_PROPERTY_MODULE_GROUP))) {
-                        t.putExtProperty(Model.EXT_PROPERTY_MODULE_GROUP, "其他");
+                        t.putExtProperty(Model.EXT_PROPERTY_MODULE_GROUP, "Others");
                     }
                 })
                 .map(t -> t.getExtPropertyValueForString(Model.EXT_PROPERTY_MODULE_GROUP))

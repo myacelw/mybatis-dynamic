@@ -34,7 +34,7 @@ public class GroupField extends AbstractField implements Serializable, Field {
 
     @Override
     public void init(Model model, ModelToTableConverter converter) {
-        Assert.notEmpty(fields, "字段组下子字段不能为空");
+        Assert.notEmpty(fields, "Group fields cannot be empty");
         fields.forEach(t -> t.init(model, converter, name + "_"));
     }
 

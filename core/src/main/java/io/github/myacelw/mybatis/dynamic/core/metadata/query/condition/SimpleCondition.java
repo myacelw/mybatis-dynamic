@@ -525,7 +525,7 @@ public class SimpleCondition implements Condition {
         in("EXPR") {
             public String sql(String column, String valueExpression, Object value) {
                 if (value == null) {
-                    throw new ConditionParameterException("IN查询条件参数不能为null");
+                    throw new ConditionParameterException("Parameter for IN query cannot be null");
                 }
 
                 int n;
@@ -534,11 +534,11 @@ public class SimpleCondition implements Condition {
                 } else if (value.getClass().isArray()) {
                     n = Array.getLength(value);
                 } else {
-                    throw new ConditionParameterException("IN查询条件参数类型错误，需要List或数组类型，传入值类型为：" + value.getClass().getName());
+                    throw new ConditionParameterException("Invalid parameter type for IN query, expected List or array, but got: " + value.getClass().getName());
                 }
 
                 if (n == 0) {
-                    throw new ConditionParameterException("IN查询条件参数不能为空集合");
+                    throw new ConditionParameterException("Parameter for IN query cannot be an empty collection");
                 }
                 String s = IntStream.range(0, n).mapToObj(i -> "#{" + valueExpression + "[" + i + "]}").collect(Collectors.joining(","));
                 return column + " IN (" + s + ")";
@@ -558,7 +558,7 @@ public class SimpleCondition implements Condition {
         notIn("EXPR") {
             public String sql(String column, String valueExpression, Object value) {
                 if (value == null) {
-                    throw new ConditionParameterException("NOT IN查询条件参数不能为null");
+                    throw new ConditionParameterException("Parameter for NOT IN query cannot be null");
                 }
 
                 int n;
@@ -567,11 +567,11 @@ public class SimpleCondition implements Condition {
                 } else if (value.getClass().isArray()) {
                     n = Array.getLength(value);
                 } else {
-                    throw new ConditionParameterException("NOT IN查询条件参数类型错误，需要List或数组类型，传入值类型为：" + value.getClass().getName());
+                    throw new ConditionParameterException("Invalid parameter type for NOT IN query, expected List or array, but got: " + value.getClass().getName());
                 }
 
                 if (n == 0) {
-                    throw new ConditionParameterException("NOT IN查询条件参数不能为空集合");
+                    throw new ConditionParameterException("Parameter for NOT IN query cannot be an empty collection");
                 }
                 String s = IntStream.range(0, n).mapToObj(i -> "#{" + valueExpression + "[" + i + "]}").collect(Collectors.joining(","));
                 return column + " NOT IN (" + s + ")";
@@ -594,7 +594,7 @@ public class SimpleCondition implements Condition {
                 if (value instanceof Collection) {
                     Collection<?> collection = ((Collection<?>) value);
                     if (collection.isEmpty()) {
-                        throw new ConditionParameterException("等于或In查询条件集合参数不能为空");
+                        throw new ConditionParameterException("Collection parameter for EqOrIn query cannot be empty");
                     } else if (collection.size() == 1) {
                         return eq.sql(column, valueExpression + "[0]", value);
                     } else {

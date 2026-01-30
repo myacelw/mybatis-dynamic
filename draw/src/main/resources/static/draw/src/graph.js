@@ -423,7 +423,7 @@ export function updateNodeWidth(newWidth) {
 }
 
 export function downloadPNG() {
-    graph.exportPNG('Model_Diagram',
+    graph.exportPNG('model_diagram',
         {
             padding: {
                 top: 20,

@@ -88,7 +88,7 @@ public class DynamicModelAutoConfiguration {
                 return db;
             }
         }
-        throw new IllegalArgumentException("没有找到匹配的数据库类型:" + dialect);
+        throw new IllegalArgumentException("No matching database type found for: " + dialect);
     }
 
     /**

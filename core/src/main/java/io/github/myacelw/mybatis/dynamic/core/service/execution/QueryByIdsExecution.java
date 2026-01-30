@@ -26,7 +26,7 @@ public class QueryByIdsExecution<ID, T> extends AbstractExecution<ID, List<T>, Q
 
     @Override
     public List<T> exec(QueryByIdsCommand<ID, T> command, DataManager<ID> dataManager) {
-        Assert.notEmpty(command.getIds(), "ID不能为空");
+        Assert.notEmpty(command.getIds(), "ID cannot be empty");
         Model model = dataManager.getModel();
 
         return dataManager.queryChain(command.getClazz())

@@ -169,12 +169,12 @@ public class SelectBuilder {
         Map<String, Field> fields = dataManager.getModelContext().getFieldRights();
         for (String s : fieldPath) {
             Field field = fields.get(s);
-            Assert.notNull(field, "没有找到模型 " + dataManager.getModel().getName() + " 的字段 " + s + "。");
+            Assert.notNull(field, "Field [" + s + "] not found in model [" + dataManager.getModel().getName()+ "]");
 
             if (field instanceof RefModel) {
                 fields = dataManager.getModelContext().getDataManagerGetter().getModelContext(((RefModel) field).getTargetModel()).getFieldRights();
             } else {
-                throw new IllegalArgumentException("模型 " + dataManager.getModel().getName() + " 字段 " + s + " 类型为" + field.getClass().getSimpleName() + "，无下级表。");
+                throw new IllegalArgumentException("Model [" + dataManager.getModel().getName() + "] field [" + s + "] is of type " + field.getClass().getSimpleName() + ", which has no child tables");
             }
         }
         return fields;

@@ -78,11 +78,11 @@ public class SearchCondition implements Condition {
             }
         } else if (dialect instanceof PostgresqlDataBaseDialect) {
             if (mode == Mode.BOOLEAN) {
-                throw new UnsupportedOperationException("全文检索 BOOLEAN 模式查询，不支持的数据库类型：" + dialect.getName());
+                throw new UnsupportedOperationException("Full-text search BOOLEAN mode is not supported for database type: " + dialect.getName());
             }
             return "to_tsvector('chinese', $COL) @@ to_tsquery('chinese', #{EXPR})";
         } else {
-            throw new UnsupportedOperationException("全文检索不支持的数据库类型：" + dialect.getName());
+            throw new UnsupportedOperationException("Full-text search is not supported for database type: " + dialect.getName());
         }
     }
 

@@ -7,8 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +46,7 @@ public class DynamicModelController {
     }
 
     @GetMapping
-    public PageResult<Map<String, Object>> list(@PathVariable String modelName, HttpServletRequest request) {
+    public PageResult<Map<String, Object>> list(@PathVariable String modelName, WebRequest request) {
         Map<String, String[]> parameterMap = request.getParameterMap();
         DataManager<Object> dataManager = getDataManager(modelName);
 

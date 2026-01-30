@@ -249,7 +249,7 @@ public class QueryNode {
         } else if (field instanceof ToManyField) {
             sql = getJoinToManyWhereSql((ToManyField) field);
         } else {
-            throw new JoinFieldException("模型[" + this.modelContext.getModel().getName() + "]Join查询字段[" + field.getName() + "]不是ToOneField或ToManyField类型字段");
+            throw new JoinFieldException("Model [" + this.modelContext.getModel().getName() + "] Join query field [" + field.getName() + "] is not a ToOneField or ToManyField type");
         }
 
         String joinConditionSql = getWhereSql(context, "j" + tableAsIndex, join.getCondition(), true, join.isIgnoreLogicDelete());
@@ -270,7 +270,7 @@ public class QueryNode {
 
         String[] joinToColumns = Arrays.stream(field.getJoinLocalFields()).map(t -> joinToModel.findBasicField(t).getColumnName()).toArray(String[]::new);
 
-        Assert.isTrue(joinColumns.length == joinToColumns.length, "模型[" + joinToModel.getName() + "]的[" + field.getName() + "]字段配置错误，和关联模型[" + model.getName() + "]主键字段数量不一致。");
+        Assert.isTrue(joinColumns.length == joinToColumns.length, "Model [" + joinToModel.getName() + "] field [" + field.getName() + "] configuration error: primary key count mismatch with associated model [" + model.getName() + "]");
 
         return doGetJoinWhereSql(joinColumns, joinToColumns);
     }
@@ -285,7 +285,7 @@ public class QueryNode {
         Model joinToModel = this.parent.modelContext.getModel();
         String[] joinToColumns = Arrays.stream(joinToModel.getPrimaryKeyFields()).map(t -> joinToModel.findBasicField(t).getColumnName()).toArray(String[]::new);
 
-        Assert.isTrue(joinColumns.length == joinToColumns.length, "模型[" + model.getName() + "]的[" + field.getName() + "]字段配置错误，和关联模型[" + model.getName() + "]主键字段数量不一致。");
+        Assert.isTrue(joinColumns.length == joinToColumns.length, "Model [" + model.getName() + "] field [" + field.getName() + "] configuration error: primary key count mismatch with associated model [" + model.getName() + "]");
 
         return doGetJoinWhereSql(joinColumns, joinToColumns);
     }
@@ -478,7 +478,7 @@ public class QueryNode {
                 Field field = modelContext.getField(fieldPath, havePermission, true);
                 if (field instanceof RefModel) {
                     if (!enabledCreate) {
-                        throw new SystemException("系统错误，当前状态不支持创建QueryNode, 模型'" + this.modelContext.getModel().getName() + "' 关联字段'" + fieldPath + "'");
+                        throw new SystemException("System error: current state does not support creating QueryNode for model [" + this.modelContext.getModel().getName() + "] and associated field [" + fieldPath + "]");
                     }
 
                     RefModel refModel = (RefModel) field;
@@ -505,7 +505,7 @@ public class QueryNode {
         QueryNode child = next.v1;
         Field childField = next.v2;
 
-        Assert.isFalse(childField instanceof BasicField, "模型'" + modelContext.getModel().getName() + "'不存在字段'" + fieldPath + "'");
+        Assert.isFalse(childField instanceof BasicField, "Model [" + modelContext.getModel().getName() + "] does not have field [" + fieldPath + "]");
 
         if (childField instanceof GroupField) {
             GroupField groupField = (GroupField) childField;
@@ -514,7 +514,7 @@ public class QueryNode {
             }
 
             BasicField basicField = groupField.findField(subFieldPath);
-            Assert.notNull(basicField, "模型'" + modelContext.getModel().getName() + "'不存在字段'" + fieldPath + "'");
+            Assert.notNull(basicField, "Model [" + modelContext.getModel().getName() + "] does not have field [" + fieldPath + "]");
             return new Tuple3<>(child, childField, basicField);
         }
 
@@ -526,7 +526,7 @@ public class QueryNode {
         Tuple3<QueryNode, Field, BasicField> tuple3 = getOrCreateNode(fieldPath, false, haveRighted, false);
 
         if (tuple3.v2 == null) {
-            throw new FieldParameterException("模型[" + modelContext.getModel().getName() + "]的字段[" + fieldPath + "]是关联类型字段，不能作为条件或者返回值");
+            throw new FieldParameterException("Model [" + modelContext.getModel().getName() + "] field [" + fieldPath + "] is an association type and cannot be used as a condition or return value");
         }
 
         return tuple3;
@@ -544,12 +544,12 @@ public class QueryNode {
                 Tuple3<QueryNode, Field, BasicField> tuple3 = findField(fieldPath, haveRighted);
 
                 if (tuple3.v3 != null) {
-                    throw new FieldParameterException("模型[" + modelContext.getModel().getName() + "]的字段[" + fieldPath + "]" + "不是关联关系类型，不能进行Exists查询");
+                    throw new FieldParameterException("Model [" + modelContext.getModel().getName() + "] field [" + fieldPath + "] is not an association type and cannot be used for Exists query");
                 }
                 QueryNode queryNode = tuple3.v1;
                 Field field = tuple3.v2;
 
-                Assert.isTrue(field instanceof RefModel, "模型[" + modelContext.getModel().getName() + "]的字段[" + fieldPath + "]" + "不是关联关系类型，不能进行Exists查询");
+                Assert.isTrue(field instanceof RefModel, "Model [" + modelContext.getModel().getName() + "] field [" + fieldPath + "] is not an association type and cannot be used for Exists query");
 
                 QueryNode existsQueryNode = new QueryNode();
                 existsQueryNode.modelContext = getRefModelContext((RefModel) field);
@@ -582,7 +582,7 @@ public class QueryNode {
             columnName = subField.getColumnName();
         } else {
             if (!(field instanceof BasicField)) {
-                throw new FieldParameterException("模型[" + modelContext.getModel().getName() + "]的字段[" + fieldPath + "]不是基本类型字段");
+                throw new FieldParameterException("Model [" + modelContext.getModel().getName() + "] field [" + fieldPath + "] is not a basic field type");
             }
             columnName = ((BasicField) field).getColumnName();
         }
@@ -592,7 +592,7 @@ public class QueryNode {
     private ModelContext getRefModelContext(RefModel field) {
         ModelContext refModelContext = this.modelContext.getDataManagerGetter().getModelContext(field.getTargetModel());
         if (refModelContext == null) {
-            throw new JoinException("模型[" + modelContext.getModel().getName() + "]的字段[" + field.getName() + "]的关联模型[" + field.getTargetModel() + "]没有被注册，请检查配置是否正确");
+            throw new JoinException("Model [" + modelContext.getModel().getName() + "] field [" + field.getName() + "] associated model [" + field.getTargetModel() + "] is not registered, please check configuration");
         }
         return refModelContext;
     }

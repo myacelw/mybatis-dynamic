@@ -27,7 +27,7 @@ public class AggQueryExecution<ID, T> extends AbstractExecution<ID, List<T>, Agg
 
     @Override
     public List<T> exec(AggQueryCommand<T> command, DataManager<ID> dataManager) {
-        Assert.notEmpty(command.getAggSelectItems(), "参数aggSelectItems不能为空");
+        Assert.notEmpty(command.getAggSelectItems(), "Parameter 'aggSelectItems' cannot be empty");
 
         List<OrderItem> orderItems = new ArrayList<>();
         if (command.getOrderItems() != null) {

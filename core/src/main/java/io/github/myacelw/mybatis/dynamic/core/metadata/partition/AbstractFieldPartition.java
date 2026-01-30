@@ -53,9 +53,9 @@ public abstract class AbstractFieldPartition extends Partition implements Clonea
 
     @Override
     public AbstractFieldPartition convertFieldToColumn(Model model) {
-        Assert.notNull(field, "分区字段不能为空");
+        Assert.notNull(field, "Partition field cannot be empty");
         BasicField f = (BasicField) model.findField(field);
-        Assert.notNull(f, "分区字段不存在：" + field);
+        Assert.notNull(f, "Partition field does not exist: " + field);
         AbstractFieldPartition clone = this.clone();
         clone.setField(f.getColumnName());
         if (this.getSubPartition() != null) {
@@ -70,7 +70,7 @@ public abstract class AbstractFieldPartition extends Partition implements Clonea
     @Override
     public void init(Model model) {
         Field partField = model.findField(field);
-        Assert.notNull(partField, "分区字段不存在：" + field);
+        Assert.notNull(partField, "Partition field does not exist: " + field);
         if (subPartition != null) {
             subPartition.init(model);
         }

@@ -46,7 +46,7 @@ public class BatchUpdateExecution<ID> extends AbstractExecution<ID, Void, BatchU
             UpdateExecution.fill(dataManager, data, changedList);
 
             if (changedList.isEmpty()) {
-                log.debug("更新数据为空，跳过执行更新操作，model:{}", model.getName());
+                log.debug("Update data is empty, skipping update operation for model: {}", model.getName());
                 continue;
             }
 
