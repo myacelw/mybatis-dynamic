@@ -10,13 +10,9 @@ import io.github.myacelw.mybatis.dynamic.spring.hook.CurrentUserHolder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,35 +23,48 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(DynamicModelController.class)
-@Import(DynamicModelControllerTest.MockConfig.class)
 public class DynamicModelControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
     private ModelService modelService;
 
-    @Autowired
     private CurrentUserHolder currentUserHolder;
 
     private DataManager<Object> dataManager;
 
-    @TestConfiguration
-    static class MockConfig {
-        @Bean
-        public ModelService modelService() {
-            return Mockito.mock(ModelService.class);
-        }
+    @BeforeEach
+    public void setup() {
+        modelService = Mockito.mock(ModelService.class);
+        currentUserHolder = Mockito.mock(CurrentUserHolder.class);
+        
+        // Manual instantiation of the controller with mocks
+        DynamicModelController controller = new DynamicModelController(modelService, currentUserHolder);
+        
+        // Standalone setup - no need for @WebMvcTest or full Spring context
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
-        @Bean
-        public CurrentUserHolder currentUserHolder() {
-            return Mockito.mock(CurrentUserHolder.class);
-        }
+        dataManager = Mockito.mock(DataManager.class);
+        // Note: The controller logic calls modelService.getModel first, then createDataManager.
+        // We don't need to mock getDataManager if we mock the underlying service calls.
+        // But wait, the original test mocked modelService.getDataManager which is NOT called in the new controller logic shown?
+        // Let's verify the controller logic. 
+        // Controller calls: modelService.getModel(name) -> modelService.createDataManager(model, perm, null)
+        
+        io.github.myacelw.mybatis.dynamic.core.metadata.Model model = new io.github.myacelw.mybatis.dynamic.core.metadata.Model();
+        model.setName("User");
+        
+        // Stub getModel
+        when(modelService.getModel("User")).thenReturn(model);
+
+        // Stub createDataManager
+        when(modelService.createDataManager(eq(model), any(), any())).thenReturn(dataManager);
+        
+        // For default dataManager.getModel() calls if any
+        when(dataManager.getModel()).thenReturn(model);
     }
 
-    @BeforeEach
+    @Test
     public void setup() {
         dataManager = Mockito.mock(DataManager.class);
         when(modelService.getDataManager(anyString(), any())).thenReturn(dataManager);
