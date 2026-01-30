@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>mybatis-dynamic-core</artifactId>
+    <name>mybatis-dynamic-core</name>
 
     <dependencies>
         <dependency>

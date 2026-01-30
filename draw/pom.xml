@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>mybatis-dynamic-draw</artifactId>
+    <name>mybatis-dynamic-draw</name>
 
     <dependencies>
         <dependency>
