@@ -119,6 +119,19 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>jdk17</id>
+            <activation>
+                <jdk>[17,)</jdk>
+            </activation>
+            <properties>
+                <springboot.version>4.0.1</springboot.version>
+                <mybatis-spring-boot.version>4.0.1</mybatis-spring-boot.version>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
