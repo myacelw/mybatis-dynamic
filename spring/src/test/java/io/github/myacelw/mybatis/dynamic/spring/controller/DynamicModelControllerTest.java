@@ -1,11 +1,9 @@
 package io.github.myacelw.mybatis.dynamic.spring.controller;
 
-import io.github.myacelw.mybatis.dynamic.core.metadata.Model;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.PageResult;
 import io.github.myacelw.mybatis.dynamic.core.service.DataManager;
 import io.github.myacelw.mybatis.dynamic.core.service.ModelService;
 import io.github.myacelw.mybatis.dynamic.core.service.chain.PageChain;
-import io.github.myacelw.mybatis.dynamic.core.metadata.Permission;
 import io.github.myacelw.mybatis.dynamic.spring.hook.CurrentUserHolder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +16,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -37,10 +36,10 @@ public class DynamicModelControllerTest {
     public void setup() {
         modelService = Mockito.mock(ModelService.class);
         currentUserHolder = Mockito.mock(CurrentUserHolder.class);
-        
+
         // Manual instantiation of the controller with mocks
         DynamicModelController controller = new DynamicModelController(modelService, currentUserHolder);
-        
+
         // Standalone setup - no need for @WebMvcTest or full Spring context
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
@@ -50,16 +49,16 @@ public class DynamicModelControllerTest {
         // But wait, the original test mocked modelService.getDataManager which is NOT called in the new controller logic shown?
         // Let's verify the controller logic. 
         // Controller calls: modelService.getModel(name) -> modelService.createDataManager(model, perm, null)
-        
+
         io.github.myacelw.mybatis.dynamic.core.metadata.Model model = new io.github.myacelw.mybatis.dynamic.core.metadata.Model();
         model.setName("User");
-        
+
         // Stub getModel
         when(modelService.getModel("User")).thenReturn(model);
 
         // Stub createDataManager
         when(modelService.createDataManager(eq(model), any(), any())).thenReturn(dataManager);
-        
+
         // For default dataManager.getModel() calls if any
         when(dataManager.getModel()).thenReturn(model);
     }
@@ -81,8 +80,8 @@ public class DynamicModelControllerTest {
         when(dataManager.insert(any())).thenReturn("100");
 
         mockMvc.perform(post("/api/dynamic/User")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\": \"test\"}"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"test\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("100"));
     }

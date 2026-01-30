@@ -126,8 +126,8 @@
                 <jdk>[17,)</jdk>
             </activation>
             <properties>
-                <springboot.version>3.2.2</springboot.version>
-                <mybatis-spring-boot.version>3.0.3</mybatis-spring-boot.version>
+                <springboot.version>4.0.1</springboot.version>
+                <mybatis-spring-boot.version>4.0.1</mybatis-spring-boot.version>
             </properties>
         </profile>
 
