@@ -170,6 +170,7 @@
                 <configuration>
                     <publishingServerId>ossrh</publishingServerId>
                     <autoPublish>true</autoPublish>
+                    <skipPublishing>false</skipPublishing>
                     <waitUntil>published</waitUntil>
                 </configuration>
             </plugin>
