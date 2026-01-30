@@ -81,7 +81,7 @@ async function main() {
         function updateNodeWidthHandle() {
             const newWidth = parseInt(nodeWidthInput.value, 10);
             if (isNaN(newWidth) || newWidth < 50 || newWidth > 500) {
-                alert('请输入50到500间的数字。');
+                alert('Please enter a number between 50 and 500.');
                 return;
             }
             updateNodeWidth(newWidth);
@@ -108,7 +108,7 @@ async function main() {
         });
 
     } catch (error) {
-        console.error('获取实体数据失败：', error);
+        console.error('Failed to fetch entity data: ', error);
     }
 }
 

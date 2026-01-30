@@ -11,7 +11,7 @@ export async function fetchEntityData(moduleGroup, headHeight, portHeight, width
 
     const response = await fetch(url);
     if (!response.ok) {
-        throw new Error(`网络请求失败：${response.statusText}`);
+        throw new Error(`Network request failed: ${response.statusText}`);
     }
     return await response.json();
 }
@@ -19,7 +19,7 @@ export async function fetchEntityData(moduleGroup, headHeight, portHeight, width
 export async function fetchDisplayModes() {
     const response = await fetch('./data/displayModes.json');
     if (!response.ok) {
-        throw new Error(`网络请求失败：${response.statusText}`);
+        throw new Error(`Network request failed: ${response.statusText}`);
     }
     return await response.json();
 }
@@ -28,7 +28,7 @@ export async function fetchDisplayModes() {
 export async function fetchModuleGroups() {
     const response = await fetch('./data/moduleGroups.json');
     if (!response.ok) {
-        throw new Error(`网络请求失败：${response.statusText}`);
+        throw new Error(`Network request failed: ${response.statusText}`);
     }
     return await response.json();
 }

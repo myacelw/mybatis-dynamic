@@ -231,14 +231,14 @@ export function initGraph(initDisplayMode) {
 }
 
 function copyToClipboard(text) {
-    console.log('复制文本: \n' + text);
+    console.log('Copy text: \n' + text);
     navigator.clipboard.writeText(text)
         .then(() => {
             // 显示复制成功提示
             showCopySuccessMessage();
         })
         .catch((err) => {
-            console.error('复制失败:', err);
+            console.error('Copy failed:', err);
         });
 }
 
@@ -423,7 +423,7 @@ export function updateNodeWidth(newWidth) {
 }
 
 export function downloadPNG() {
-    graph.exportPNG('模型图',
+    graph.exportPNG('Model_Diagram',
         {
             padding: {
                 top: 20,

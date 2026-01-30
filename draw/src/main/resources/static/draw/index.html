@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>模型图</title>
+    <title>Model Diagram</title>
     <script src="https://unpkg.com/@antv/x6@2.18.1/dist/index.js"></script>
     <script src="https://unpkg.com/@antv/x6-plugin-scroller@2.0.10/dist/index.js"></script>
     <script src="https://unpkg.com/@antv/x6-plugin-export@2.1.6/dist/index.js"></script>
@@ -12,35 +12,35 @@
 <body>
 <div id="toolbar">
     <label>
-        显示模式:
+        Display Mode:
         <select id="displayMode">
-<!--            <option value="模型">模型</option>-->
-<!--            <option value="描述">描述</option>-->
-<!--            <option value="数据库表">数据库表</option>-->
+<!--            <option value="Model">Model</option>-->
+<!--            <option value="Description">Description</option>-->
+<!--            <option value="Database Table">Database Table</option>-->
         </select>
     </label>
     <label>
-        显示模块组:
+        Module Group:
         <select id="moduleGroup">
-            <option value="ALL">全部</option>
+            <option value="ALL">All</option>
         </select>
     </label>
-    <!-- 新增节点宽度输入框 -->
+    <!-- Node Width Input -->
     <label>
-        节点宽度:
+        Node Width:
         <input type="number" id="nodeWidthInput" min="50" max="500" style="width:80px;">
     </label>
-    <button id="updateWidthButton">更新宽度</button>
-    <button id="saveGraphButton">保存为图片</button>
-    <button id="saveDrawioButton">保存为draw.io文件</button>
-    <!-- 新增提示框 -->
-    <div id="copySuccessMessage">复制成功！</div>
+    <button id="updateWidthButton">Update Width</button>
+    <button id="saveGraphButton">Save as Image</button>
+    <button id="saveDrawioButton">Save as .drawio</button>
+    <!-- Copy Success Message -->
+    <div id="copySuccessMessage">Copied successfully!</div>
 </div>
 <div id="main">
-<!-- X6 绘图容器 -->
+<!-- X6 Graph Container -->
 <div id="container"></div>
 </div>
-<!-- 通过 ES6 模块方式加载主入口模块 -->
+<!-- Load main app module via ES6 -->
 <script type="module" src="./src/app.js"></script>
 </body>
 </html>
