@@ -9,6 +9,7 @@ import io.github.myacelw.mybatis.dynamic.core.service.command.*;
 import io.github.myacelw.mybatis.dynamic.core.service.impl.IdUtil;
 import io.github.myacelw.mybatis.dynamic.core.service.impl.ModelContext;
 import lombok.NonNull;
+import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.session.ResultHandler;
 
 import java.util.Collection;
