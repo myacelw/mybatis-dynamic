@@ -65,21 +65,6 @@ public class DynamicModelControllerTest {
     }
 
     @Test
-    public void setup() {
-        dataManager = Mockito.mock(DataManager.class);
-        when(modelService.getDataManager(anyString(), any())).thenReturn(dataManager);
-        io.github.myacelw.mybatis.dynamic.core.metadata.Model model = new io.github.myacelw.mybatis.dynamic.core.metadata.Model();
-        model.setName("User");
-        when(dataManager.getModel()).thenReturn(model);
-
-        // Stub getModel for the new controller logic
-        when(modelService.getModel("User")).thenReturn(model);
-
-        // Stub createDataManager to return our mock dataManager
-        when(modelService.createDataManager(eq(model), any(), any())).thenReturn(dataManager);
-    }
-
-    @Test
     public void testGetById() throws Exception {
         Map<String, Object> user = new HashMap<>();
         user.put("id", "1");
