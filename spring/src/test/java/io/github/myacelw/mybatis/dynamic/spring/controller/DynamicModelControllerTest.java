@@ -12,7 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -26,18 +28,32 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(DynamicModelController.class)
+@Import(DynamicModelControllerTest.MockConfig.class)
 public class DynamicModelControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Autowired
     private ModelService modelService;
 
-    @MockBean
+    @Autowired
     private CurrentUserHolder currentUserHolder;
 
     private DataManager<Object> dataManager;
+
+    @TestConfiguration
+    static class MockConfig {
+        @Bean
+        public ModelService modelService() {
+            return Mockito.mock(ModelService.class);
+        }
+
+        @Bean
+        public CurrentUserHolder currentUserHolder() {
+            return Mockito.mock(CurrentUserHolder.class);
+        }
+    }
 
     @BeforeEach
     public void setup() {
