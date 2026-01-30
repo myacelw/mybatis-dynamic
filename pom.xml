@@ -169,7 +169,6 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>ossrh</publishingServerId>
-                    <tokenAuth>true</tokenAuth>
                     <autoPublish>true</autoPublish>
                 </configuration>
             </plugin>
