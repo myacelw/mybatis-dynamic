@@ -29,10 +29,9 @@ jobs:
 
       - name: Publish to Maven Central
         run: |
-          # 使用 -P release 激活你 pom.xml 中的签名和发布配置
-          # -DskipTests 跳过测试以加快发布速度
-          mvn clean deploy -P release -DskipTests \
-            -DretryFailedDeploymentCount=5
+          # Use -P release to activate GPG signing
+          # -DskipTests to speed up publishing
+          mvn clean deploy -P release -DskipTests
         env:
           # 将 GitHub Secrets 映射给 Maven
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
