@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2ecc71;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Background Circle (Optional) -->
+  <circle cx="100" cy="100" r="90" fill="#f8f9fa" />
+  
+  <!-- Database Stack -->
+  <path d="M60 70 C60 60, 140 60, 140 70 V130 C140 140, 60 140, 60 130 Z" fill="none" stroke="#2c3e50" stroke-width="8"/>
+  <path d="M60 70 C60 80, 140 80, 140 70" fill="none" stroke="#2c3e50" stroke-width="8"/>
+  <path d="M60 100 C60 110, 140 110, 140 100" fill="none" stroke="#2c3e50" stroke-width="8"/>
+  <path d="M60 70 C60 60, 140 60, 140 70" fill="#2c3e50" opacity="0.1"/>
+
+  <!-- Dynamic Arrows -->
+  <path d="M160 100 A 70 70 0 0 1 100 170" stroke="url(#grad1)" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <polygon points="90,170 110,170 100,190" fill="url(#grad1)" />
+  
+  <path d="M40 100 A 70 70 0 0 1 100 30" stroke="url(#grad1)" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <polygon points="90,30 110,30 100,10" fill="url(#grad1)" />
+  
+  <!-- Text (Optional, small) -->
+  <text x="100" y="115" font-family="Arial, sans-serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#2c3e50">MD</text>
+</svg>
