@@ -1,5 +1,9 @@
 # mybatis-dynamic
 
+<p align="center">
+  <img src="docs/logo.svg" alt="mybatis-dynamic logo" width="200" height="200">
+</p>
+
 [中文文档](README_CN.md)
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
