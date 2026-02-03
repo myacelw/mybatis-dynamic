@@ -132,6 +132,8 @@ public class Class2ModelTransferImpl implements Class2ModelTransfer {
         model.getFields().forEach(field -> {
             if (field instanceof ToManyField) {
                 fixAndCheckToMany(model, (ToManyField) field);
+            } else if (field instanceof ToOneField) {
+                fixAndCheckToOne(model, (ToOneField) field);
             }
         });
         // id字段排到最前面
@@ -570,6 +572,13 @@ public class Class2ModelTransferImpl implements Class2ModelTransfer {
         }
         Assert.isTrue(!ObjectUtil.isEmpty(field.getTargetModel()), "Model '" + model.getName() + "' ToMany field '" + field.getName() + "' targetModel attribute cannot be null");
         Assert.isTrue(!ObjectUtil.isEmpty(field.getJoinTargetFields()), "Model '" + model.getName() + "' ToMany field '" + field.getName() + "' joinTargetFields attribute cannot be null");
+    }
+
+    protected void fixAndCheckToOne(Model model, ToOneField field) {
+        Assert.isTrue(!ObjectUtil.isEmpty(field.getJoinLocalFields()), "Model '" + model.getName() + "' ToOne field '" + field.getName() + "' joinLocalFields attribute cannot be null");
+        for (String localField : field.getJoinLocalFields()) {
+            Assert.notNull(model.findField(localField), "Model '" + model.getName() + "' ToOne field '" + field.getName() + "' joinLocalField '" + localField + "' not found in model. Please explicitly define this field with @BasicField.");
+        }
     }
 
     /**
