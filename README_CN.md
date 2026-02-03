@@ -138,7 +138,7 @@ public class UserController {
     @GetMapping
     public List<User> list() {
         // 流畅查询 API
-        return userService.queryChain()
+        return userService.query()
                 .where(c -> c.gt(User.Fields.age, 18))
                 .exec();
     }
@@ -229,7 +229,7 @@ public class User {
 
 ```java
 // 自动关联 'department' 表以获取部门名称
-List<User> users = userService.queryChain()
+List<User> users = userService.query()
         .select(User.Fields.name, "department.name")
         .exec();
 ```
@@ -241,9 +241,9 @@ List<User> users = userService.queryChain()
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.Join;
 import io.github.myacelw.mybatis.dynamic.core.metadata.enums.JoinType;
 
-List<User> users = userService.queryChain()
-        .joins(Join.of("department", JoinType.INNER)
-                   .and(c -> c.eq("department.active", true)))
+List<User> users = userService.query()
+        .joins(Join.inner("department")
+                   .on(c -> c.eq("department.active", true)))
         .exec();
 ```
 
@@ -269,7 +269,7 @@ public class Department {
 **查询:**
 ```java
 // 获取部门及其所有用户
-List<Department> depts = departmentService.queryChain()
+List<Department> depts = departmentService.query()
         .joins(Join.of("users"))
         .exec();
 ```
@@ -310,7 +310,7 @@ public class StudentCourse {
 **查询:**
 ```java
 // 获取学生及其课程 (通过 StudentCourse 关联)
-List<Student> students = studentService.queryChain()
+List<Student> students = studentService.query()
         .joins(Join.of("studentCourses.course")) 
         .exec();
 ```
@@ -388,7 +388,7 @@ User user = new User();
 user.getExt().put("phone", "123456");
 userService.insert(user);
 
-List<User> users = userService.queryChain()
+List<User> users = userService.query()
         .where(c -> c.eq("phone", "123456"))
         .exec();
 ```
@@ -415,7 +415,7 @@ List<User> users = userService.queryChain()
 ```java
 // 如果 name 为 null，则不会将 "name = ?" 添加到 SQL 中。
 // 如果 age 为 null，则不会将 "age > ?" 添加到 SQL 中。
-userService.queryChain()
+userService.query()
     .where(c -> c.eqOptional("name", name)
                  .gtOptional("age", age))
     .exec();
@@ -426,7 +426,7 @@ userService.queryChain()
 **复杂逻辑**
 ```java
 // WHERE (age > 18 AND status = 'Active') OR role = 'Admin'
-userService.queryChain()
+userService.query()
         .where(c -> c.bracket(b -> b.gt("age", 18).eq("status", "Active"))
                      .or(b -> b.eq("role", "Admin")))
         .exec();
@@ -435,7 +435,7 @@ userService.queryChain()
 **Exists 子查询**
 ```java
 // 查找至少有一笔订单金额大于 100 的用户
-userService.queryChain()
+userService.query()
     .where(c -> c.exists("orders", sub -> sub.gt("amount", 100)))
     .exec();
 ```
@@ -454,7 +454,7 @@ data.put("name", "Bob");
 Integer id = dataManager.insert(data);
 
 // 返回 Map 的查询
-List<Map<String, Object>> results = dataManager.queryChain()
+List<Map<String, Object>> results = dataManager.query()
         .where(c -> c.gt("age", 20))
         .exec();
 ```

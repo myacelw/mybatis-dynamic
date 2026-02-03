@@ -142,7 +142,7 @@ public class UserController {
     @GetMapping
     public List<User> list() {
         // Fluent query API
-        return userService.queryChain()
+        return userService.query()
                 .where(c -> c.gt(User.Fields.age, 18))
                 .exec();
     }
@@ -231,21 +231,19 @@ Selecting a field from a related entity automatically triggers a **Left Join**.
 
 ```java
 // Automatically joins 'department' table to fetch department name
-List<User> users = userService.queryChain()
+List<User> users = userService.query()
         .select(User.Fields.name, "department.name")
         .exec();
 ```
 
 **Explicit Join Configuration:**
-You can customize the join type (e.g., INNER JOIN) and add ON conditions.
+You can customize the join type (e.g., INNER JOIN) and add ON conditions using the `on()` method.
 
 ```java
-import io.github.myacelw.mybatis.dynamic.core.metadata.query.Join;
-import io.github.myacelw.mybatis.dynamic.core.metadata.enums.JoinType;
-
-List<User> users = userService.queryChain()
-        .joins(Join.of("department", JoinType.INNER)
-                   .and(c -> c.eq("department.active", true)))
+// Customize join type and add conditions
+List<User> users = userService.query()
+        .joins(Join.inner("mainDepartment")
+                   .on(c -> c.eq("active", true)))
         .exec();
 ```
 
@@ -271,7 +269,7 @@ public class Department {
 **Querying:**
 ```java
 // Fetch Department and all its Users
-List<Department> depts = departmentService.queryChain()
+List<Department> depts = departmentService.query()
         .joins(Join.of("users"))
         .exec();
 ```
@@ -312,7 +310,7 @@ public class StudentCourse {
 **Querying:**
 ```java
 // Fetch Student and their Courses (joining through StudentCourse)
-List<Student> students = studentService.queryChain()
+List<Student> students = studentService.query()
         .joins(Join.of("studentCourses.course")) 
         .exec();
 ```
@@ -390,7 +388,7 @@ User user = new User();
 user.getExt().put("phone", "123456");
 userService.insert(user);
 
-List<User> users = userService.queryChain()
+List<User> users = userService.query()
         .where(c -> c.eq("phone", "123456"))
         .exec();
 ```
@@ -417,7 +415,7 @@ These methods automatically ignore the condition if the provided value is `null`
 ```java
 // If name is null, "name = ?" is not added to SQL.
 // If age is null, "age > ?" is not added to SQL.
-userService.queryChain()
+userService.query()
     .where(c -> c.eqOptional("name", name)
                  .gtOptional("age", age))
     .exec();
@@ -428,7 +426,7 @@ userService.queryChain()
 **Complex Logic**
 ```java
 // WHERE (age > 18 AND status = 'Active') OR role = 'Admin'
-userService.queryChain()
+userService.query()
         .where(c -> c.bracket(b -> b.gt("age", 18).eq("status", "Active"))
                      .or(b -> b.eq("role", "Admin")))
         .joins(Join.of("mainDepartment")) 
@@ -438,7 +436,7 @@ userService.queryChain()
 **Exists Subquery**
 ```java
 // Find users who have at least one order with amount > 100
-userService.queryChain()
+userService.query()
     .where(c -> c.exists("orders", sub -> sub.gt("amount", 100)))
     .exec();
 ```
@@ -457,7 +455,7 @@ data.put("name", "Bob");
 Integer id = dataManager.insert(data);
 
 // Query returning Maps
-List<Map<String, Object>> results = dataManager.queryChain()
+List<Map<String, Object>> results = dataManager.query()
         .where(c -> c.gt("age", 20))
         .exec();
 ```
