@@ -29,9 +29,16 @@ jobs:
 
       - name: Publish to Maven Central
         run: |
-          # Use -P release to activate GPG signing
-          # -DskipTests to speed up publishing
-          mvn clean deploy -P release -DskipTests
+          # 1. 提取版本号：从 'refs/tags/v1.2.3' 中提取出 '1.2.3'
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "Determined version: $VERSION"
+          
+          # 2. 执行部署：通过 -Drevision 注入版本
+          # -P release 激活 GPG 签名插件
+          # -DskipTests 跳过测试以加快发布速度
+          # --batch-mode 减少日志干扰
+          mvn clean deploy -P release -DskipTests -Drevision=$VERSION --batch-mode
+
         env:
           # 将 GitHub Secrets 映射给 Maven
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
