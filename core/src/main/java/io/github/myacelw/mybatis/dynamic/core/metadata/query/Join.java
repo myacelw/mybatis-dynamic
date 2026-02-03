@@ -2,9 +2,13 @@ package io.github.myacelw.mybatis.dynamic.core.metadata.query;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.Condition;
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.ConditionBuilder;
+import io.github.myacelw.mybatis.dynamic.core.metadata.query.condition.GroupCondition;
 import io.github.myacelw.mybatis.dynamic.core.util.lambda.SFunction;
 import lombok.Data;
 import lombok.SneakyThrows;
+
+import java.util.function.Consumer;
 
 import static io.github.myacelw.mybatis.dynamic.core.util.lambda.LambdaUtil.name;
 
@@ -50,6 +54,29 @@ public class Join implements Cloneable {
     boolean ignoreLogicDelete = false;
 
 
+    /**
+     * 设置 Join On 条件
+     * @param consumer 条件构建器
+     * @return this
+     */
+    public Join on(Consumer<ConditionBuilder> consumer) {
+        ConditionBuilder builder = Condition.builder();
+        consumer.accept(builder);
+        this.condition = builder.build();
+        return this;
+    }
+
+    /**
+     * 设置 Join On 条件
+     * @param condition 条件
+     * @return this
+     */
+    public Join on(Condition condition) {
+        this.condition = condition;
+        return this;
+    }
+
+
     public Join ignoreLogicDelete() {
         this.ignoreLogicDelete = true;
         return this;
@@ -78,6 +105,33 @@ public class Join implements Cloneable {
 
     public static Join of(SFunction<?, ?> field, JoinType type) {
         return of(name(field), type);
+    }
+
+
+    public static Join inner(String fieldPath) {
+        return of(fieldPath, JoinType.INNER);
+    }
+
+    public static Join inner(SFunction<?, ?> field) {
+        return inner(name(field));
+    }
+
+
+    public static Join left(String fieldPath) {
+        return of(fieldPath, JoinType.LEFT);
+    }
+
+    public static Join left(SFunction<?, ?> field) {
+        return left(name(field));
+    }
+
+
+    public static Join right(String fieldPath) {
+        return of(fieldPath, JoinType.RIGHT);
+    }
+
+    public static Join right(SFunction<?, ?> field) {
+        return right(name(field));
     }
 
 
