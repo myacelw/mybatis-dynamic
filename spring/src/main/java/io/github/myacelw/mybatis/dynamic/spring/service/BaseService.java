@@ -105,7 +105,7 @@ public interface BaseService<ID, T> {
      *
      * @return BatchUpdateByConditionChain 实例。
      */
-    BatchUpdateByConditionChain<ID> batchUpdateByConditionChain();
+    BatchUpdateByConditionChain<ID> batchUpdateByCondition();
 
     /**
      * 根据 ID 是否存在决定执行插入或更新。

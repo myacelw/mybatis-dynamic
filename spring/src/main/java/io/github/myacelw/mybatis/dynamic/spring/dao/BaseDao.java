@@ -140,7 +140,7 @@ public interface BaseDao<ID, T> {
      *
      * @return BatchUpdateByConditionChain 实例。
      */
-    default BatchUpdateByConditionChain<ID> batchUpdateByConditionChain() {
+    default BatchUpdateByConditionChain<ID> batchUpdateByCondition() {
         return getDataManager().batchUpdateByConditionChain();
     }
 
