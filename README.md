@@ -1,7 +1,7 @@
 # mybatis-dynamic
 
 <p align="center">
-  <img src="docs/logo.svg" alt="mybatis-dynamic logo" width="200" height="200">
+  <img src="logo.svg" alt="mybatis-dynamic logo" width="200" height="200">
 </p>
 
 [中文文档](README_CN.md)
