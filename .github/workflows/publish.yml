@@ -47,12 +47,15 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
-      - name: Upload agent-skill.md to Release
+      - name: Zip skill artifact
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          zip -r mybatis-dynamic-skill.zip skills/mybatis-dynamic
+
+      - name: Upload skill zip to Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            agent-skill.md
-            **/agent-skill.md
+          files: mybatis-dynamic-skill.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
