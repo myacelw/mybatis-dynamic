@@ -1,0 +1,4 @@
+- The project uses Maven with a revision property for versioning.
+- Version bump should be the last commit in a release sequence.
+- Join API was enhanced with static factory methods and a fluent on() method.
+- Remote push failed due to HTTPS auth limitations in the current environment.

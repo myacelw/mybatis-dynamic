@@ -308,7 +308,7 @@ List<User> users = userService.query()
 
 启动应用后访问 `/draw/index.html`，即可看到当前系统的全量数据模型关系图。
 
-![mybatis-dynamic-draw-preview](./draw-preview.png)
+![mybatis-dynamic-draw-preview](draw-preview.png)
 
 这对梳理复杂业务关系、生成设计文档非常有帮助，且完全无需额外维护，代码即图表。
 

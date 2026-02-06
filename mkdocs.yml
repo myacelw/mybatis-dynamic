@@ -1,0 +1,24 @@
+site_name: MyBatis Dynamic
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: blue
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Quick Start: quick-start.md
+  - Core Features: core-features.md
+  - Spring Integration: spring-integration.md
+  - Advanced Features: advanced-features.md
+  - Extensions: extensions.md
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - admonition
