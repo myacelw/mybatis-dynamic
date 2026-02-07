@@ -1,0 +1,48 @@
+<svg width="1300" height="730" viewBox="0 0 1300 730" xmlns="http://www.w3.org/2000/svg">
+    <!-- 1. 深邃背景 -->
+    <defs>
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:1" />
+        </linearGradient>
+        <filter id="glow">
+            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    <rect width="1300" height="730" fill="url(#bgGrad)" />
+
+    <!-- 2. 动态网格 -->
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+        <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    </pattern>
+    <rect width="100%" height="100%" fill="url(#grid)" />
+
+    <!-- 3. Logo (Left) -->
+    <g transform="translate(150, 200) scale(1.2)">
+        <!-- Left Pillar -->
+        <path d="M120 150 L120 350 A 20 20 0 0 0 160 350 L160 200 A 20 20 0 0 1 200 200 L200 350" 
+              stroke="white" stroke-width="0" fill="white" opacity="0.9" filter="url(#glow)"/>
+        <!-- Right Pillar -->
+        <path d="M300 350 L300 200 A 20 20 0 0 1 340 200 L340 350 A 20 20 0 0 0 380 350 L380 150" 
+              stroke="white" stroke-width="40" stroke-linecap="round" fill="none" opacity="0.9" filter="url(#glow)" />
+        <!-- Center Dot -->
+        <circle cx="250" cy="250" r="30" fill="#60a5fa" filter="url(#glow)" />
+    </g>
+
+    <!-- 4. 文字标题 (Right) -->
+    <text x="600" y="320" font-family="Arial, sans-serif" font-weight="bold" font-size="90" fill="white">mybatis-dynamic</text>
+    <text x="600" y="400" font-family="Arial, sans-serif" font-weight="bold" font-size="50" fill="#93c5fd">v0.1.1 Released</text>
+
+    <!-- 5. 标语 -->
+    <text x="600" y="480" font-family="Arial, sans-serif" font-size="36" fill="#cbd5e1" letter-spacing="1">告别繁琐 XML，拥抱动态数据建模</text>
+
+    <!-- 6. 装饰代码块 -->
+    <rect x="850" y="550" width="400" height="140" rx="10" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.1)" />
+    <text x="870" y="590" font-family="Monaco, Consolas, monospace" font-size="20" fill="#a5f3fc">userService.query()</text>
+    <text x="890" y="620" font-family="Monaco, Consolas, monospace" font-size="20" fill="#a5f3fc">.where(c -> c.gt("age", 18))</text>
+    <text x="890" y="650" font-family="Monaco, Consolas, monospace" font-size="20" fill="#a5f3fc">.exec();</text>
+</svg>
