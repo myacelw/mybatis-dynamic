@@ -38,6 +38,7 @@ extra_javascript:
 nav:
   - Home: index.md
   - Quick Start: quick-start.md
+  - Article: article-dynamic-modeling.md
   - Core Features:
     - Introduction: core-features/index.md
     - Introduction: core-features/1-introduction.md

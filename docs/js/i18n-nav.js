@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var map = {
         'Home': '首页',
         'Quick Start': '快速开始',
+        'Article': '深度文章',
         'Core Features': '核心功能',
         'Introduction': '简介',
         'DataManager & ID': 'DataManager 与 ID',
