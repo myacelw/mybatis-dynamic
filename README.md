@@ -4,7 +4,7 @@
   <img src="logo.svg" alt="mybatis-dynamic logo" width="200" height="200">
 </p>
 
-[中文文档](README_CN.md)
+[📚 Documentation](https://myacelw.github.io/mybatis-dynamic/) | [中文文档](README_CN.md)
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.myacelw/mybatis-dynamic-core.svg)](https://search.maven.org/search?q=g:io.github.myacelw%20AND%20a:mybatis-dynamic-core)
