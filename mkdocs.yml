@@ -5,7 +5,6 @@ theme:
     primary: indigo
     accent: blue
   features:
-    - navigation.tabs
     - navigation.sections
     - navigation.expand
     - content.code.copy
