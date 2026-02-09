@@ -19,13 +19,14 @@ plugins:
           name: English
           build: true
         - locale: zh
-          name: 中文
+          name: 简体中文
           build: true
       nav_translations:
         zh:
           Home: 首页
           Quick Start: 快速开始
           Core Features: 核心功能
+          Introduction: 简介
           1. Introduction: 1. 简介
           2. DataManager & ID: 2. DataManager 与 ID
           3. ModelService: 3. ModelService
@@ -48,7 +49,7 @@ extra:
     - name: English
       link: /mybatis-dynamic/
       lang: en
-    - name: 中文
+    - name: 简体中文
       link: /mybatis-dynamic/zh/
       lang: zh
 
@@ -73,6 +74,7 @@ nav:
     - 6. Custom Conditions: advanced-features/6-custom-conditions.md
     - 7. Best Practices: advanced-features/7-best-practices-faq.md
   - Extensions: extensions/index.md
+
 markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
