@@ -1,5 +1,9 @@
 site_name: MyBatis Dynamic
 site_url: https://myacelw.github.io/mybatis-dynamic/
+
+hooks:
+  - hooks.py
+
 theme:
   name: material
   palette:
@@ -13,6 +17,7 @@ theme:
 
 plugins:
   - search
+  - sitemap
   - i18n:
       docs_structure: folder
       languages:
