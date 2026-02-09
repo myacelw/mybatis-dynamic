@@ -9,6 +9,28 @@ theme:
     - navigation.sections
     - navigation.expand
     - content.code.copy
+  language: en
+
+plugins:
+  - i18n:
+      docs_structure: folder
+      languages:
+        - locale: en
+          default: true
+          name: English
+          build: true
+        - locale: zh
+          name: 中文
+          build: true
+
+extra:
+  alternate:
+    - name: English
+      link: /mybatis-dynamic/
+      lang: en
+    - name: 中文
+      link: /mybatis-dynamic/zh/
+      lang: zh
 
 nav:
   - Home: index.md
