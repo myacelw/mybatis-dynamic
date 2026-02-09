@@ -4,7 +4,12 @@
   <img src="logo.svg" alt="mybatis-dynamic logo" width="200" height="200">
 </p>
 
-[📚 Documentation](https://myacelw.github.io/mybatis-dynamic/) | [中文文档](README_CN.md)
+<p align="center">
+    <b><a href="https://myacelw.github.io/mybatis-dynamic/">📚 Official Documentation</a></b>
+    <br>
+    <br>
+    <a href="README.md">English README</a> | <a href="README_CN.md">中文 README</a>
+</p>
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.myacelw/mybatis-dynamic-core.svg)](https://search.maven.org/search?q=g:io.github.myacelw%20AND%20a:mybatis-dynamic-core)

@@ -35,9 +35,23 @@ extra:
 nav:
   - Home: index.md
   - Quick Start: quick-start.md
-  - Core Features: core-features.md
+  - Core Features:
+    - Introduction: core-features/index.md
+    - 1. Introduction: core-features/1-introduction.md
+    - 2. DataManager & ID: core-features/2-datamanager-id.md
+    - 3. ModelService: core-features/3-modelservice.md
+    - 4. DataChangeInterceptor: core-features/4-datachangeinterceptor.md
+    - 5. PermissionGetter & CurrentUserHolder: core-features/5-permissiongetter-currentuserholder.md
   - Spring Integration: spring-integration.md
-  - Advanced Features: advanced-features.md
+  - Advanced Features:
+    - Overview: advanced-features/index.md
+    - 1. Fluent Chain APIs: advanced-features/1-fluent-chain-apis-deep-dive.md
+    - 2. Join Operations: advanced-features/2-join-operations-deep-dive.md
+    - 3. Recursive & Tree: advanced-features/3-recursive-tree-operations.md
+    - 4. Relation Filling: advanced-features/4-relation-filling-filldatachain.md
+    - 5. ModelService Advanced: advanced-features/5-modelservice-advanced-features.md
+    - 6. Custom Conditions: advanced-features/6-custom-conditions.md
+    - 7. Best Practices: advanced-features/7-best-practices-faq.md
   - Extensions: extensions.md
 markdown_extensions:
   - pymdownx.highlight
