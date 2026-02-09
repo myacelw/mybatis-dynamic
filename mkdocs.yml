@@ -11,6 +11,7 @@ theme:
   language: en
 
 plugins:
+  - search
   - i18n:
       docs_structure: folder
       languages:
@@ -23,26 +24,25 @@ plugins:
           build: true
       nav_translations:
         zh:
-          Home: 首页
-          Quick Start: 快速开始
-          Core Features: 核心功能
-          Introduction: 简介
-          1. Introduction: 1. 简介
-          2. DataManager & ID: 2. DataManager 与 ID
-          3. ModelService: 3. ModelService
-          4. DataChangeInterceptor: 4. 数据变更拦截器
-          5. PermissionGetter & CurrentUserHolder: 5. 权限管理
-          Spring Integration: Spring 集成
-          Advanced Features: 高级功能
-          Overview: 概览
-          1. Fluent Chain APIs: 1. 流畅链式 API
-          2. Join Operations: 2. 连接操作
-          3. Recursive & Tree: 3. 递归与树形结构
-          4. Relation Filling: 4. 关联填充
-          5. ModelService Advanced: 5. ModelService 高级功能
-          6. Custom Conditions: 6. 自定义条件
-          7. Best Practices: 7. 最佳实践
-          Extensions: 扩展
+          'Home': '首页'
+          'Quick Start': '快速开始'
+          'Core Features': '核心功能'
+          'Introduction': '简介'
+          'DataManager & ID': 'DataManager 与 ID'
+          'ModelService': 'ModelService'
+          'DataChangeInterceptor': '数据变更拦截器'
+          'PermissionGetter & CurrentUserHolder': '权限管理'
+          'Spring Integration': 'Spring 集成'
+          'Advanced Features': '高级功能'
+          'Overview': '概览'
+          'Fluent Chain APIs': '流畅链式 API'
+          'Join Operations': '连接操作'
+          'Recursive & Tree': '递归与树形结构'
+          'Relation Filling': '关联填充'
+          'ModelService Advanced': 'ModelService 高级功能'
+          'Custom Conditions': '自定义条件'
+          'Best Practices': '最佳实践'
+          'Extensions': '扩展'
 
 extra:
   alternate:
@@ -58,21 +58,21 @@ nav:
   - Quick Start: quick-start.md
   - Core Features:
     - Introduction: core-features/index.md
-    - 1. Introduction: core-features/1-introduction.md
-    - 2. DataManager & ID: core-features/2-datamanager-id.md
-    - 3. ModelService: core-features/3-modelservice.md
-    - 4. DataChangeInterceptor: core-features/4-datachangeinterceptor.md
-    - 5. PermissionGetter & CurrentUserHolder: core-features/5-permissiongetter-currentuserholder.md
+    - Introduction: core-features/1-introduction.md
+    - DataManager & ID: core-features/2-datamanager-id.md
+    - ModelService: core-features/3-modelservice.md
+    - DataChangeInterceptor: core-features/4-datachangeinterceptor.md
+    - PermissionGetter & CurrentUserHolder: core-features/5-permissiongetter-currentuserholder.md
   - Spring Integration: spring-integration/index.md
   - Advanced Features:
     - Overview: advanced-features/index.md
-    - 1. Fluent Chain APIs: advanced-features/1-fluent-chain-apis-deep-dive.md
-    - 2. Join Operations: advanced-features/2-join-operations-deep-dive.md
-    - 3. Recursive & Tree: advanced-features/3-recursive-tree-operations.md
-    - 4. Relation Filling: advanced-features/4-relation-filling-filldatachain.md
-    - 5. ModelService Advanced: advanced-features/5-modelservice-advanced-features.md
-    - 6. Custom Conditions: advanced-features/6-custom-conditions.md
-    - 7. Best Practices: advanced-features/7-best-practices-faq.md
+    - Fluent Chain APIs: advanced-features/1-fluent-chain-apis-deep-dive.md
+    - Join Operations: advanced-features/2-join-operations-deep-dive.md
+    - Recursive & Tree: advanced-features/3-recursive-tree-operations.md
+    - Relation Filling: advanced-features/4-relation-filling-filldatachain.md
+    - ModelService Advanced: advanced-features/5-modelservice-advanced-features.md
+    - Custom Conditions: advanced-features/6-custom-conditions.md
+    - Best Practices: advanced-features/7-best-practices-faq.md
   - Extensions: extensions/index.md
 
 markdown_extensions:
