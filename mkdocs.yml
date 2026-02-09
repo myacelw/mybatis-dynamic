@@ -1,4 +1,5 @@
 site_name: MyBatis Dynamic
+site_url: https://myacelw.github.io/mybatis-dynamic/
 theme:
   name: material
   palette:
