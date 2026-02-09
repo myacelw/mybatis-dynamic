@@ -22,27 +22,6 @@ plugins:
         - locale: zh
           name: 简体中文
           build: true
-      nav_translations:
-        zh:
-          'Home': '首页'
-          'Quick Start': '快速开始'
-          'Core Features': '核心功能'
-          'Introduction': '简介'
-          'DataManager & ID': 'DataManager 与 ID'
-          'ModelService': 'ModelService'
-          'DataChangeInterceptor': '数据变更拦截器'
-          'PermissionGetter & CurrentUserHolder': '权限管理'
-          'Spring Integration': 'Spring 集成'
-          'Advanced Features': '高级功能'
-          'Overview': '概览'
-          'Fluent Chain APIs': '流畅链式 API'
-          'Join Operations': '连接操作'
-          'Recursive & Tree': '递归与树形结构'
-          'Relation Filling': '关联填充'
-          'ModelService Advanced': 'ModelService 高级功能'
-          'Custom Conditions': '自定义条件'
-          'Best Practices': '最佳实践'
-          'Extensions': '扩展'
 
 extra:
   alternate:
@@ -52,6 +31,9 @@ extra:
     - name: 简体中文
       link: /mybatis-dynamic/zh/
       lang: zh
+
+extra_javascript:
+  - js/i18n-nav.js
 
 nav:
   - Home: index.md
