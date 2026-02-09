@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/api-reference/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/api-reference/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/api-reference/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/article-dynamic-modeling/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/article-dynamic-modeling/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/article-dynamic-modeling/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/quick-start/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/quick-start/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/quick-start/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/advanced-features/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/advanced-features/1-fluent-chain-apis-deep-dive/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/1-fluent-chain-apis-deep-dive/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/1-fluent-chain-apis-deep-dive/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/advanced-features/2-join-operations-deep-dive/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/2-join-operations-deep-dive/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/2-join-operations-deep-dive/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/advanced-features/3-recursive-tree-operations/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/3-recursive-tree-operations/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/3-recursive-tree-operations/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/advanced-features/4-relation-filling-filldatachain/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/4-relation-filling-filldatachain/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/4-relation-filling-filldatachain/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/advanced-features/5-modelservice-advanced-features/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/5-modelservice-advanced-features/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/5-modelservice-advanced-features/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/advanced-features/6-custom-conditions/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/6-custom-conditions/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/6-custom-conditions/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/advanced-features/7-best-practices-faq/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/7-best-practices-faq/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/7-best-practices-faq/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/core-features/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/core-features/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/core-features/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/core-features/1-introduction/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/core-features/1-introduction/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/core-features/1-introduction/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/core-features/2-datamanager-id/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/core-features/2-datamanager-id/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/core-features/2-datamanager-id/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/core-features/3-modelservice/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/core-features/3-modelservice/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/core-features/3-modelservice/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/core-features/4-datachangeinterceptor/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/core-features/4-datachangeinterceptor/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/core-features/4-datachangeinterceptor/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/core-features/5-permissiongetter-currentuserholder/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/core-features/5-permissiongetter-currentuserholder/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/core-features/5-permissiongetter-currentuserholder/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/extensions/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/extensions/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/extensions/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/spring-integration/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/spring-integration/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/spring-integration/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/api-reference/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/api-reference/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/api-reference/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/article-dynamic-modeling/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/article-dynamic-modeling/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/article-dynamic-modeling/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/quick-start/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/quick-start/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/quick-start/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/1-fluent-chain-apis-deep-dive/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/1-fluent-chain-apis-deep-dive/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/1-fluent-chain-apis-deep-dive/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/2-join-operations-deep-dive/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/2-join-operations-deep-dive/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/2-join-operations-deep-dive/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/3-recursive-tree-operations/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/3-recursive-tree-operations/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/3-recursive-tree-operations/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/4-relation-filling-filldatachain/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/4-relation-filling-filldatachain/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/4-relation-filling-filldatachain/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/5-modelservice-advanced-features/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/5-modelservice-advanced-features/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/5-modelservice-advanced-features/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/6-custom-conditions/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/6-custom-conditions/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/6-custom-conditions/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/7-best-practices-faq/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/advanced-features/7-best-practices-faq/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/advanced-features/7-best-practices-faq/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/core-features/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/core-features/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/core-features/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/core-features/1-introduction/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/core-features/1-introduction/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/core-features/1-introduction/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/core-features/2-datamanager-id/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/core-features/2-datamanager-id/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/core-features/2-datamanager-id/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/core-features/3-modelservice/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/core-features/3-modelservice/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/core-features/3-modelservice/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/core-features/4-datachangeinterceptor/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/core-features/4-datachangeinterceptor/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/core-features/4-datachangeinterceptor/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/core-features/5-permissiongetter-currentuserholder/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/core-features/5-permissiongetter-currentuserholder/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/core-features/5-permissiongetter-currentuserholder/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/extensions/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/extensions/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/extensions/"/>
+    </url>
+    <url>
+        <loc>https://myacelw.github.io/mybatis-dynamic/zh/spring-integration/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://myacelw.github.io/mybatis-dynamic/zh/spring-integration/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://myacelw.github.io/mybatis-dynamic/spring-integration/"/>
+    </url>
+</urlset>

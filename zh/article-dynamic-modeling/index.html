@@ -1,0 +1,1495 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://myacelw.github.io/mybatis-dynamic/zh/article-dynamic-modeling/">
+      
+      
+        <link rel="prev" href="../quick-start/">
+      
+      
+        <link rel="next" href="../core-features/">
+      
+      
+        
+          <link rel="alternate" href="../../article-dynamic-modeling/" hreflang="en">
+        
+          <link rel="alternate" href="./" hreflang="zh">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Article - MyBatis Dynamic</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mybatis-dynamic" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../" title="MyBatis Dynamic" class="md-header__button md-logo" aria-label="MyBatis Dynamic" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MyBatis Dynamic
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Article
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../article-dynamic-modeling/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="MyBatis Dynamic" class="md-nav__button md-logo" aria-label="MyBatis Dynamic" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    MyBatis Dynamic
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quick-start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Article
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Article
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        前言
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、核心概念：从 Class 到 Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、实战演示
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、实战演示">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 构造模型元数据
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 运行时注册与建表
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 基于 Map 的数据操作
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、进阶场景：模型热更新
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、动态关联查询
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、生产环境的高级挑战与应对
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、生产环境的高级挑战与应对">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 多实例部署的模型同步
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ddl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. DDL 变更的风险控制
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Features
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core-features/1-introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core-features/2-datamanager-id/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DataManager & ID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core-features/3-modelservice/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ModelService
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core-features/4-datachangeinterceptor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DataChangeInterceptor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core-features/5-permissiongetter-currentuserholder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PermissionGetter & CurrentUserHolder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spring-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced Features
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Advanced Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-features/1-fluent-chain-apis-deep-dive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fluent Chain APIs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-features/2-join-operations-deep-dive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Join Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-features/3-recursive-tree-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recursive & Tree
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-features/4-relation-filling-filldatachain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Relation Filling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-features/5-modelservice-advanced-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ModelService Advanced
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-features/6-custom-conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../advanced-features/7-best-practices-faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Best Practices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extensions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        前言
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、核心概念：从 Class 到 Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、实战演示
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、实战演示">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 构造模型元数据
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 运行时注册与建表
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 基于 Map 的数据操作
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、进阶场景：模型热更新
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、动态关联查询
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、生产环境的高级挑战与应对
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、生产环境的高级挑战与应对">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 多实例部署的模型同步
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ddl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. DDL 变更的风险控制
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="mybatis-dynamic">MyBatis-Dynamic 进阶：无需实体类的全动态数据建模</h1>
+<blockquote>
+<p>作者：刘伟</p>
+</blockquote>
+<hr />
+<h2 id="_1">前言</h2>
+<p>在上一篇文章 <a href="https://juejin.cn/post/7603653885601759282">《告别繁琐 XML：用 mybatis-dynamic 实现动态数据建模》</a> 中，我们介绍了 mybatis-dynamic 如何通过 "模型即真相" (Model as Truth) 的理念，让 Java 实体类直接驱动数据库表结构。</p>
+<p>但在 <strong>低代码平台</strong>、<strong>报表系统</strong> 或 <strong>动态表单</strong> 等场景下，我们往往面临更极致的需求：
+- <strong>表结构由用户在运行时定义</strong>，无法预先写死 Java 类。
+- <strong>字段随时可能增减</strong>，需要即时反映到数据库。
+- <strong>数据结构不确定</strong>，只能用 JSON 或 Map 承载。</p>
+<p>有人问："如果没有 Entity 类，还能用 mybatis-dynamic 吗？需要自己拼 SQL 吗？"</p>
+<p>答案是：<strong>完全可以，而且体验依然丝滑。</strong></p>
+<p>mybatis-dynamic 的内核设计完全解耦了 <code>Model</code> (元数据) 和 <code>Class</code> (Java类型)。实体类只是定义 Model 的一种快捷方式，你完全可以绕过它，直接操作 Model。</p>
+<p>本文将带你解锁这一"隐藏技能"，实现真正的<strong>全动态建模</strong>。</p>
+<hr />
+<h2 id="class-model">一、核心概念：从 Class 到 Model</h2>
+<p>在常规模式下，框架的启动流程是：
+1. 扫描 <code>@Model</code> 注解的 Java 类。
+2. 解析类结构，生成 <code>Model</code> 对象（包含表名、字段、类型等元数据）。
+3. 根据 <code>Model</code> 对象生成 DDL，同步数据库。
+4. 注册 <code>DataManager</code> 提供 CRUD 服务。</p>
+<p>在<strong>全动态模式</strong>下，我们只需手动完成第 2 步——直接构造 <code>Model</code> 对象，剩下的交给框架。</p>
+<hr />
+<h2 id="_2">二、实战演示</h2>
+<p>假设我们要实现一个简单的"在线表单设计器"，用户创建了一个 "请假申请表" (LeaveApplication)，包含 "申请人" (applicant) 和 "天数" (days) 两个字段。</p>
+<h3 id="1">1. 构造模型元数据</h3>
+<p>我们不需要写任何 Java 类，直接通过代码构造 <code>Model</code> 对象：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1. 创建模型定义</span>
+<span class="n">Model</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Model</span><span class="p">();</span>
+<span class="n">model</span><span class="p">.</span><span class="na">setName</span><span class="p">(</span><span class="s">&quot;LeaveApplication&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// 模型名称，用于索引</span>
+<span class="n">model</span><span class="p">.</span><span class="na">setTableName</span><span class="p">(</span><span class="s">&quot;t_leave_app&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// 数据库表名</span>
+
+<span class="c1">// 2. 定义主键 (通常由系统自动管理，也可以自定义)</span>
+<span class="n">model</span><span class="p">.</span><span class="na">addLongIdFieldIfNotExist</span><span class="p">();</span><span class="w">   </span><span class="c1">// 自动添加 Long 类型的 ID 字段</span>
+
+<span class="c1">// 3. 动态添加字段</span>
+<span class="c1">// 申请人字段</span>
+<span class="n">BasicField</span><span class="w"> </span><span class="n">applicantField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Field</span><span class="p">.</span><span class="na">stringBuilder</span><span class="p">(</span><span class="s">&quot;applicant&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">characterMaximumLength</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">ddlComment</span><span class="p">(</span><span class="s">&quot;申请人姓名&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
+<span class="n">model</span><span class="p">.</span><span class="na">addField</span><span class="p">(</span><span class="n">applicantField</span><span class="p">);</span>
+
+<span class="c1">// 天数字段</span>
+<span class="n">BasicField</span><span class="w"> </span><span class="n">daysField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Field</span><span class="p">.</span><span class="na">integerBuilder</span><span class="p">(</span><span class="s">&quot;days&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">ddlDefaultValue</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">ddlComment</span><span class="p">(</span><span class="s">&quot;请假天数&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
+<span class="n">model</span><span class="p">.</span><span class="na">addField</span><span class="p">(</span><span class="n">daysField</span><span class="p">);</span>
+
+<span class="c1">// 4. 添加标准审计字段 (创建人、创建时间等)</span>
+<span class="c1">// 注意：这需要 Spring 容器中存在 CreatorFiller/ModifierFiller 的实现 Bean</span>
+<span class="n">model</span><span class="p">.</span><span class="na">addAuditFieldsIfNotExist</span><span class="p">();</span>
+</code></pre></div>
+<blockquote>
+<p>💡 <strong>提示</strong>：在实际项目中，这段逻辑通常是将前端传来的 JSON 配置解析为 <code>Model</code> 对象。</p>
+</blockquote>
+<h3 id="2">2. 运行时注册与建表</h3>
+<p>拥有 <code>Model</code> 对象后，注入 <code>ModelService</code> 即可完成注册。框架会自动比对数据库，创建表结构。</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@Autowired</span>
+<span class="kd">private</span><span class="w"> </span><span class="n">ModelService</span><span class="w"> </span><span class="n">modelService</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">deployModel</span><span class="p">(</span><span class="n">Model</span><span class="w"> </span><span class="n">model</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 注册并更新表结构</span>
+<span class="w">    </span><span class="c1">// 框架会自动生成: CREATE TABLE t_leave_app (...)</span>
+<span class="w">    </span><span class="n">modelService</span><span class="p">.</span><span class="na">updateAndRegister</span><span class="p">(</span><span class="n">model</span><span class="p">);</span><span class="w"> </span>
+
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;模型 &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="na">getName</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; 已发布！&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="3-map">3. 基于 Map 的数据操作</h3>
+<p>没有实体类，数据怎么存取？
+mybatis-dynamic 的 <code>DataManager</code> 接口原生支持 <code>Map&lt;String, Object&gt;</code>。</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 获取动态模型的数据管理器</span>
+<span class="c1">// 注意：泛型 ID 类型要与 model.addLongIdFieldIfNotExist() 对应</span>
+<span class="n">DataManager</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dataManager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">modelService</span><span class="p">.</span><span class="na">getDataManager</span><span class="p">(</span><span class="s">&quot;LeaveApplication&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span>
+
+<span class="c1">// --- 插入数据 ---</span>
+<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="n">data</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;applicant&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;张三&quot;</span><span class="p">);</span>
+<span class="n">data</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;days&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+
+<span class="c1">// 执行插入 (自动处理主键和审计字段)</span>
+<span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dataManager</span><span class="p">.</span><span class="na">insert</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;新记录ID: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+
+<span class="c1">// --- 查询数据 ---</span>
+<span class="c1">// 返回 List&lt;Map&lt;String, Object&gt;&gt;</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dataManager</span><span class="p">.</span><span class="na">query</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">c</span>
+<span class="w">    </span><span class="p">.</span><span class="na">eq</span><span class="p">(</span><span class="s">&quot;applicant&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;张三&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="na">gt</span><span class="p">(</span><span class="s">&quot;days&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">// --- 更新数据 ---</span>
+<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">update</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="n">update</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+<span class="n">update</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;days&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+<span class="n">dataManager</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">update</span><span class="p">);</span>
+
+<span class="c1">// --- 分页查询 ---</span>
+<span class="n">PageResult</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dataManager</span><span class="p">.</span><span class="na">page</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">);</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;总条数: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">page</span><span class="p">.</span><span class="na">getTotal</span><span class="p">());</span>
+</code></pre></div>
+<p>完全不需要 <code>BaseService</code> 或 <code>Mapper</code>，一切都在运行时完成。</p>
+<hr />
+<h2 id="_3">三、进阶场景：模型热更新</h2>
+<p>低代码平台最常见需求是：用户发现少了个字段，想加一个 "原因" (reason) 字段。</p>
+<p>在 mybatis-dynamic 中，这就像修改集合一样简单：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1. 获取现有模型</span>
+<span class="n">Model</span><span class="w"> </span><span class="n">currentModel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">modelService</span><span class="p">.</span><span class="na">getModel</span><span class="p">(</span><span class="s">&quot;LeaveApplication&quot;</span><span class="p">);</span>
+
+<span class="c1">// 2. 添加新字段</span>
+<span class="n">BasicField</span><span class="w"> </span><span class="n">reasonField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Field</span><span class="p">.</span><span class="na">stringBuilder</span><span class="p">(</span><span class="s">&quot;reason&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">characterMaximumLength</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">ddlComment</span><span class="p">(</span><span class="s">&quot;请假原因&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
+<span class="n">currentModel</span><span class="p">.</span><span class="na">addField</span><span class="p">(</span><span class="n">reasonField</span><span class="p">);</span>
+
+<span class="c1">// 3. 热更新</span>
+<span class="c1">// 框架会自动检测差异，执行: ALTER TABLE t_leave_app ADD COLUMN reason ...</span>
+<span class="n">modelService</span><span class="p">.</span><span class="na">updateAndRegister</span><span class="p">(</span><span class="n">currentModel</span><span class="p">);</span>
+
+<span class="c1">// 4. 立即可以使用新字段</span>
+<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">newData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="n">newData</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;applicant&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;李四&quot;</span><span class="p">);</span>
+<span class="n">newData</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;reason&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;世界那么大，我想去看看&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">// 新字段</span>
+<span class="n">dataManager</span><span class="p">.</span><span class="na">insert</span><span class="p">(</span><span class="n">newData</span><span class="p">);</span>
+</code></pre></div>
+<hr />
+<h2 id="_4">四、动态关联查询</h2>
+<p>即使没有实体类，只要正确配置了 <code>ToOne</code> / <code>ToMany</code> 字段元数据，<code>dataManager.query()</code> 依然会自动处理 JOIN。</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 假设还有一个 User 模型</span>
+<span class="n">Model</span><span class="w"> </span><span class="n">userModel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span><span class="w"> </span>
+<span class="n">modelService</span><span class="p">.</span><span class="na">register</span><span class="p">(</span><span class="n">userModel</span><span class="p">);</span>
+
+<span class="c1">// 在 LeaveApplication 中动态添加关联</span>
+<span class="n">ToOneField</span><span class="w"> </span><span class="n">userField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Field</span><span class="p">.</span><span class="na">toOneBuilder</span><span class="p">(</span><span class="s">&quot;user&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">targetModel</span><span class="p">(</span><span class="s">&quot;User&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">// 关联目标模型名称</span>
+<span class="w">        </span><span class="p">.</span><span class="na">joinField</span><span class="p">(</span><span class="s">&quot;applicant&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;name&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">// 本表 applicant = User.name</span>
+<span class="w">        </span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
+<span class="n">leaveModel</span><span class="p">.</span><span class="na">addField</span><span class="p">(</span><span class="n">userField</span><span class="p">);</span>
+<span class="n">modelService</span><span class="p">.</span><span class="na">updateAndRegister</span><span class="p">(</span><span class="n">leaveModel</span><span class="p">);</span>
+
+<span class="c1">// 查询时自动带出 User 信息</span>
+<span class="c1">// 结果 Map 中会包含 key &quot;user&quot;，其 value 也是一个 Map</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dataManager</span><span class="p">.</span><span class="na">query</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="na">eq</span><span class="p">(</span><span class="s">&quot;days&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">));</span>
+</code></pre></div>
+<hr />
+<h2 id="_5">五、生产环境的高级挑战与应对</h2>
+<p>虽然全动态建模看起来很美，但在真实的高并发、分布式生产环境中，必须保持清醒的头脑。如果不加限制地使用，可能会引发灾难。</p>
+<h3 id="1_1">1. 多实例部署的模型同步</h3>
+<p>mybatis-dynamic 的模型元数据默认存储在<strong>内存</strong>中。在微服务或多 Pod 部署场景下，如果实例 A 动态添加了一个字段并更新了数据库，实例 B 的内存中并不知道这个变化。</p>
+<p><strong>后果</strong>：实例 B 查询时可能会忽略新数据，或者在更新时因为不知道新字段而导致数据丢失。</p>
+<p><strong>解决方案</strong>：
+*   <strong>引入消息机制</strong>：当一个节点更新模型时，通过 Redis Pub/Sub 或 MQ 广播 "模型变更事件"。
+*   <strong>监听刷新</strong>：其他节点监听到事件后，重新从数据库或配置中心加载最新的模型定义，实现最终一致性。</p>
+<h3 id="2-ddl">2. DDL 变更的风险控制</h3>
+<p><code>modelService.updateAndRegister()</code> 底层会执行 <code>ALTER TABLE</code> 语句。在开发环境这很快，但在生产环境：</p>
+<ul>
+<li><strong>大表锁表</strong>：如果表中有几千万数据，MySQL (特别是旧版本) 加字段可能会锁表数分钟甚至更久，导致业务中断。</li>
+<li><strong>并发冲突</strong>：如果两个管理员同时修改同一个表的结构，可能会导致 DDL 冲突或覆盖。</li>
+</ul>
+<p><strong>建议</strong>：
+*   <strong>权限分离</strong>：限制动态 DDL 的触发权限，只允许特定管理员操作。
+*   <strong>异步执行</strong>：对于大表变更，不要在 HTTP 请求线程中同步等待，建议提交任务后台执行。
+*   <strong>维护窗口</strong>：对于核心大表的结构变更，尽量安排在业务低峰期进行。</p>
+<hr />
+<h2 id="_6">总结</h2>
+<p>mybatis-dynamic 的全动态能力，使其成为构建 <strong>动态数据平台</strong> 的利器。</p>
+<ul>
+<li><strong>元数据驱动</strong>：完全脱离 Java 编译期限制。</li>
+<li><strong>自动 DDL</strong>：无需手动维护复杂的 SQL 脚本。</li>
+<li><strong>统一 API</strong>：Map 和 Entity 共享同一套 Fluent API。</li>
+</ul>
+<p>现在，你可以自信地回复产品经理：“想怎么改表都行，在线配置，立即生效。”</p>
+<hr />
+<p><em>更多示例请参考项目 <code>sample</code> 目录下的动态模型测试用例。</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../js/i18n-nav.js"></script>
+      
+    
+  </body>
+</html>
