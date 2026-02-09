@@ -40,7 +40,7 @@ nav:
   - Quick Start: quick-start.md
   - Article: article-dynamic-modeling.md
   - Core Features:
-    - Introduction: core-features/index.md
+    - Overview: core-features/index.md
     - Introduction: core-features/1-introduction.md
     - DataManager & ID: core-features/2-datamanager-id.md
     - ModelService: core-features/3-modelservice.md
