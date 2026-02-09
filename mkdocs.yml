@@ -22,6 +22,27 @@ plugins:
         - locale: zh
           name: 中文
           build: true
+      nav_translations:
+        zh:
+          Home: 首页
+          Quick Start: 快速开始
+          Core Features: 核心功能
+          1. Introduction: 1. 简介
+          2. DataManager & ID: 2. DataManager 与 ID
+          3. ModelService: 3. ModelService
+          4. DataChangeInterceptor: 4. 数据变更拦截器
+          5. PermissionGetter & CurrentUserHolder: 5. 权限管理
+          Spring Integration: Spring 集成
+          Advanced Features: 高级功能
+          Overview: 概览
+          1. Fluent Chain APIs: 1. 流畅链式 API
+          2. Join Operations: 2. 连接操作
+          3. Recursive & Tree: 3. 递归与树形结构
+          4. Relation Filling: 4. 关联填充
+          5. ModelService Advanced: 5. ModelService 高级功能
+          6. Custom Conditions: 6. 自定义条件
+          7. Best Practices: 7. 最佳实践
+          Extensions: 扩展
 
 extra:
   alternate:
@@ -42,7 +63,7 @@ nav:
     - 3. ModelService: core-features/3-modelservice.md
     - 4. DataChangeInterceptor: core-features/4-datachangeinterceptor.md
     - 5. PermissionGetter & CurrentUserHolder: core-features/5-permissiongetter-currentuserholder.md
-  - Spring Integration: spring-integration.md
+  - Spring Integration: spring-integration/index.md
   - Advanced Features:
     - Overview: advanced-features/index.md
     - 1. Fluent Chain APIs: advanced-features/1-fluent-chain-apis-deep-dive.md
@@ -52,7 +73,7 @@ nav:
     - 5. ModelService Advanced: advanced-features/5-modelservice-advanced-features.md
     - 6. Custom Conditions: advanced-features/6-custom-conditions.md
     - 7. Best Practices: advanced-features/7-best-practices-faq.md
-  - Extensions: extensions.md
+  - Extensions: extensions/index.md
 markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
