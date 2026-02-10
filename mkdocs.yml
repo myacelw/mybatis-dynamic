@@ -63,6 +63,7 @@ nav:
     - Custom Conditions: advanced-features/6-custom-conditions.md
     - Best Practices: advanced-features/7-best-practices-faq.md
   - Extensions: extensions/index.md
+  - API Reference: api-reference.md
 
 markdown_extensions:
   - pymdownx.highlight
