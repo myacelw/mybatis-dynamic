@@ -22,6 +22,7 @@
 
 ## 文档
 
+*   [动态建模简介](intro-to-dynamic-modeling.md)：告别繁琐 XML，用代码定义模型。
 *   [快速开始](quick-start.md)：几分钟内上手运行。
 *   [核心功能](../core-features.md)：了解 `DataManager`、`ModelService` 和基本 CRUD。
 *   [高级功能](advanced-features.md)：掌握链式 API、递归查询和权限管理。
